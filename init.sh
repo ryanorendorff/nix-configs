@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
-if [ ! -d ~/.nixpkgs ] ; then
+git submodule init
+git submodule update
+
+if [[ ! -d ~/.nixpkgs && $(uname) == "Darwin" ]] ; then
   mkdir -p ~/.nixpkgs
 fi
 
-if [ ! -e ~/.nixpkgs/darwin-configuration.nix ] ; then
+if [[ ! -e ~/.nixpkgs/darwin-configuration.nix && $(uname) == "Darwin" ]] ; then
   ln -s `pwd`/darwin-configuration.nix ~/.nixpkgs/darwin-configuration.nix
 fi
 
@@ -19,7 +22,6 @@ fi
 if [ ! -e ~/.config/nixpkgs/config.nix ] ; then
   ln -s `pwd`/config.nix ~/.config/nixpkgs/config.nix
 fi
-
 
 if [ ! -e ~/.zsh_custom ] ; then
   ln -s `pwd`/zsh/custom ~/.zsh_custom

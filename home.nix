@@ -4,7 +4,7 @@ with pkgs; let
   files = callPackage ./files {};
   sessionVariables = (recurseIntoAttrs (callPackage ./sessionVariables { })).variables;
   i3Config = (recurseIntoAttrs (callPackage ./i3 { config = config; }));
-  mine = callPackage ./mine {};
+  mine = callPackage ./systemPackages/mine {};
 in {
   programs.home-manager.enable = true;
   programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
@@ -70,7 +70,7 @@ in {
   } else {
     enable = true;
     allowBold = true;
-    browser = termiteBrowser;
+    browser = config.home.file."bin/chrome-personal".target;
     clickableUrl = true;
     cursorBlink = "on";
     cursorShape = "block";
@@ -209,7 +209,7 @@ in {
         };
         irc = {
           appname = "weechat";
-          icon = "${dotfilesPath}weechat/.weechat/icon.png";
+          icon = ./files/icon.png;
           format  = "%s: %b";
           urgency = "critical";
           background = "#FD5F00";
@@ -265,6 +265,7 @@ in {
       sudo vmhgfs-fuse -o allow_other -o auto_unmount -o uid=1000 -o gid=1000 .host:/tdoggett /mnt/vmware/tdoggett
       sudo vmhgfs-fuse -o allow_other -o auto_unmount -o uid=1000 -o gid=1000 .host:/wallpapers /mnt/vmware/wallpapers
       sudo mount -a && systemctl --user restart random-background
+      systemctl --user start compton.service
       ${mine.i3-gnome-pomodoro-mine}/bin/pomodoro-client daemon 4 --nagbar &
       xset dpms 90
       xset s off

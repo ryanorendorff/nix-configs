@@ -1,6 +1,8 @@
 { stdenv, lib, pkgs, chunkwm, ... }:
 
-with pkgs; [
+let
+  mine = callPackage ./mine {};
+in with pkgs; [
   aspell
   aspellDicts.en
   ctags
@@ -42,5 +44,5 @@ with pkgs; [
   youtube-dl
   zsh
 ]
-  ++ lib.optionals stdenv.isDarwin ( callPackage ./darwin.nix {chunkwm = chunkwm;} )
-  ++ lib.optionals stdenv.isLinux ( callPackage ./linux.nix {} )
+  ++ lib.optionals stdenv.isDarwin ( callPackage ./darwin.nix {mine = mine; chunkwm = chunkwm;} )
+  ++ lib.optionals stdenv.isLinux ( callPackage ./linux.nix { mine = mine; } )

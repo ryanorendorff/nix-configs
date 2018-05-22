@@ -12,7 +12,7 @@
 ''
 + ( pkgs.callPackage ./buildProjectList.nix {
   zgitclone = zgitclone;
-  projectList = import ../../projectList;
+  projectList = import ../../workProjectList;
 } )
 + ''
   npm set progress true"

@@ -4,7 +4,7 @@
   {
     host = "vmhost";
     hostname = "tdoggett4.zillow.local";
-    identityFile = "~/.ssh/id_rsa";
+    identityFile = toString ../keys/private/id_rsa;
     user = "tdoggett";
   }
 ]

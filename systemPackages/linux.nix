@@ -1,10 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, mine, ... }:
 
 let
   myPythonPackages = pythonPackages: with pythonPackages; [
     websocket_client
   ];
-  mine = callPackage ./mine {};
   php = pkgs.php72;
   phpPackages = pkgs.php72Packages;
 in
