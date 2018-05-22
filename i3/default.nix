@@ -1,4 +1,4 @@
-{ pkgs, config, stdenv, ... }:
+{ pkgs, config, stdenv, mine, ... }:
 
 let
   startupBrowser = config.home.file."bin/chrome".target;
@@ -255,7 +255,7 @@ in {
           notification = true;
         }
         {
-          command = "postman";
+          command = "${mine.postman-mine}/bin/postman";
           notification = true;
         }
         {

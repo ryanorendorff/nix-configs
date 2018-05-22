@@ -30,11 +30,11 @@ let
 
   postman = stdenv.mkDerivation rec {
     name = "postman-${version}";
-    version = "6.0.10";
+    version = "6.1.2";
 
     src = fetchurl {
       url = "https://dl.pstmn.io/download/version/${version}/linux64";
-      sha1 = "fkkpb3daxwp3rkhxm6j3kxifvjc5py1n";
+      sha1 = "06v99w0d4cphl03q3ii4zkwh8fayli52";
       name = "${name}.tar.gz";
     };
 
@@ -57,7 +57,7 @@ let
     installPhase = ''
       mkdir -p $out/share/postman
       mkdir -p $out/share/applications
-      cp -R * $out/share/postman
+      cp -R app/* $out/share/postman
       mkdir -p $out/bin
       ln -s $out/share/postman/Postman $out/bin/postman
       ln -s ${desktopItem}/share/applications/* $out/share/applications/
@@ -134,6 +134,7 @@ let
       pydbus
       click
       i3ipc
+      pkgs.gnome3.pomodoro
     ];
 
     propagatedBuildInputs = [

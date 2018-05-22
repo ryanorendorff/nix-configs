@@ -1,4 +1,4 @@
-{ pkgs, mine, ... }:
+{ pkgs, mine, config, ... }:
 
 let
   myPythonPackages = pythonPackages: with pythonPackages; [
@@ -9,17 +9,15 @@ in
 with pkgs; [
   (python.withPackages myPythonPackages)
   mine.i3-gnome-pomodoro-mine
+  gnome3.pomodoro # This is a dependency for i3-gnome-pomodoro-mine; need to get it as part of the derivation
   mine.postman-mine
   alarm-clock-applet
-  apci
   bash-completion
   cava
-  completiondmenu
   compton
   dmenu
   firefox-devedition-bin
   glibcLocales
-  gnome3.pomodoro
   gnupg
   gnupg1compat
   google-chrome
@@ -36,12 +34,10 @@ with pkgs; [
   openssh
   php71
   phpPackages.composer
-  postman
   qscreenshot
   rtv
   sysstat
   termite
-  vim
   vit
   vlc
   vscode

@@ -1,4 +1,4 @@
-{ lib, stdenv, pkgs, ... }:
+{ lib, stdenv, pkgs, config, ... }:
 
 let variables = (
   {
@@ -11,7 +11,7 @@ let variables = (
     TERM = "xterm-256color";
   }
   // (if stdenv.isDarwin then import ./darwin.nix { pkgs = pkgs; } else {})
-  // (if stdenv.isLinux then import ./linux.nix { pkgs = pkgs; } else {})
+  // (if stdenv.isLinux then import ./linux.nix { pkgs = pkgs; config = config; } else {})
 ); in {
   variables = variables;
 }

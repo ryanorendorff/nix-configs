@@ -2,14 +2,17 @@
 
 with pkgs; let
   files = callPackage ./files {};
-  sessionVariables = (recurseIntoAttrs (callPackage ./sessionVariables { })).variables;
-  i3Config = (recurseIntoAttrs (callPackage ./i3 { config = config; }));
+  vimInfo = callPackage ./vim {};
+  sessionVariables = (recurseIntoAttrs (callPackage ./sessionVariables { config = config; })).variables;
   mine = callPackage ./systemPackages/mine {};
+  i3Config = (recurseIntoAttrs (callPackage ./i3 { config = config; mine = mine; }));
 in {
   programs.home-manager.enable = true;
   programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
 
   home.file = import ./scripts { pkgs = pkgs; stdenv = stdenv; config = config; };
+
+  home.packages = if stdenv.isDarwin then [] else callPackage ./systemPackages { chunkwm = {}; };
 
   programs.git = {
     enable = true;
@@ -63,6 +66,14 @@ in {
     enable = false;
   } else {
     enable = true;
+  };
+
+  programs.vim = if stdenv.isDarwin then {
+    enable = false;
+  } else {
+    enable = true;
+    plugins = vimInfo.knownPlugins;
+    extraConfig = vimInfo.vimConfig;
   };
 
   programs.termite = if stdenv.isDarwin then {

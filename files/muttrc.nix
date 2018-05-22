@@ -1,10 +1,12 @@
-{  pkgs, ...}:
+{ pkgs, config, stdenv, ...}:
 
-''
+let
+  vim = if stdenv.isDarwin then pkgs.vim else config.programs.vim.package;
+in ''
   bind editor <space> noop
   set edit_headers
 
-  set editor        = "${pkgs.vim} +/^$ ++1"
+  set editor        = "${vim} +/^$ ++1"
   set folder        = imaps://outlook.office365.com:993/
   set hostname      = "zillowgroup.com"
   set imap_user     = tdoggett@zillowgroup.com

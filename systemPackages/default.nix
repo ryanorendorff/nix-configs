@@ -1,4 +1,4 @@
-{ stdenv, lib, pkgs, chunkwm, ... }:
+{ stdenv, lib, pkgs, chunkwm, config, ... }:
 
 let
   mine = pkgs.callPackage ./mine {};
@@ -43,4 +43,4 @@ in with pkgs; [
   zsh
 ]
   ++ lib.optionals stdenv.isDarwin ( callPackage ./darwin.nix {mine = mine; chunkwm = chunkwm;} )
-  ++ lib.optionals stdenv.isLinux ( callPackage ./linux.nix { mine = mine; } )
+  ++ lib.optionals stdenv.isLinux ( callPackage ./linux.nix { mine = mine; config = config; } )

@@ -5,7 +5,7 @@
   i3blocks = callPackage ../i3/i3blocks { config = config; };
   ideavimrc = callPackage ./ideavimrc.nix {};
   mailcap = callPackage ./mailcap.nix {};
-  muttrc = callPackage ./muttrc.nix {};
+  muttrc = callPackage ./muttrc.nix { config = config; };
   npmrc = callPackage ./npmrc.nix {};
   rtv-cfg = callPackage ./rtv-cfg.nix {};
 }
