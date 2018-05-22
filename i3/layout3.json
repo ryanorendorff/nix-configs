@@ -1,0 +1,220 @@
+{
+  "layout": "splitv",
+  "percent": 1,
+  "type": "con",
+  "nodes": [
+    {
+      "layout": "splith",
+      "percent": 1,
+      "type": "con",
+      "nodes": [
+        {
+          // Box 1
+          "layout": "splitv",
+          "percent": 0.73,
+          "type": "con",
+          "nodes": [
+            {
+              // Box 1a
+              "layout": "splith",
+              "percent": 0.60,
+              "type": "con",
+              "nodes": [
+                {
+                  // Box 1ai
+                  "layout": "tabbed",
+                  "percent": 0.33,
+                  "type": "con",
+                  "nodes": [
+                    {
+                      "name": "Reddit",
+                      "swallows": [
+                        {
+                          "class": ".*Termite.*",
+                          "instance": ".*termite.*",
+                          "title": "^rtv$"
+                        }
+                      ],
+                      "type": "con"
+                    }
+                  ]
+                },
+                {
+                  // Box 1aii
+                  "layout": "tabbed",
+                  "percent": 0.67,
+                  "type": "con",
+                  "nodes": [
+                    {
+                      "name": "Chat",
+                      "swallows": [
+                        {
+                          "class": ".*Termite.*",
+                          "instance": ".*termite.*",
+                          "title": "^weechat$"
+                        }
+                      ],
+                      "type": "con"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              // Box 1b
+              "layout": "splith",
+              "percent": 0.40,
+              "type": "con",
+              "nodes": [
+                {
+                  // Box 1bi
+                  "layout": "tabbed",
+                  "percent": 0.20,
+                  "type": "con",
+                  "nodes": [
+                    {
+                      "name": "Todoist",
+                      "swallows": [
+                        {
+                          "class": "^Google\\-chrome$",
+                          "instance": ".*todoist.*__app.*",
+                          "window_role": "^pop\\-up$"
+                        }
+                      ],
+                      "type": "con"
+                    }
+                  ]
+                },
+                {
+                  // Box 1bii
+                  "layout": "tabbed",
+                  "percent": 0.80,
+                  "type": "con",
+                  "nodes": [
+                    {
+                      "name": "CRM Dev",
+                      "swallows": [
+                        {
+                          "class": ".*Termite.*",
+                          "title": "^web_crm$",
+                          "instance": ".*termite.*"
+                        }
+                      ],
+                      "type": "con"
+                    },
+                    {
+                      "name": "CRM Dev Server",
+                      "swallows": [
+                        {
+                          "class": ".*Termite.*",
+                          "title": "^npm_start$",
+                          "instance": ".*termite.*"
+                        }
+                      ],
+                      "type": "con"
+                    },
+                    {
+                      "name": "Home",
+                      "swallows": [
+                        {
+                          "class": ".*Termite.*",
+                          "instance": ".*termite.*",
+                          "title": "^home$"
+                        }
+                      ],
+                      "type": "con"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          // Box 2
+          "layout": "splitv",
+          "percent": 0.27,
+          "type": "con",
+          "nodes": [
+            {
+              // Box 2a
+              "layout": "tabbed",
+              "percent": 0.25,
+              "type": "con",
+              "nodes": [
+                {
+                  "name": "MPD",
+                  "swallows": [
+                    {
+                      "class": ".*Termite.*",
+                      "instance": ".*termite.*",
+                      "title": "^ncmpc$"
+                    }
+                  ],
+                  "type": "con"
+                }
+              ]
+            },
+            {
+              // Box 2b
+              "layout": "tabbed",
+              "percent": 0.25,
+              "type": "con",
+              "nodes": [
+                {
+                  "name": "Mail",
+                  "swallows": [
+                    {
+                      "class": ".*Termite.*",
+                      "instance": ".*termite.*",
+                      "title": "^mutt$"
+                    }
+                  ],
+                  "type": "con"
+                }
+              ]
+            },
+            {
+              // Box 2c
+              "layout": "tabbed",
+              "percent": 0.25,
+              "type": "con",
+              "nodes": [
+                {
+                  "name": "Hacker News",
+                  "swallows": [
+                    {
+                      "class": ".*Termite.*",
+                      "instance": ".*termite.*",
+                      "title": "^haxor$"
+                    }
+                  ],
+                  "type": "con"
+                }
+              ]
+            },
+            {
+              // Box 2d
+              "layout": "tabbed",
+              "percent": 0.25,
+              "type": "con",
+              "nodes": [
+                {
+                  "name": "System",
+                  "swallows": [
+                    {
+                      "class": ".*Termite.*",
+                      "instance": ".*termite.*",
+                      "title": "^htop$"
+                    }
+                  ],
+                  "type": "con"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

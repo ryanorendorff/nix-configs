@@ -1,4 +1,4 @@
-{ stdenv, lib, pkgs, chunkwm, nvim, ... }:
+{ stdenv, lib, pkgs, chunkwm, ... }:
 
 with pkgs; [
   aspell
@@ -28,7 +28,6 @@ with pkgs; [
   neomutt
   nix-repl
   nodejs
-  nvim
   openssl
   perl
   playerctl

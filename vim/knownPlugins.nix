@@ -1,0 +1,19 @@
+{...}:
+
+[
+  "fugitive"
+  "nerdtree"
+  "nerdtree-git-plugin"
+  "vim-nix"
+  "ctrlp"
+  "ctrlp-z"
+  "airline"
+  "gitgutter"
+  "vim-airline-themes"
+  "molokai"
+  "vim-markdown"
+  "vim-misc"
+  "typescript-vim"
+  "tsuquyomi"
+  "vim-trailing-whitespace"
+]

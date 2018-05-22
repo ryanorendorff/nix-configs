@@ -1,16 +1,15 @@
 { stdenv, lib, config, pkgs, ... }:
 
-let
-  chunkwm = pkgs.recurseIntoAttrs (pkgs.callPackage ./chunkwm {
+with pkgs; let
+  chunkwm = recurseIntoAttrs (callPackage ./chunkwm {
     inherit (pkgs) callPackage stdenv fetchFromGitHub imagemagick;
-    inherit (pkgs.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
+    inherit (darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
   });
-  nvim = import ./nvim { pkgs = pkgs; };
-  files = pkgs.callPackage ./files {};
-  sessionVariables = (pkgs.recurseIntoAttrs (pkgs.callPackage ./sessionVariables { nvim = nvim; })).variables;
-in
-{
-  environment.systemPackages = with pkgs; callPackage ./systemPackages { chunkwm = chunkwm; nvim = nvim; };
+  files = callPackage ./files {};
+  sessionVariables = (recurseIntoAttrs (callPackage ./sessionVariables { })).variables;
+  vim = callPackage ./vim {};
+in {
+  environment.systemPackages = callPackage ./systemPackages { chunkwm = chunkwm; };
   environment.variables = sessionVariables;
   environment.etc."hosts".text = files.etc-hosts;
 
@@ -41,8 +40,8 @@ in
   ];
 
   launchd.user.agents.fetch-nixpkgs = {
-    command = "${pkgs.git}/bin/git -C ~/.nix-defexpr/nixpkgs fetch origin master";
-    environment.GIT_SSL_CAINFO = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+    command = "${git}/bin/git -C ~/.nix-defexpr/nixpkgs fetch origin master";
+    environment.GIT_SSL_CAINFO = "${cacert}/etc/ssl/certs/ca-bundle.crt";
     serviceConfig.KeepAlive = false;
     serviceConfig.ProcessType = "Background";
     serviceConfig.StartInterval = 360;
@@ -50,7 +49,37 @@ in
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
-  # nix.package = pkgs.nix;
+  # nix.package = nix;
+
+  programs.vim = {
+    enable = true;
+    enableSensible = true;
+    extraKnownPlugins = {
+      vim-jsx = vimUtils.buildVimPluginFrom2Nix {
+        name = "vim-javascript-2018-02-19";
+        src = fetchgit {
+          url = "git://github.com/mxw/vim-jsx";
+          rev = "52ee8bb9f4b53e9bcb38c95f9839ec983bcf7f9d";
+          sha256 = "17pffzwnvsimnnr4ql1qirdh4a0sqqsmcwfiqqzgglvsnzw5vpls";
+        };
+        dependencies = [];
+      };
+      vim-javascript-libraries-syntax = vimUtils.buildVimPluginFrom2Nix {
+        name = "vim-javascript-libraries-syntax-2018-02-22";
+        src = fetchgit {
+          url = "https://github.com/othree/javascript-libraries-syntax.vim";
+          rev = "2f812813cda79a3fbd53a50c57441fe58d3109cd";
+          sha256 = "0k0zcdz9y1mwhdvkn7hsavij658ji15qdamfr1709rp40lv4673c";
+        };
+        dependencies = [];
+      };
+    };
+    plugins = [{
+      names = vim.knownPlugins;
+    }];
+    vimOptions = {};
+    vimConfig = vim.vimConfig;
+  };
 
   nix.extraOptions = ''
     gc-keep-derivations = true
@@ -81,6 +110,9 @@ in
   programs.bash = {
     enable = true;
     enableCompletion = false;
+    interactiveShellInit = ''
+      eval "$(${fasd}/bin/fasd --init auto)"
+    '';
   };
   # programs.zsh.enable = true;
   # programs.fish.enable = true;
@@ -152,7 +184,7 @@ in
 
   services.skhd = {
     enable = false;
-    package = pkgs.skhd;
+    package = skhd;
     skhdConfig = ''
       # enter fullscreen mode for the focused container
       alt - f : chunkc tiling::window --toggle fullscreen

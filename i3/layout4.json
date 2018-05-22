@@ -1,0 +1,12 @@
+{
+    "name": "Browser",
+    "percent": 1,
+    "swallows": [
+      {
+        "class": ".*Firefox.*",
+        "window_role": "^browser$"
+      }
+    ],
+    "type": "con"
+}
+

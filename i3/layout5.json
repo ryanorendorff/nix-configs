@@ -1,0 +1,12 @@
+{
+    "name": "Postman",
+    "percent": 1,
+    "swallows": [
+      {
+        "class": "^Postman$",
+        "title": "^Postman$"
+      }
+    ],
+    "type": "con"
+}
+

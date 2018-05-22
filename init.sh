@@ -20,3 +20,7 @@ if [ ! -e ~/.config/nixpkgs/config.nix ] ; then
   ln -s `pwd`/config.nix ~/.config/nixpkgs/config.nix
 fi
 
+
+if [ ! -e ~/.zsh_custom ] ; then
+  ln -s `pwd`/zsh/custom ~/.zsh_custom
+fi

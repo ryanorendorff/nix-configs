@@ -5,7 +5,7 @@ rec {
   dotfiles = "${PROJECTS}/nocoolnametom/dotfiles";
   ZILLOW = "${PROJECTS}/zillow";
   BROWSER = "${pkgs.w3m}/bin/w3m";
-  EDITOR = "${nvim}/bin/nvim";
-  RTV_EDITOR = "${nvim}/bin/nvim";
+  EDITOR = "${pkgs.vim}/bin/vim";
+  RTV_EDITOR = "${pkgs.vim}/bin/vim";
   RTV_URLVIEWER = "${pkgs.urlview}/bin/urlview";
 }
