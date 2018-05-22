@@ -1,8 +1,7 @@
-{ pkgs, chunkwm, ... }:
+{ pkgs, chunkwm, mine, ... }:
 
 let
   myPythonPackages = pythonPackages: with pythonPackages; [
-    websocket_client
   ];
   php = pkgs.php72;
   phpPackages = pkgs.php72Packages;
@@ -31,5 +30,4 @@ with pkgs; [
   ripgrep
   shellcheck
   silver-searcher
-  weechat # duplicated here because it depends on websocket_client but other python packages may need to be different between systems
 ]

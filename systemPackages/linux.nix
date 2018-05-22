@@ -2,7 +2,6 @@
 
 let
   myPythonPackages = pythonPackages: with pythonPackages; [
-    websocket_client
   ];
   php = pkgs.php72;
   phpPackages = pkgs.php72Packages;

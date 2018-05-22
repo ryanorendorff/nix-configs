@@ -1,3 +1,6 @@
 [submodule "i3/i3blocks/i3blocks-contrib"]
 	path = i3/i3blocks/i3blocks-contrib
 	url = https://github.com/vivien/i3blocks-contrib
+[submodule "zsh/custom/themes/powerlevel9k"]
+	path = zsh/custom/themes/powerlevel9k
+	url = https://github.com/bhilburn/powerlevel9k

@@ -1,10 +1,9 @@
 { stdenv, lib, pkgs, chunkwm, ... }:
 
 let
-  mine = callPackage ./mine {};
+  mine = pkgs.callPackage ./mine {};
 in with pkgs; [
-  aspell
-  aspellDicts.en
+  mine.weechat-with-slack
   ctags
   curl
   fasd
@@ -39,7 +38,6 @@ in with pkgs; [
   typespeed
   urlview
   w3m
-  weechat
   wget
   youtube-dl
   zsh

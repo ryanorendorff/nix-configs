@@ -1,7 +1,34 @@
 { pkgs, lib, xorg, gnome2, gnome3, makeWrapper, fetchurl, stdenv, fetchFromGitHub, pythonPackages, python36Packages, makeDesktopItem, ... }:
 
-{
-  "postman-mine" = stdenv.mkDerivation rec {
+let
+  wee-slack = with pkgs; stdenv.mkDerivation rec {
+    version = "2.0.0";
+    baseName = "wee-slack";
+    name = "${baseName}-${version}";
+
+    src = fetchFromGitHub {
+      rev = "v${version}";
+      owner = baseName;
+      repo = baseName;
+      sha256 = "0712zzscgylprnnpgy2vr35a5mdqhic8kag5v3skhd84awbvk1n5";
+    };
+
+    buildInputs = [ weechat (python.withPackages(ps: with ps; [websocket_client])) ];
+    phases = [ "installPhase" ];
+
+    installPhase = ''
+      mkdir -p $out/share
+      cp $src/wee_slack.py $out/share/
+    '';
+
+    meta = with stdenv.lib; {
+      description = "A rofi emoji picker";
+      maintainers = with maintainers; [ nocoolnametom ];
+      license = licenses.mit;
+    };
+  };
+
+  postman = stdenv.mkDerivation rec {
     name = "postman-${version}";
     version = "6.0.10";
 
@@ -88,7 +115,7 @@
     };
   };
 
-  "i3-gnome-pomodoro-mine" = with python36Packages; stdenv.mkDerivation rec {
+  i3-gnome-pomodoro = with python36Packages; stdenv.mkDerivation rec {
     version = "1.0-alpha1";
     name = "i3-gnome-pomodoro-${version}";
 
@@ -128,6 +155,24 @@
       description = "Integrate gnome-pomodoro into i3";
       license = licenses.gpl3;
       maintainers = with maintainers; [ nocoolnametom ];
+    };
+  };
+in {
+  wee-slack = wee-slack;
+  postman-mine = postman;
+  i3-gnome-pomodoro-mine = i3-gnome-pomodoro;
+  weechat-with-slack = pkgs.weechat.override {
+    extraBuildInputs = [
+      wee-slack
+      pkgs.perl
+      pkgs.aspellDicts.en
+    ];
+    configure = {availablePlugins,...}: {
+      plugins =
+        with availablePlugins; [
+          perl
+          (python.withPackages (ps: with ps; [websocket_client xmpppy]))
+        ];
     };
   };
 }

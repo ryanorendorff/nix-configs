@@ -39,7 +39,7 @@ in {
     executable = true;
   };
   "bin/tweechat" = {
-    text = pkgs.callPackage ./tweechat { };
+    text = pkgs.callPackage ./tweechat { mine = mine; };
     executable = true;
   };
   "bin/todoist" = {
