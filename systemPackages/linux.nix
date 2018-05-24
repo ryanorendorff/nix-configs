@@ -16,7 +16,6 @@ with pkgs; [
   cava
   compton
   dmenu
-  firefox-devedition-bin
   glibcLocales
   gnupg
   gnupg1compat

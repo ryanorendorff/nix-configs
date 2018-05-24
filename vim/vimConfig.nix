@@ -12,10 +12,11 @@
   colorscheme molokai
   let g:rehash256 = 1
 
+  set splitbelow
+  set splitright
+
   " Use 'jj' to exit Insert Mode
   :imap jj <Esc>
-
-  let g:TerminusFocusReporting=0
 
   " NERDTree
   let g:NERDTreeIndicatorMapCustom = {

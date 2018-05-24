@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
   '';
 
   postInstall = ''
-    ln -f $out/Applications/${appName}.app ~/Applications/${appName}.app
+    ln -f "$out/Applications/${appName}.app" "~/Applications/${appName}.app"
   '';
 
   meta = with stdenv.lib; {

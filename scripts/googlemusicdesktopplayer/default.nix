@@ -1,7 +1,7 @@
 {...}:
 
 let
-  gplayAppInfo = "/mnt/vmware/tdoggett/Library/Application\ Support/Google\ Play\ Music\ Desktop\ Player/json_store/playback.json";
+  gplayAppInfo = "/mnt/vmware/tdoggett/Library/Application Support/Google Play Music Desktop Player/json_store/playback.json";
 in ''
   #!/usr/bin/env bash
 
@@ -11,5 +11,5 @@ in ''
   # version: 1.0.0
   # license: MIT
 
-  grep -q '"playing":\s*true' "${gplayAppInfo}" && grep '\s*"title":\s*".*",' "${gplayAppInfo}". | cut -d \" -f 4 || echo "Not Playing..."
+  grep -q '"playing":\s*true' "${gplayAppInfo}" && grep '\s*"title":\s*".*",' "${gplayAppInfo}" | cut -d \" -f 4 || echo "Not Playing..."
 ''
