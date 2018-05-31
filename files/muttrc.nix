@@ -6,7 +6,7 @@ in ''
   bind editor <space> noop
   set edit_headers
 
-  set editor        = "${vim} +/^$ ++1"
+  set editor        = "${vim}/bin/vim +/^$ ++1"
   set folder        = imaps://outlook.office365.com:993/
   set hostname      = "zillowgroup.com"
   set imap_user     = tdoggett@zillowgroup.com
@@ -91,6 +91,8 @@ in ''
 
   # Open the highlighted mailbox
   bind index,pager \Co sidebar-open
+
+  bind index,pager \Cv view-raw-message
 
   # Move the highlight to the previous page
   # This is useful if you have a LOT of mailboxes.

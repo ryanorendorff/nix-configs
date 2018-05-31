@@ -7,7 +7,7 @@
     { repo = "api-json-schema-provider"; }
     { repo = "aps-client"; }
     { repo = "aps-contacts"; }
-    { repo = "aps-messages"; }
+    { repo = "aps-messages"; shell = ../shells/php55/default.nix; build = false; }
     { repo = "aps-push-notification"; }
     { repo = "aps-team-stats"; }
     { repo = "aps-util"; }
@@ -55,7 +55,7 @@
   zrm = [
     { repo = "agent-platform-core-clients"; }
     { repo = "agent-teams-utilities"; }
-    { repo = "agent-teams"; shell = ../shells/php55/default.nix; }
+    { repo = "agent-teams"; shell = ../shells/php55/default.nix; build = false; }
     { repo = "agenthub-api-client"; }
     { repo = "agentteamsproc"; }
     { repo = "autoresponder-service"; }
@@ -63,6 +63,7 @@
     { repo = "crm-data-entities"; }
     { repo = "crm-data-repository"; }
     { repo = "ean-client"; }
+    { repo = "hybrid-thread-orchestration"; }
     { repo = "lead-forwarding-proc"; }
     { repo = "lead-routing-api"; }
     { repo = "leadrouting-data-repository"; }
