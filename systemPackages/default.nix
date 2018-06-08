@@ -33,6 +33,7 @@ in with pkgs; [
   perl
   playerctl
   stow
+  styx
   terraform
   tig
   typespeed

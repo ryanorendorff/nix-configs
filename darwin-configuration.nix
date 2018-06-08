@@ -6,12 +6,25 @@ with pkgs; let
     inherit (darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
   });
   files = callPackage ./files {};
+  nixDocker = callPackage ./nixDocker {};
   sessionVariables = (recurseIntoAttrs (callPackage ./sessionVariables { })).variables;
   vim = callPackage ./vim {};
 in {
   environment.systemPackages = callPackage ./systemPackages { chunkwm = chunkwm; };
   environment.variables = sessionVariables;
   environment.etc."hosts".text = files.etc-hosts;
+  environment.etc."trulia/server.json".text = ''
+    { "SERVER": "DEV" }
+  '';
+  environment.etc."ssh/ssh_config".text = ''
+    Host *
+	    SendEnv LANG LC_*
+    Host nix-docker-root
+      Port 3022
+      User root
+      IdentityFile /etc/nix/docker_rsa
+      HostName 127.0.0.1
+  '';
 
   nixpkgs.config.allowUnsupportedSystem = false;
   nixpkgs.config.allowUnfree = true;
@@ -39,6 +52,14 @@ in {
     "/usr/local/sbin"
   ];
 
+  environment.postBuild = ''
+    if [[ ! -e /etc/nix/docker_rsa ]]; then
+      echo "Missing /etc/nix/docker_rsa!"
+      echo "Please run the following command:"
+      echo "    sudo cp ${nixDocker}/ssh/insecure_rsa /etc/nix/docker_rsa && sudo chmod 0600 /etc/nix/docker_rsa"
+    fi
+  '';
+
   launchd.user.agents.fetch-nixpkgs = {
     command = "${git}/bin/git -C ~/.nix-defexpr/nixpkgs fetch origin master";
     environment.GIT_SSL_CAINFO = "${cacert}/etc/ssl/certs/ca-bundle.crt";
@@ -49,7 +70,7 @@ in {
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
-  # nix.package = nix;
+  nix.package = nix;
 
   programs.vim = {
     enable = true;
@@ -121,8 +142,8 @@ in {
   # $ darwin-rebuild changelog
   system.stateVersion = 3;
 
-  services.mopidy.enable = true;
-  services.mopidy.mediakeys.enable = true;
+  services.mopidy.enable = false;
+  services.mopidy.mediakeys.enable = false;
 
   services.chunkwm = {
     enable = false;
@@ -240,11 +261,13 @@ in {
   nix.maxJobs = 1;
   nix.buildCores = 1;
   nix.distributedBuilds = true;
-  nix.buildMachines = [{
-    hostName = "nix-docker";
-    sshUser = "root";
-    sshKey = "/etc/nix/docker_rsa";
-    systems = [ "x86_64-linux" ];
-    maxJobs = 2;
-  }];
+  nix.buildMachines = [
+    {
+      hostName = "nix-docker";
+      sshUser = "root";
+      sshKey = "/etc/nix/docker_rsa";
+      systems = [ "x86_64-linux" ];
+      maxJobs = 2;
+    }
+  ];
 }

@@ -42,6 +42,10 @@ in (
       text = files.muttrc;
       executable = false;
     };
+    ".zsh_custom/themes/powerlevel9k" = {
+      source = pkgs.callPackage ../zsh/theme/powerlevel9k {};
+      executable = false;
+    };
   }
   // (if stdenv.isDarwin then import ./darwin.nix { pkgs = pkgs; config = config; } else {})
   // (if stdenv.isLinux then import ./linux.nix { pkgs = pkgs; config = config; } else {})

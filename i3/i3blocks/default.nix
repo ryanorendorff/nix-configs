@@ -1,27 +1,7 @@
 {pkgs, shellcheck, stdenv, config, lib, ...}:
 
 let
-  patchScript = buildDeps: source: let
-      scriptName = "i3blocks-contrib-" + builtins.head (lib.reverseList (lib.splitString "/" (toString source)));
-    in stdenv.mkDerivation rec {
-    src = source;
-    name = scriptName;
-    loc = "./${scriptName}";
-    unpackPhase = ''
-      cp $src $loc
-    '';
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      patchShebangs $loc
-    '';
-    checkPhase = ''
-      ${shellcheck}/bin/shellcheck -x $loc
-    '';
-    installPhase = ''
-      cp $loc $out
-      wrapProgram $out --prefix PATH : ${lib.makeBinPath buildDeps}
-    '';
-  };
+  i3blocksContrib = pkgs.callPackage ./i3blocksContrib {};
 in ''
   # i3blocks config file
   #
@@ -81,7 +61,7 @@ in ''
 
   # Media Player
   [mediaplayer]
-  command=${patchScript [pkgs.perl] ./i3blocks-contrib/mediaplayer/mediaplayer}
+  commad=${i3blocksContrib.mediaplayer}/mediaplayer
   instance=mpd
   interval=5
   signal=10
@@ -118,7 +98,7 @@ in ''
   #separator=false
 
   [bandwidth]
-  command=${patchScript [] ./i3blocks-contrib/bandwidth/bandwidth} -i enp0s3
+  command=${i3blocksContrib.bandwidth}/bandwidth -i enp0s3
 
   # CPU usage
   [cpu_usage]
@@ -129,7 +109,7 @@ in ''
 
   # Battery indicator
   [batterybar]
-  command=${patchScript [pkgs.acpi] ./i3blocks-contrib/batterybar/batterybar}
+  command=${i3blocksContrib.batterybar}/batterybar
   label=⚡
   interval=30
   markup=pango

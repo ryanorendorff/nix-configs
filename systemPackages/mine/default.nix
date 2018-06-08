@@ -1,6 +1,37 @@
 { pkgs, lib, xorg, gnome2, gnome3, makeWrapper, fetchurl, stdenv, fetchFromGitHub, pythonPackages, python36Packages, makeDesktopItem, ... }:
 
 let
+  pync_no_test = pkgs.python27.pkgs.buildPythonPackage rec {
+    version  = "2.0.3";
+    baseName = "pync";
+    name     = "${baseName}-${version}";
+    disabled = ! stdenv.isDarwin;
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/p/${baseName}/${name}.tar.gz";
+      sha256 = "0zqim86gzlg80gx7fzzzyimg7656brgkqxx52691y5m36lbydf9q";
+    };
+
+    buildInputs = [ pkgs.coreutils pkgs.terminal-notifier ];
+
+    propagatedBuildInputs = [ pkgs.python27.pkgs.dateutil ];
+
+    patchPhase = stdenv.lib.optionalString stdenv.isDarwin ''
+      sed -i 's|/usr/local/bin/|${pkgs.terminal-notifier}/bin/|g' pync/TerminalNotifier.py
+    '';
+
+    meta = {
+      description = "Python Wrapper for Mac OS 10.8 Notification Center";
+      homepage    = https://pypi.python.org/pypi/pync/1.4;
+    };
+  };
+  weechatPythonPackageList = python: python.withPackages(ps: with ps; [
+    websocket_client
+    xmpppy
+  ] ++ (if stdenv.isDarwin then [
+    pync_no_test
+  ] else []));
+in let
   wee-slack = with pkgs; stdenv.mkDerivation rec {
     version = "2.0.0";
     baseName = "wee-slack";
@@ -13,7 +44,8 @@ let
       sha256 = "0712zzscgylprnnpgy2vr35a5mdqhic8kag5v3skhd84awbvk1n5";
     };
 
-    buildInputs = [ weechat (python.withPackages(ps: with ps; [websocket_client])) ];
+
+    buildInputs = [ weechat (weechatPythonPackageList python) ];
     phases = [ "installPhase" ];
 
     installPhase = ''
@@ -172,7 +204,7 @@ in {
       plugins =
         with availablePlugins; [
           perl
-          (python.withPackages (ps: with ps; [websocket_client xmpppy]))
+          (weechatPythonPackageList python)
         ];
     };
   };
