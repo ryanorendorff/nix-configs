@@ -1,18 +1,18 @@
 { pkgs, config, lib, ... }:
 
-with pkgs; let
-  files = callPackage ./files {};
-  vimInfo = callPackage ./vim {};
-  sessionVariables = (recurseIntoAttrs (callPackage ./sessionVariables { config = config; })).variables;
-  mine = callPackage ./systemPackages/mine {};
-  i3Config = (recurseIntoAttrs (callPackage ./i3 { config = config; mine = mine; }));
+let
+  stdenv = pkgs.stdenv;
+  files = pkgs.callPackage ./files { inherit config; };
+  appConfigs = pkgs.callPackage ./appConfigs {};
+  sessionVariables = (pkgs.recurseIntoAttrs (pkgs.callPackage ./sessionVariables { inherit config; })).variables;
 in {
+  nixpkgs.overlays = [ (import ./pkgs/overlays.nix) ];
   programs.home-manager.enable = true;
   programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
 
-  home.file = import ./scripts { pkgs = pkgs; stdenv = stdenv; config = config; };
+  home.file = (pkgs.callPackage ./scripts { inherit config; }).theScripts;
 
-  home.packages = if stdenv.isDarwin then [] else callPackage ./systemPackages { chunkwm = {}; };
+  home.packages = if stdenv.isDarwin then [] else pkgs.callPackage ./installList {};
 
   programs.git = {
     enable = true;
@@ -49,7 +49,7 @@ in {
 
   programs.ssh = {
     enable = true;
-    matchBlocks = callPackage ./sshConfig {};
+    matchBlocks = pkgs.callPackage ./sshConfig {};
   };
 
   programs.bash = if stdenv.isDarwin then {
@@ -58,7 +58,7 @@ in {
     enable = true;
     enableAutojump = true;
     initExtra = ''
-      eval "$(${fasd}/bin/fasd --init auto)"
+      eval "$(${pkgs.fasd}/bin/fasd --init auto)"
     '';
   };
 
@@ -72,8 +72,8 @@ in {
     enable = false;
   } else {
     enable = true;
-    plugins = vimInfo.knownPlugins;
-    extraConfig = vimInfo.vimConfig;
+    plugins = appConfigs.vim.knownPlugins;
+    extraConfig = appConfigs.vim.vimConfig;
   };
 
   programs.termite = if stdenv.isDarwin then {
@@ -138,7 +138,7 @@ in {
     enable = true;
     enableAutosuggestions = true;
     initExtra = ''
-      eval "$(${fasd}/bin/fasd --init auto)"
+      eval "$(${pkgs.fasd}/bin/fasd --init auto)"
     '';
     oh-my-zsh = {
       enable = true;
@@ -156,7 +156,7 @@ in {
     enable = false;
   } else {
     enable = true;
-    configFile = {} // i3Config.layouts;
+    configFile = appConfigs.i3.layouts;
   };
 
   services = if stdenv.isDarwin then {} else {
@@ -265,7 +265,7 @@ in {
   } else {
     enable = true;
     windowManager = {
-      i3 = i3Config.i3Config;
+      i3 = appConfigs.i3.i3Config { xdg = config.xdg; home = config.home; };
     };
     initExtra = ''
       sudo mkdir -p /mnt/vmware/{downloads,googledrive,googledrivezillow,projects,tdoggett}
@@ -277,11 +277,11 @@ in {
       sudo vmhgfs-fuse -o allow_other -o auto_unmount -o uid=1000 -o gid=1000 .host:/wallpapers /mnt/vmware/wallpapers
       sudo mount -a && systemctl --user restart random-background
       systemctl --user start compton.service
-      ${mine.i3-gnome-pomodoro-mine}/bin/pomodoro-client daemon 4 --nagbar &
+      ${pkgs.mine.python36Packages.i3-gnome-pomodoro}/bin/pomodoro-client daemon 4 --nagbar &
       xset dpms 90
       xset s off
       xrd -merge ~/.Xresources
-      ${mine.i3-gnome-pomodoro-mine}/bin/pomodoro-client start && ${mine.i3-gnome-pomodoro-mine}/bin/pomodoro-client skip 
+      ${pkgs.mine.python36Packages.i3-gnome-pomodoro}/bin/pomodoro-client start && ${pkgs.mine.python36Packages.i3-gnome-pomodoro}/bin/pomodoro-client skip 
     '';
   };
 }

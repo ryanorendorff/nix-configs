@@ -1,7 +1,7 @@
-{ pkgs, config, stdenv, ...}:
+{ pkgs, config, ...}:
 
 let
-  vim = if stdenv.isDarwin then pkgs.vim else config.programs.vim.package;
+  vim = if pkgs.stdenv.isDarwin then pkgs.vim else config.programs.vim.package;
 in ''
   bind editor <space> noop
   set edit_headers

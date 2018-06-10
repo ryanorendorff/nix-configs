@@ -1,8 +1,7 @@
 { pkgs, config, ... }:
 
 let
-  files = pkgs.callPackage ../files { config = config; };
-  mine = pkgs.callPackage ../systemPackages/mine { };
+  files = pkgs.callPackage ../files { inherit config; };
   chromePath = "${pkgs.google-chrome}/bin/google-chrome-stable --profile-directory=\"Default\"";
   chromePersonalPath = "${pkgs.google-chrome}/bin/google-chrome-stable --profile-directory=\"Profile 1\"";
 in {
@@ -35,11 +34,11 @@ in {
     executable = true;
   };
   "bin/trtv" = {
-    text = pkgs.callPackage ./trtv { config = config; };
+    text = pkgs.callPackage ./trtv { inherit config; };
     executable = true;
   };
   "bin/tweechat" = {
-    text = pkgs.callPackage ./tweechat { mine = mine; };
+    text = pkgs.callPackage ./tweechat { };
     executable = true;
   };
   "bin/todoist" = {
@@ -59,7 +58,7 @@ in {
     executable = true;
   };
   "bin/i3blocks/pomodoro" = {
-    text = pkgs.callPackage ./pomodoro { mine = mine; };
+    text = pkgs.callPackage ./pomodoro { };
     executable = true;
   };
   "bin/i3blocks/bitcoin" = {

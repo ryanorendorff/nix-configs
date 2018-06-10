@@ -1,4 +1,4 @@
-{pkgs,...}:
+{ pkgs, ... }:
 
 ''
   #!/usr/bin/env bash

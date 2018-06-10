@@ -1,7 +1,7 @@
-{stdenv,...}:
+{ pkgs, lib, ... }:
 
 let
-  projectsPath = if stdenv.isDarwin then "~/Projects/" else "~/projects/";
+  projectsPath = if pkgs.stdenv.isDarwin then "~/Projects/" else "~/projects/";
   downloadsVBoxPath = "/mnt/vbox/sdcard/Downloads";
   downloadsVmwarePath = "/mnt/vmware/downloads";
 in ''
@@ -28,7 +28,7 @@ in ''
     git clone git@github.com-nocoolnametom:nocoolnametom/wiki_copy.git ${projectsPath}nocoolnametom/wiki_copy ;
   fi;
 '' + (
-  if stdenv.isDarwin then "" else ''
+  if pkgs.stdenv.isDarwin then "" else ''
     if [[ ! -L ~/Downloads && -d ${downloadsVBoxPath} ]]; then
       if [ -d ~/Downloads ]; then
         mv ~/Downloads ~/Downloads.orig

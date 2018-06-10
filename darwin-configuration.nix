@@ -1,16 +1,16 @@
-{ stdenv, lib, config, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 
 with pkgs; let
-  chunkwm = recurseIntoAttrs (callPackage ./chunkwm {
-    inherit (pkgs) callPackage stdenv fetchFromGitHub imagemagick;
-    inherit (darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
-  });
+  dockerHost = "nix-docker";
   files = callPackage ./files {};
-  nixDocker = callPackage ./nixDocker {};
   sessionVariables = (recurseIntoAttrs (callPackage ./sessionVariables { })).variables;
-  vim = callPackage ./vim {};
+  appConfigs = callPackage ./appConfigs {};
 in {
-  environment.systemPackages = callPackage ./systemPackages { chunkwm = chunkwm; };
+  imports = [
+    ./pkgs
+  ];
+
+  environment.systemPackages = callPackage ./installList { };
   environment.variables = sessionVariables;
   environment.etc."hosts".text = files.etc-hosts;
   environment.etc."trulia/server.json".text = ''
@@ -19,7 +19,7 @@ in {
   environment.etc."ssh/ssh_config".text = ''
     Host *
 	    SendEnv LANG LC_*
-    Host nix-docker-root
+    Host ${dockerHost}
       Port 3022
       User root
       IdentityFile /etc/nix/docker_rsa
@@ -56,7 +56,7 @@ in {
     if [[ ! -e /etc/nix/docker_rsa ]]; then
       echo "Missing /etc/nix/docker_rsa!"
       echo "Please run the following command:"
-      echo "    sudo cp ${nixDocker}/ssh/insecure_rsa /etc/nix/docker_rsa && sudo chmod 0600 /etc/nix/docker_rsa"
+      echo "    sudo cp ${pkgs.mine.nixDocker}/ssh/insecure_rsa /etc/nix/docker_rsa && sudo chmod 0600 /etc/nix/docker_rsa"
     fi
   '';
 
@@ -96,10 +96,10 @@ in {
       };
     };
     plugins = [{
-      names = vim.knownPlugins;
+      names = appConfigs.vim.knownPlugins;
     }];
     vimOptions = {};
-    vimConfig = vim.vimConfig;
+    vimConfig = appConfigs.vim.vimConfig;
   };
 
   nix.extraOptions = ''
@@ -147,60 +147,10 @@ in {
 
   services.chunkwm = {
     enable = false;
-    package = chunkwm.core;
+    package = pkgs.mine.chunkwm.core;
     hotload = true;
-    extraConfig = ''
-      chunkc core::log_file stdout
-      chunkc core::log_level debug
-    '';
-    plugins = {
-      dir = "/run/current-system/sw/bin/chunkwm-plugins/";
-      list = ["border" "ffm" "tiling"];
-      "border".config = ''
-        chunkc set focused_border_color          0xffc0b18b
-        chunkc set focused_border_width          4
-        chunkc set focused_border_radius         0
-        chunkc set focused_border_skip_floating  0
-      '';
-      "tiling".config = ''
-        chunkc set global_desktop_mode           bsp
-        # chunkc set 2_desktop_mode                monocle
-        # chunkc set 5_desktop_mode                float
-
-        # chunkc set 1_desktop_tree                ~/.chunkwm_layouts/dev_1
-
-        chunkc set global_desktop_offset_top     25
-        chunkc set global_desktop_offset_bottom  15
-        chunkc set global_desktop_offset_left    15
-        chunkc set global_desktop_offset_right   15
-        chunkc set global_desktop_offset_gap     15
-
-        chunkc set 1_desktop_offset_top          25
-        chunkc set 1_desktop_offset_bottom       15
-        chunkc set 1_desktop_offset_left         15
-        chunkc set 1_desktop_offset_right        15
-        chunkc set 1_desktop_offset_gap          15
-
-        chunkc set 3_desktop_offset_top          15
-        chunkc set 3_desktop_offset_bottom       15
-        chunkc set 3_desktop_offset_left         15
-        chunkc set 3_desktop_offset_right        15
-
-        chunkc set desktop_padding_step_size     10.0
-        chunkc set desktop_gap_step_size         5.0
-
-        chunkc set bsp_spawn_left                1
-        chunkc set bsp_optimal_ratio             1.618
-        chunkc set bsp_split_mode                optimal
-        chunkc set bsp_split_ratio               0.66
-
-        chunkc set window_focus_cycle            monitor
-        chunkc set mouse_follows_focus           1
-        chunkc set window_float_next             0
-        chunkc set window_float_center           1
-        chunkc set window_region_locked          1
-      '';
-    };
+    extraConfig = pkgs.mine.chunkwm.extraConfig;
+    plugins = pkgs.mine.chunkwm.plugins;
   };
 
   services.skhd = {
@@ -263,7 +213,7 @@ in {
   nix.distributedBuilds = true;
   nix.buildMachines = [
     {
-      hostName = "nix-docker";
+      hostName = dockerHost;
       sshUser = "root";
       sshKey = "/etc/nix/docker_rsa";
       systems = [ "x86_64-linux" ];

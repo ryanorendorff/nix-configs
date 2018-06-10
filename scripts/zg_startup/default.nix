@@ -11,7 +11,7 @@
   npm set progress false;
 ''
 + ( pkgs.callPackage ./buildProjectList.nix {
-  zgitclone = zgitclone;
+  inherit zgitclone;
   projectList = import ../../workProjectList;
 } )
 + ''

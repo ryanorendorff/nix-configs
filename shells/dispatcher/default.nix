@@ -9,7 +9,7 @@ let
   php-redis = pkgs.php71Packages.redis;
   php-xdebug = pkgs.php71Packages.xdebug;
   php-yaml = pkgs.php71Packages.yaml;
-in stdenv.mkDerivation rec {
+in pkgs.stdenv.mkDerivation rec {
   name = "zg-dispatcher-env";
 
   # This is the list of packages used for this environment.

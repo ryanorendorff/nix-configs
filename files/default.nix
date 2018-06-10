@@ -1,11 +1,15 @@
-{ callPackage, config, ... }:
+{ pkgs, config, ... }:
 
-{
-  etc-hosts = callPackage ./etc-hosts.nix {};
-  i3blocks = callPackage ../i3/i3blocks { config = config; };
-  ideavimrc = callPackage ./ideavimrc.nix {};
-  mailcap = callPackage ./mailcap.nix {};
-  muttrc = callPackage ./muttrc.nix { config = config; };
-  npmrc = callPackage ./npmrc.nix {};
-  rtv-cfg = callPackage ./rtv-cfg.nix {};
+with pkgs;
+
+let
+  appConfigs = pkgs.callPackage ../appConfigs { inherit config; };
+in {
+  etc-hosts = callPackage ./etc-hosts.nix { inherit config; };
+  i3blocks = appConfigs.i3blocks;
+  ideavimrc = callPackage ./ideavimrc.nix { inherit config; };
+  mailcap = callPackage ./mailcap.nix { inherit config; };
+  muttrc = callPackage ./muttrc.nix { inherit config; };
+  npmrc = callPackage ./npmrc.nix { inherit config; };
+  rtv-cfg = callPackage ./rtv-cfg.nix { inherit config; };
 }

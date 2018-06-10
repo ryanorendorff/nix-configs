@@ -1,6 +1,6 @@
-{pkgs, mine, ...}:
+{pkgs, ...}:
 
 ''
   #!/usr/bin/env bash
-  ${pkgs.termite}/bin/termite -e ${mine.weechat-with-slack}/bin/weechat -t weechat
+  ${pkgs.termite}/bin/termite -e ${pkgs.mine.weechat}/bin/weechat -t weechat
 ''

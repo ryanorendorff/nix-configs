@@ -17,7 +17,7 @@ let
   });
 
   # XDebug for PHP 5.5.37
-  php55_xdebug = stdenv.mkDerivation rec {
+  php55_xdebug = pkgs.stdenv.mkDerivation rec {
     name = "xdebug-2.3.1";
     src = fetchurl {
       url = "http://pecl.php.net/get/${name}.tgz";
@@ -32,7 +32,7 @@ let
   };
 
   # XCache for PHP 5.5.37 (this allows for symfony in-memory caching to occur)
-  php55_xcache = stdenv.mkDerivation rec {
+  php55_xcache = pkgs.stdenv.mkDerivation rec {
     name = "xcache-${version}";
     version = "3.2.0";
     src = fetchurl {
@@ -56,7 +56,7 @@ let
   };
 
   # YAML for PHP 5.5.37
-  php55_yaml = stdenv.mkDerivation rec {
+  php55_yaml = pkgs.stdenv.mkDerivation rec {
     name = "yaml-1.3.1";
     src = fetchurl {
       url = "http://pecl.php.net/get/${name}.tgz";
@@ -75,7 +75,7 @@ let
 
 in
 
-stdenv.mkDerivation rec {
+pkgs.stdenv.mkDerivation rec {
   name = "zg-php55-env";
 
   # This is the list of packages used for this environment.
