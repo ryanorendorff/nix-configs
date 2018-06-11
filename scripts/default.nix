@@ -5,26 +5,23 @@ let
   theScripts = (
     {
       "bin/personal_startup" = {
-        text = pkgs.callPackage ./personal_startup { inherit config; };
+        source = pkgs.mine.scripts.personal_startup;
         executable = true;
       };
       "bin/zg_startup" = {
-        text = pkgs.callPackage ./zg_startup {
-          inherit config;
-          zgitclone = "${builtins.getEnv "HOME"}/${config.home.file."bin/zgitclone".target}";
-        };
+        source = pkgs.mine.scripts.zg_startup;
         executable = true;
       };
       "bin/zg_backup" = {
-        text = pkgs.callPackage ./zg_backup { inherit config; };
+        source = pkgs.mine.scripts.zg_backup;
         executable = true;
       };
       "bin/zgitclone" = {
-        text = pkgs.callPackage ./zgitclone { inherit config; };
+        source = pkgs.mine.scripts.zgitclone;
         executable = true;
       };
       "bin/sync_projects" = {
-        text = pkgs.callPackage ./sync_projects { inherit config; };
+        source = pkgs.mine.scripts.sync_projects;
         executable = true;
       };
       ".ideavimrc" = {
@@ -32,7 +29,7 @@ let
         executable = false;
       };
       ".config/rtv/rtv.cfg" = {
-        text = files.rtv-cfg;
+        text = pkgs.appConfigs.rtv;
         executable = false;
       };
       ".npmrc" = {
@@ -40,7 +37,7 @@ let
         executable = false;
       };
       ".muttrc" = {
-        text = files.muttrc;
+        source = pkgs.appConfigs.neomutt;
         executable = false;
       };
       ".zsh_custom/themes/powerlevel9k" = {

@@ -3,10 +3,12 @@
 let
   stdenv = pkgs.stdenv;
   files = pkgs.callPackage ./files { inherit config; };
-  appConfigs = pkgs.callPackage ./appConfigs {};
   sessionVariables = (pkgs.recurseIntoAttrs (pkgs.callPackage ./sessionVariables { inherit config; })).variables;
 in {
-  nixpkgs.overlays = [ (import ./pkgs/overlays.nix) ];
+  nixpkgs.overlays = [
+    (import ./pkgs/overlays.nix)
+    (import ./appConfigs/overlays.nix)
+  ];
   programs.home-manager.enable = true;
   programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
 
@@ -72,8 +74,8 @@ in {
     enable = false;
   } else {
     enable = true;
-    plugins = appConfigs.vim.knownPlugins;
-    extraConfig = appConfigs.vim.vimConfig;
+    plugins = pkgs.appConfigs.vim.knownPlugins;
+    extraConfig = pkgs.appConfigs.vim.vimConfig;
   };
 
   programs.termite = if stdenv.isDarwin then {
@@ -156,7 +158,7 @@ in {
     enable = false;
   } else {
     enable = true;
-    configFile = appConfigs.i3.layouts;
+    configFile = pkgs.appConfigs.i3.layouts;
   };
 
   services = if stdenv.isDarwin then {} else {
@@ -265,7 +267,7 @@ in {
   } else {
     enable = true;
     windowManager = {
-      i3 = appConfigs.i3.i3Config { xdg = config.xdg; home = config.home; };
+      i3 = pkgs.appConfigs.i3.i3Config { xdg = config.xdg; home = config.home; };
     };
     initExtra = ''
       sudo mkdir -p /mnt/vmware/{downloads,googledrive,googledrivezillow,projects,tdoggett}

@@ -1,5 +1,5 @@
 self: super: {
-  mine = import ./default.nix {
+  appConfigs = import ./default.nix {
     pkgs = self;
   };
 }

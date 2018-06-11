@@ -4,10 +4,9 @@ with pkgs; let
   dockerHost = "nix-docker";
   files = callPackage ./files {};
   sessionVariables = (recurseIntoAttrs (callPackage ./sessionVariables { })).variables;
-  appConfigs = callPackage ./appConfigs {};
 in {
   imports = [
-    ./pkgs
+    ./overlays
   ];
 
   environment.systemPackages = callPackage ./installList { };
@@ -96,10 +95,10 @@ in {
       };
     };
     plugins = [{
-      names = appConfigs.vim.knownPlugins;
+      names = pkgs.appConfigs.vim.knownPlugins;
     }];
     vimOptions = {};
-    vimConfig = appConfigs.vim.vimConfig;
+    vimConfig = pkgs.appConfigs.vim.vimConfig;
   };
 
   nix.extraOptions = ''

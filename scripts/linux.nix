@@ -10,67 +10,47 @@ in {
     executable = false;
   };
   "bin/tmutt" = {
-    text = pkgs.callPackage ./tmutt {};
+    source = pkgs.mine.scripts.tmutt;
     executable = true;
   };
   "bin/chrome" = {
-    text = pkgs.callPackage ./chrome { chromePath = chromePath; };
+    source = pkgs.mine.scripts.chrome;
     executable = true;
   };
   "bin/chrome-personal" = {
-    text = pkgs.callPackage ./chrome-personal { chromePersonalPath = chromePersonalPath; };
+    source = pkgs.mine.scripts.chrome-personal;
     executable = true;
   };
   "bin/thaxor" = {
-    text = pkgs.callPackage ./thaxor {};
+    source = pkgs.mine.scripts.thaxor;
     executable = true;
   };
   "bin/thtop" = {
-    text = pkgs.callPackage ./thtop {};
+    source = pkgs.mine.scripts.thtop;
     executable = true;
   };
   "bin/tncmpc" = {
-    text = pkgs.callPackage ./tncmpc {};
+    source = pkgs.mine.scripts.tncmpc;
     executable = true;
   };
   "bin/trtv" = {
-    text = pkgs.callPackage ./trtv { inherit config; };
+    source = pkgs.mine.scripts.trtv;
     executable = true;
   };
   "bin/tweechat" = {
-    text = pkgs.callPackage ./tweechat { };
+    source = pkgs.mine.scripts.tweechat;
     executable = true;
   };
   "bin/todoist" = {
-    text = pkgs.callPackage ./todoist { chromePersonalPath = chromePersonalPath; };
+    source = pkgs.mine.scripts.todoist;
     executable = true;
   };
   "bin/youtube" = {
-    text = pkgs.callPackage ./youtube { chromePersonalPath = chromePersonalPath; };
+    source = pkgs.mine.scripts.youtube;
     executable = true;
   };
   ".config/i3blocks/config" = {
-    text = files.i3blocks;
+    text = pkgs.appConfigs.i3blocks;
     executable = false;
-  };
-  "bin/i3blocks/calendar" = {
-    text = pkgs.callPackage ./calendar { };
-    executable = true;
-  };
-  "bin/i3blocks/pomodoro" = {
-    text = pkgs.callPackage ./pomodoro { };
-    executable = true;
-  };
-  "bin/i3blocks/bitcoin" = {
-    text = pkgs.callPackage ./bitcoin { };
-    executable = true;
-  };
-  "bin/i3blocks/ethereum" = {
-    text = pkgs.callPackage ./ethereum { };
-    executable = true;
-  };
-  "bin/i3blocks/googlemusicdesktopplayer" = {
-    text = pkgs.callPackage ./googlemusicdesktopplayer { };
-    executable = true;
   };
 }

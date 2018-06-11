@@ -1,4 +1,4 @@
-{pkgs, shellcheck, config, lib, ...}:
+{pkgs, shellcheck, lib, ...}:
 
 ''
   # i3blocks config file
@@ -30,24 +30,24 @@
 
   # Next Appointment
   [calendar]
-  command=~/${config.home.file."bin/i3blocks/calendar".target}
+  command=${pkgs.mine.i3blocks.mine.calendar}
   interval=60
 
   # Pomodoro
   [pomodoro]
-  command=~/${config.home.file."bin/i3blocks/pomodoro".target}
+  command=${pkgs.mine.i3blocks.mine.pomodoro}
   interval=1
 
   # Bitcoin Price
   [btc]
   label=BTC
-  command=~/${config.home.file."bin/i3blocks/bitcoin".target}
+  command=${pkgs.mine.i3blocks.mine.bitcoin}
   interval=60
 
   # Ethereum Price
   [eth]
   label=ETH
-  command=~/${config.home.file."bin/i3blocks/ethereum".target}
+  command=${pkgs.mine.i3blocks.mine.ethereum}
   interval=60
 
   # Volume indicator
@@ -59,7 +59,7 @@
 
   # Media Player
   [mediaplayer]
-  command=${pkgs.mine.i3blocksContrib.mediaplayer}/mediaplayer
+  command=${pkgs.mine.i3blocks.i3blocksContrib.mediaplayer}/mediaplayer
   instance=mpd
   interval=5
   signal=10
@@ -67,7 +67,7 @@
 
   # Google Play Music Desktop Player on VM Host
   [googlemusicdesktopplayer]
-  command=~/${config.home.file."bin/i3blocks/googlemusicdesktopplayer".target}
+  command=${pkgs.mine.i3blocks.mine.googlemusicdesktopplayer}
   interval=5
   separator=true
 
@@ -96,7 +96,7 @@
   #separator=false
 
   [bandwidth]
-  command=${pkgs.mine.i3blocksContrib.bandwidth}/bandwidth -i enp0s3
+  command=${pkgs.mine.i3blocks.i3blocksContrib.bandwidth}/bandwidth -i enp0s3
 
   # CPU usage
   [cpu_usage]
@@ -107,7 +107,7 @@
 
   # Battery indicator
   [batterybar]
-  command=${pkgs.mine.i3blocksContrib.batterybar}/batterybar
+  command=${pkgs.mine.i3blocks.i3blocksContrib.batterybar}/batterybar
   label=⚡
   interval=30
   markup=pango

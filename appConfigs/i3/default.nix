@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 let
   MainWS = "\"1: Main \"";
@@ -27,7 +27,7 @@ in {
     "i3/layout4.json".source = ./layout4.json;
     "i3/layout5.json".source = ./layout5.json;
   };
-  i3Config = { xdg ? config.xdg, home ? config.home }: {
+  i3Config = { xdg, home }: {
     enable = true;
     package = pkgs.i3;
     config = ( let

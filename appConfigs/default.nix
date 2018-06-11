@@ -1,4 +1,4 @@
-{ pkgs, config, lib ? pkgs.lib, debug ? false, ... }:
+{ pkgs, config ? {}, lib ? pkgs.lib, debug ? false, ... }:
 
 with lib;
 
@@ -12,5 +12,5 @@ mapAttrs' (name: type: {
   }) file {};
 }) (filterAttrs (name: type:
   (type == "directory" && builtins.pathExists "${toString ./.}/${name}/default.nix") ||
-  (type == "regular" && hasSuffix ".nix" name && ! (name == "default.nix") && ! (name == "pkgs.nix"))
+  (type == "regular" && hasSuffix ".nix" name && ! (name == "default.nix") && ! (name == "overlays.nix"))
 ) (builtins.readDir ./.))
