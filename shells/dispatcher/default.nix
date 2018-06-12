@@ -4,37 +4,45 @@ let
 in with import <nixpkgs> {
   # Overwrite the PHP packages to load config from $PROJECT_ROOT/.php/config - requires compilation
   overlays = [
-    (self: super: let
-        applyLocalConfigDir = originalPackage: self.pkgs.lib.overrideDerivation originalPackage (old: rec {
-          configureFlags = originalPackage.configureFlags ++ [
-            "--with-config-file-scan-dir=${local_dir}/.php/config"
-          ];
+    (self: super: {
+        # This wraps an existing PHP executable with the configuration for this environment
+        # This prevents us from having to compile the PHP package for each environment.
+        wrapPhpWithConfig = phpPackage: configIni: self.stdenv.mkDerivation rec {
+          name = "wrapped-php";
+          phases = [ "installPhase" ];
+          buildInputs = [ self.makeWrapper];
+          installPhase = ''
+            mkdir -p $out/bin
+            ln -s ${phpPackage}/bin/php $out/bin/php
+            wrapProgram $out/bin/php --add-flags "-c ${configIni}"
+          '';
+        };
+        # This injects the wrapped executable into a given PHAR executable like composer, box, or phpcs
+        injectPhpToPharPackage = pharPackage: packageName: phpPackage: self.lib.overrideDerivation pharPackage (old: rec {
+          installPhase = ''
+            mkdir -p $out/bin
+            install -D $src $out/libexec/${packageName}/${packageName}.phar
+            makeWrapper ${phpPackage}/bin/php $out/bin/${packageName} \
+              --add-flags "$out/libexec/${packageName}/${packageName}.phar"
+          '';
         });
-      in {
-        php56 = applyLocalConfigDir super.php56;
-        php70 = applyLocalConfigDir super.php70;
-        php71 = applyLocalConfigDir super.php71;
-        php72 = applyLocalConfigDir super.php72;
-    })
+      }
+    )
   ];
 };
 
 let
   packages = pkgs.php71Packages; # Alias the list of PHP packages to "packages"
-  php = pkgs.php71; # Alias the PHP package to "php"
+  php = pkgs.wrapPhpWithConfig pkgs.php71 configIniFile;
 
   # Ensure that composer is using the local environment's PHP executable
-  composer = packages.composer;
+  composer = pkgs.injectPhpToPharPackage packages.composer "composer" php;
 
   # Ensure that phpcs is using the local environment's PHP executable
-  phpcs = pkgs.lib.overrideDerivation packages.phpcs (old: rec {
-    installPhase = ''
-      mkdir -p $out/bin
-      install -D $src $out/libexec/phpcs/phpcs.phar
-      makeWrapper ${php}/bin/php $out/bin/phpcs \
-        --add-flags "$out/libexec/phpcs/phpcs.phar"
-    '';
-  });
+  phpcs = pkgs.injectPhpToPharPackage packages.phpcs "phpcs" php;
+
+  # Ensure that phpcs is using the local environment's PHP executable
+  php-cs-fixer = pkgs.injectPhpToPharPackage packages.php-cs-fixer "php-cs-fixer" php;
 
   # This is the config.ini for this project; it links the extensions required
   configIniFile = pkgs.writeText "env_config.ini" ''
@@ -60,8 +68,9 @@ in stdenv.mkDerivation rec {
   # the shell:
   buildInputs = with pkgs; [
     less
-    packages.composer
-    packages.phpcs
+    composer
+    phpcs
+    php-cs-fixer
     php
     redis
   ];
@@ -72,12 +81,12 @@ in stdenv.mkDerivation rec {
   shellHook = ''
     export PROJECT_HOME=`pwd`
     export PATH=$PROJECT_HOME/.php/bin:$PROJECT_HOME/vendor/bin:$PATH
-    mkdir -p $PROJECT_HOME/.php/{extensions,config}
+    mkdir -p $PROJECT_HOME/.php/extensions
     rm -f $PROJECT_HOME/.php/bin && ln -s $env/bin $PROJECT_HOME/.php/bin
-    rm -f $PROJECT_HOME/.php/config/env_config.ini && ln -s ${configIniFile} $PROJECT_HOME/.php/config/env_config.ini
   '';
 
-  # This contains instructions to wrap the 
+  # This contains instructions to wrap the redis-server with the typical dev port so we can just run
+  # "redis-server" for running tests
   env = buildEnv {
     name = name;
     paths = buildInputs;

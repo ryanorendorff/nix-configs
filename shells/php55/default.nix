@@ -4,14 +4,28 @@ let
 in with import <nixpkgs> {
   # Overwrite the PHP packages to load config from $PROJECT_ROOT/.php/config - requires compilation
   overlays = [
-    (self: super: let
-        applyLocalConfigDir = originalPackage: self.pkgs.lib.overrideDerivation originalPackage (old: rec {
-          configureFlags = originalPackage.configureFlags ++ [
-            "--with-config-file-scan-dir=${local_dir}/.php/config"
-          ];
-        }
-      );
-      in {
+    (self: super: {
+        # This wraps an existing PHP executable with the configuration for this environment
+        # This prevents us from having to compile the PHP package for each environment.
+        wrapPhpWithConfig = phpPackage: configIni: self.stdenv.mkDerivation rec {
+          name = "wrapped-php";
+          phases = [ "installPhase" ];
+          buildInputs = [ self.makeWrapper];
+          installPhase = ''
+            mkdir -p $out/bin
+            ln -s ${phpPackage}/bin/php $out/bin/php
+            wrapProgram $out/bin/php --add-flags "-c ${configIni}"
+          '';
+        };
+        # This injects the wrapped executable into a given PHAR executable like composer, box, or phpcs
+        injectPhpToPharPackage = pharPackage: packageName: phpPackage: self.lib.overrideDerivation pharPackage (old: rec {
+          installPhase = ''
+            mkdir -p $out/bin
+            install -D $src $out/libexec/${packageName}/${packageName}.phar
+            makeWrapper ${phpPackage}/bin/php $out/bin/${packageName} \
+              --add-flags "$out/libexec/${packageName}/${packageName}.phar"
+          '';
+        });
         php55 = self.lib.overrideDerivation super.php56 (old: rec {
           version = "5.5.37";
           name = "php-${version}";
@@ -19,9 +33,6 @@ in with import <nixpkgs> {
             url = "https://secure.php.net/distributions/php-${version}.tar.bz2";
             sha256 = "d2380ebe46caf17f2c4cd055867d00a82e6702dc5f62dc29ce864a5742905d88";
           };
-          configureFlags = super.php56.configureFlags ++ [
-            "--with-config-file-scan-dir=${local_dir}/.php/config"
-          ];
         });
         php55Packages = {
           composer = self.stdenv.mkDerivation rec {
@@ -108,17 +119,19 @@ in with import <nixpkgs> {
             makeFlags = [ "EXTENSION_DIR=$(out)/lib/php/extensions" ];
           };
         };
-        php56 = applyLocalConfigDir super.php56;
-        php70 = applyLocalConfigDir super.php70;
-        php71 = applyLocalConfigDir super.php71;
-        php72 = applyLocalConfigDir super.php72;
     })
   ];
 };
 
 let
   packages = pkgs.php55Packages; # Alias the list of PHP packages to "packages"
-  php = pkgs.php55; # Alias the PHP package to "php"
+  php = pkgs.wrapPhpWithConfig pkgs.php55 configIniFile;
+
+  # Ensure that composer is using the local environment's PHP executable
+  composer = pkgs.injectPhpToPharPackage packages.composer "composer" php;
+
+  # Ensure that phpcs is using the local environment's PHP executable
+  phpcs = pkgs.injectPhpToPharPackage packages.phpcs "phpcs" php;
 
   # This is the config.ini for this project; it links the extensions required
   configIniFile = pkgs.writeText "env_config.ini" ''
@@ -141,8 +154,8 @@ in stdenv.mkDerivation rec {
   # the shell:
   buildInputs = with pkgs; [
     less
-    packages.composer
-    packages.phpcs
+    composer
+    phpcs
     php
   ];
 
@@ -154,7 +167,6 @@ in stdenv.mkDerivation rec {
     export PATH=$PROJECT_HOME/.php/bin:$PROJECT_HOME/vendor/bin:$PATH
     mkdir -p $PROJECT_HOME/.php/{extensions,config}
     rm -f $PROJECT_HOME/.php/bin && ln -s $env/bin $PROJECT_HOME/.php/bin
-    rm -f $PROJECT_HOME/.php/config/env_config.ini && ln -s ${configIniFile} $PROJECT_HOME/.php/config/env_config.ini
   '';
 
   # This contains instructions to wrap the 
