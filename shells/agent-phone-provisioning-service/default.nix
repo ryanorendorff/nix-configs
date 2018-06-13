@@ -118,6 +118,19 @@ in with import <nixpkgs> {
             buildInputs = with self; [ autoreconfHook php55 libyaml ];
             makeFlags = [ "EXTENSION_DIR=$(out)/lib/php/extensions" ];
           };
+          redis = self.stdenv.mkDerivation rec {
+            name = "redis-2.2.8";
+            src = self.fetchurl {
+              url = "http://pecl.php.net/get/${name}.tgz";
+              sha256 = "1ddijx6r798hsxxqr5vskknv8nh1knx5rdh7axj8z132vr93flzw";
+            };
+            autoreconfPhase = "phpize";
+            preConfigure = "touch unix.h";
+            doCheck = true;
+            checkTarget = "test";
+            buildInputs = with self; [ autoreconfHook php55 redis ];
+            makeFlags = [ "EXTENSION_DIR=$(out)/lib/php/extensions" ];
+          };
         };
     })
   ];
@@ -141,6 +154,7 @@ let
     extension_dir = ${local_dir}/.php/extensions
     extension = ${packages.xcache}/lib/php/extensions/xcache.so
     extension = ${packages.yaml}/lib/php/extensions/yaml.so
+    extension = ${packages.redis}/lib/php/extensions/redis.so
     zend_extension = ${packages.xdebug}/lib/php/extensions/xdebug.so
     xdebug.remote_enable = 1
     xdebug.remote_autostart = 1
@@ -148,7 +162,7 @@ let
 in stdenv.mkDerivation rec {
   # This name isn't really very important, but can help identify the project this derivation file
   # belongs to.
-  name = "zg-php55-env";
+  name = "zg-agent-phone-provisioning-service-env";
 
   # This is the list of packages used for this environment. If it's here then it's available within
   # the shell:

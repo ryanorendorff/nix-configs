@@ -7,7 +7,7 @@
     { repo = "api-json-schema-provider"; }
     { repo = "aps-client"; }
     { repo = "aps-contacts"; }
-    { repo = "aps-messages"; shell = ../shells/php55/default.nix; build = false; }
+    { repo = "aps-messages"; shell = ../shells/php55/default.nix; }
     { repo = "aps-push-notification"; }
     { repo = "aps-team-stats"; }
     { repo = "aps-util"; }
@@ -17,17 +17,17 @@
   ];
   chuck = [
     { repo = "dispatcher"; shell = ../shells/dispatcher/default.nix; }
-    { repo = "dispatcher-model"; shell = ../shells/php55/default.nix; build = false; }
+    { repo = "dispatcher-model"; shell = ../shells/php55/default.nix; }
   ];
   com = [
     { repo = "email"; build = false; }
   ];
   ean = [
-    { repo = "agent-phone-provisioning-service"; }
+    { repo = "agent-phone-provisioning-service"; shell = ../shells/agent-phone-provisioning-service/default.nix; }
     { repo = "wiggum"; }
   ];
   lemmy = [
-    { repo = "goodcop"; }
+    { repo = "goodcop"; shell = ../shells/goodcop/default.nix; }
     { repo = "l2-functional-tests"; }
     { repo = "lead-model"; }
     { repo = "lead-model-serialization"; }
@@ -44,7 +44,7 @@
   tem = [
     { repo = "react-app-template"; }
   ];
-  web = [
+  web = [ # We don't build anything in web because they take too long and we rarely use them
     { repo = "agentprofile"; build = false; }
     { repo = "agentweb"; build = false; }
     { repo = "code-quality-configs"; }
@@ -61,13 +61,13 @@
     { repo = "autoresponder-service"; }
     { repo = "capi-server"; }
     { repo = "crm-data-entities"; }
-    { repo = "crm-data-repository"; }
+    { repo = "crm-data-repository"; shell = ../shells/php55/default.nix; }
     { repo = "ean-client"; }
     { repo = "hybrid-thread-orchestration"; }
     { repo = "lead-forwarding-proc"; }
     { repo = "lead-routing-api"; }
     { repo = "leadrouting-data-repository"; }
-    { repo = "leadrouting-handler"; shell = ../shells/leadrouting-handler/default.nix; build = false; }
+    { repo = "leadrouting-handler"; shell = ../shells/leadrouting-handler/default.nix; }
     { repo = "leadrouting-lib"; }
     { repo = "nav-bundle"; }
     { repo = "notifications-panel"; }
@@ -79,7 +79,7 @@
     { repo = "polaris-to-beth-concierge-proc"; }
     { repo = "puppetmaster"; }
     { repo = "styleguide"; }
-    { repo = "thread-data-repository"; }
+    { repo = "thread-data-repository"; shell = ../shells/php55/default.nix; }
     { repo = "trulia-featured-listings-api-client"; }
     { repo = "trulia-featured-listings-api"; }
     { repo = "video-message-template-provisioner"; }

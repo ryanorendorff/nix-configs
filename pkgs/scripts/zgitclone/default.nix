@@ -100,6 +100,7 @@ pkgs.writeScript "zgitclone" ''
   fi
   echo "$DIR" >> "${builtins.getEnv "HOME"}/.local/share/zillowgits"
   cd "$DIR"
+  echo "$DIR"
   git remote set-url --push origin "ssh://stash.sv2.trulia.com/~tdoggett/$PROJECT_NAME.git"
 
   git config user.name "Tom Doggett"
