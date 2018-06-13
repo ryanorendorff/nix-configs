@@ -2,10 +2,10 @@
 
 mkDarwinApp rec {
   inherit appName; 
-  version = "3.1.5";
+  version = "3.1.6";
   src = fetchurl {
     url = "https://iterm2.com/downloads/stable/iTerm2-${builtins.replaceStrings ["."] ["_"] version}.zip";
-    sha256 = "0sfpkzw71z8y6qz0dyjvzymskr6gz92rlskd79jn2p7yjrncwnbi";
+    sha256 = "11q0dg26nm9kx8v2lfn4wxlqzj4zjddf9fafpd4xp7pr90mh3ksa";
     name = "${ appName }.zip";
   };
 

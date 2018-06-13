@@ -2,10 +2,10 @@
 
 mkDarwinApp rec {
   appName = "Firefox";
-  version = "58.0.2";
+  version = "60.0.2";
   src = fetchurl {
     url =  "https://archive.mozilla.org/pub/firefox/releases/${version}/mac/en-US/Firefox%20${version}.dmg";
-    sha256 = "0ivcid68wajhsb6siyd3bbycnh0dwnrzwys4iplj3p4a5a3aj2nk";
+    sha256 = "0cnp2ij4lh44lmyy1hjx0nrzcvd3nzmib723s7y0sf516lhwyaf2";
     name = "${ appName }.dmg";
   };
 
