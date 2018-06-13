@@ -8,15 +8,10 @@ pkgs.writeScript "zg_startup" (
     if [ -e ${builtins.getEnv "HOME"}/.local/share/zillowgits ]; then
       rm ${builtins.getEnv "HOME"}/.local/share/zillowgits
     fi
-
-    npm set progress false;
   ''
   + ( import ./buildProjectList.nix {
     inherit lib;
     inherit pkgs;
     projectList = import ../../../workProjectList;
   } )
-  + ''
-    npm set progress true"
-  ''
 )

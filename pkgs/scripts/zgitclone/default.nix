@@ -2,47 +2,137 @@
 
 pkgs.writeScript "zgitclone" ''
   #!/usr/bin/env bash
-  dir=${"$"}{1//\~/_}
-  mkdir -p "${builtins.getEnv "ZILLOW"}/$dir"
-  cd "${builtins.getEnv "ZILLOW"}/$dir"
-  if [[ $# -eq 0 || $# -eq 1 ]]; then
+  export DIR=""
+  export NAME=""
+  export SHOULD_BUILD=1
+  export NIX_SHELL=""
+  script="${"$"}{0##*/}"
+  while test $# -gt 0; do
+  case "$1" in
+    -h|--help)
+      echo "$script - Clone a Zillow git project"
+      echo " "
+      echo "$script [options] teamName projectName"
+      echo " "
+      echo "options:"
+      echo "-h, --help                show brief help"
+      echo "-n, --name=NAME           specify the directory name (default is projectName)"
+      echo "-d, --output-dir=DIR      specify an absolute directory path (default is $ZILLOW/<teamName>/<projectName>)"
+      echo "--no-build                do not run automatic dependency building"
+      echo "-N, --nix-shell=<path>    path to a nix file to copy as default.nix"
+      exit 0
+      ;;
+    -n)
+      shift
+      if test $# -gt 0; then
+        export NAME="$1"
+      else
+        echo "no name specified"
+        exit 1
+      fi
+      shift
+      ;;
+    --name*)
+      export NAME=`echo $1 | sed -e 's/^[^=]*=//g'`
+      shift
+      ;;
+    -d)
+      shift
+      if test $# -gt 0; then
+        export DIR="$1"
+      else
+        echo "no directory path specified"
+        exit 1
+      fi
+      shift
+      ;;
+    --output-dir*)
+      export DIR=`echo $1 | sed -e 's/^[^=]*=//g'`
+      shift
+      ;;
+    --no-build*)
+      export SHOULD_BUILD=0
+      shift
+      ;;
+    -N)
+      shift
+      if test $# -gt 0; then
+        export NIX_SHELL="$1"
+      else
+        echo "no nix file specified"
+        exit 1
+      fi
+      shift
+      ;;
+    --nix-shell*)
+      export NIX_SHELL=`echo $1 | sed -e 's/^[^=]*=//g'`
+      shift
+      ;;
+    *)
+      break
+      ;;
+    esac
+  done
+
+  export TEAM_NAME=${"$"}{1//\~/_}
+  export PROJECT_NAME=${"$"}{2//\~/_}
+  if [[ -z "$NAME" ]] ; then
+    export NAME="$PROJECT_NAME"
+  fi
+  
+  if [[ $# -eq 0 || $# -eq 1 ]] ; then
     script="${"$"}{0##*/}"
-    echo "Usage: $script teamName projectName [localDirectoryName]"
+    echo "Missing teamName and/or projectName"
+    $script --help
     exit 0
   fi
-  if [ $# -eq 2 ] ; then
-    if [ ! -d "${builtins.getEnv "ZILLOW"}/$dir/$2" ] ; then
-      git clone "ssh://stash.sv2.trulia.com/$1/$2.git" "$2"
-    fi
-    if [ ! -d "${builtins.getEnv "ZILLOW"}/$dir/$2/.git" ] ; then
-      exit
-    fi
-    echo "${builtins.getEnv "ZILLOW"}/$dir/$2" >> "${builtins.getEnv "HOME"}/.local/share/zillowgits"
-    cd "${builtins.getEnv "ZILLOW"}/$dir/$2"
-    git remote set-url --push origin "ssh://stash.sv2.trulia.com/~tdoggett/$2.git"
-  else
-    if [ ! -d "${builtins.getEnv "ZILLOW"}/$dir/$3" ] ; then
-      git clone "ssh://stash.sv2.trulia.com/$1/$2.git" "$3"
-    fi
-    if [ ! -d "${builtins.getEnv "ZILLOW"}/$dir/$3/.git" ] ; then
-      exit
-    else
-      echo "${builtins.getEnv "ZILLOW"}/$dir/$3/.git"
-    fi
-    echo "${builtins.getEnv "ZILLOW"}/$dir/$3" >> "${builtins.getEnv "HOME"}/.local/share/zillowgits"
-    cd "${builtins.getEnv "ZILLOW"}/$dir/$3"
-    git remote set-url --push origin "ssh://stash.sv2.trulia.com/~tdoggett/$3.git"
+
+  if [[ -z "$DIR" ]] ; then
+    export DIR="${builtins.getEnv "ZILLOW"}/$TEAM_NAME/$NAME"
   fi
+
+  if [ ! -d "$DIR" ] ; then
+    mkdir -p "$DIR"
+    git clone -q --recurse-submodules "ssh://stash.sv2.trulia.com/$TEAM_NAME/$PROJECT_NAME.git" "$DIR"
+  fi
+  if [ ! -d "$DIR/.git" ] ; then
+    exit
+  fi
+  echo "$DIR" >> "${builtins.getEnv "HOME"}/.local/share/zillowgits"
+  cd "$DIR"
+  git remote set-url --push origin "ssh://stash.sv2.trulia.com/~tdoggett/$PROJECT_NAME.git"
+
   git config user.name "Tom Doggett"
   git config user.email "tdoggett@zillowgroup.com"
-  if [[ -e default.nix && ! `git ls-files -o | grep default.nix` ]] ; then
-    git update-index --skip-worktree default.nix
+
+  if [[ ! -z "$NIX_SHELL" && -e "$NIX_SHELL" && ! -e ./default.nix ]]; then
+    cp "$NIX_SHELL" ./default.nix
+    if [[ ! `git ls-files -o | grep default.nix` ]] ; then
+      git update-index --skip-worktree default.nix
+    fi
   fi
+
   mkdir -p .git/info && touch .git/info/exclude && echo "default.nix" >> .git/info/exclude
-  if [[ ! $# -eq 4 && -e package.json && ! -d node_modules ]] ; then
-    npm install
+
+  if [[ $SHOULD_BUILD -eq 1 ]] ; then
+    if [[ ! -z "$NIX_SHELL" ]]; then
+      if [[ -e package.json && ! -d node_modules ]] ; then
+        nix-shell --pure --command "npm install --progress=false --silent --quiet > /dev/null 2>&1"
+      fi
+
+      if [[ -e composer.json && ! -d vendor ]] ; then
+        nix-shell --pure --command "composer install -n -q"
+      fi
+    else
+      if [[ -e package.json && ! -d node_modules ]] ; then
+        npm install --progress=false --silent --quiet > /dev/null 2>&1
+      fi
+
+      if [[ -e composer.json && ! -d vendor ]] ; then
+        composer install -n -q
+      fi
+    fi
   fi
-  if [[ ! $# -eq 4 && -e composer.json && ! -d vendor ]] ; then
-    composer install -n -q
-  fi
+
+  cd - > /dev/null;
 ''

@@ -16,7 +16,7 @@
     { repo = "message-client"; }
   ];
   chuck = [
-    { repo = "dispatcher"; shell = ../shells/dispatcher/default.nix; build = false; }
+    { repo = "dispatcher"; shell = ../shells/dispatcher/default.nix; }
     { repo = "dispatcher-model"; shell = ../shells/php55/default.nix; build = false; }
   ];
   com = [
@@ -33,7 +33,7 @@
     { repo = "lead-model-serialization"; }
   ];
   npm = [
-    { repo = "navbar"; }
+    { repo = "navbar"; build = false;}
   ];
   sup = [
     { repo = "account-migration"; }
