@@ -67,7 +67,7 @@
     { repo = "lead-forwarding-proc"; }
     { repo = "lead-routing-api"; }
     { repo = "leadrouting-data-repository"; }
-    { repo = "leadrouting-handler"; }
+    { repo = "leadrouting-handler"; shell = ../shells/leadrouting-handler/default.nix; build = false; }
     { repo = "leadrouting-lib"; }
     { repo = "nav-bundle"; }
     { repo = "notifications-panel"; }
