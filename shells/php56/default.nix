@@ -61,6 +61,7 @@ in stdenv.mkDerivation rec {
   # the shell:
   buildInputs = with pkgs; [
     less
+    git
     composer
     phpcs
     php
