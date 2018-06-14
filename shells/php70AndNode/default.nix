@@ -31,14 +31,17 @@ in with import <nixpkgs> {
 };
 
 let
-  packages = pkgs.php71Packages; # Alias the list of PHP packages to "packages"
-  php = pkgs.wrapPhpWithConfig pkgs.php71 configIniFile;
+  packages = pkgs.php70Packages; # Alias the list of PHP packages to "packages"
+  php = pkgs.wrapPhpWithConfig pkgs.php70 configIniFile;
 
   # Ensure that composer is using the local environment's PHP executable
   composer = pkgs.injectPhpToPharPackage packages.composer "composer" php;
 
   # Ensure that phpcs is using the local environment's PHP executable
   phpcs = pkgs.injectPhpToPharPackage packages.phpcs "phpcs" php;
+
+  # Ensure that phpcs is using the local environment's PHP executable
+  php-cs-fixer = pkgs.injectPhpToPharPackage packages.php-cs-fixer "php-cs-fixer" php;
 
   # This is the config.ini for this project; it links the extensions required
   configIniFile = pkgs.writeText "env_config.ini" ''
@@ -47,7 +50,6 @@ let
     date.timezone = America/Los_Angeles
     extension_dir = ${local_dir}/.php/extensions
     extension = ${packages.yaml}/lib/php/extensions/yaml.so
-    extension = ${packages.redis}/lib/php/extensions/redis.so
     zend_extension = ${packages.xdebug}/lib/php/extensions/xdebug.so
     xdebug.remote_enable = 1
     xdebug.remote_autostart = 1
@@ -55,7 +57,7 @@ let
 in stdenv.mkDerivation rec {
   # This name isn't really very important, but can help identify the project this derivation file
   # belongs to.
-  name = "zg-agent-phone-provisioning-service-env";
+  name = "zg-php70-and-node-env";
 
   # This is the list of packages used for this environment. If it's here then it's available within
   # the shell:
@@ -64,7 +66,10 @@ in stdenv.mkDerivation rec {
     git
     composer
     phpcs
+    php-cs-fixer
     php
+    nodejs
+    npm2nix
   ];
 
   # This sets up the environment within the shell, places the composer `vendor/bin` directory within
@@ -72,8 +77,8 @@ in stdenv.mkDerivation rec {
   # `.php/bin` so they can be used in IDEs or however you may need them.
   shellHook = ''
     export PROJECT_HOME=`pwd`
-    export PATH=$PROJECT_HOME/.php/bin:$PROJECT_HOME/vendor/bin:$PATH
-    mkdir -p $PROJECT_HOME/.php/{extensions,config}
+    export PATH=$PROJECT_HOME/.php/bin:$PROJECT_HOME/vendor/bin:$PROJECT_HOME/node_modules/.bin:$PATH
+    mkdir -p $PROJECT_HOME/.php/extensions
     rm -f $PROJECT_HOME/.php/bin && ln -s $env/bin $PROJECT_HOME/.php/bin
   '';
 

@@ -1,13 +1,13 @@
 {
   afra = [
-    { repo = "apops"; }
+    { repo = "apops"; shell = ../shells/zg-apops/default.nix; }
   ];
   aps = [
     { repo = "api-authentication-handler"; }
     { repo = "api-json-schema-provider"; }
     { repo = "aps-client"; }
     { repo = "aps-contacts"; }
-    { repo = "aps-messages"; shell = ../shells/php55/default.nix; }
+    { repo = "aps-messages"; shell = ../shells/zg-aps-messages/default.nix; }
     { repo = "aps-push-notification"; }
     { repo = "aps-team-stats"; }
     { repo = "aps-util"; }
@@ -16,24 +16,24 @@
     { repo = "message-client"; }
   ];
   chuck = [
-    { repo = "dispatcher"; shell = ../shells/dispatcher/default.nix; }
-    { repo = "dispatcher-model"; shell = ../shells/php55/default.nix; }
+    { repo = "dispatcher"; shell = ../shells/zg-dispatcher/default.nix; }
+    { repo = "dispatcher-model"; shell = ../shells/zg-dispatcher-model/default.nix; }
   ];
   com = [
     { repo = "email"; build = false; }
   ];
   ean = [
-    { repo = "agent-phone-provisioning-service"; shell = ../shells/agent-phone-provisioning-service/default.nix; }
+    { repo = "agent-phone-provisioning-service"; shell = ../shells/zg-agent-phone-provisioning-service/default.nix; }
     { repo = "wiggum"; }
   ];
   lemmy = [
-    { repo = "goodcop"; shell = ../shells/goodcop/default.nix; }
+    { repo = "goodcop"; shell = ../shells/zg-goodcop/default.nix; }
     { repo = "l2-functional-tests"; }
     { repo = "lead-model"; }
     { repo = "lead-model-serialization"; }
   ];
   npm = [
-    { repo = "navbar"; build = false;}
+    { repo = "navbar"; shell = ../shells/trulia-navbar/default.nix; build = false; }
   ];
   sup = [
     { repo = "account-migration"; }
@@ -42,7 +42,7 @@
     { repo = "user-profile-service"; }
   ];
   tem = [
-    { repo = "react-app-template"; }
+    { repo = "react-app-template"; shell = ../shells/zg-react-app-template/default.nix; }
   ];
   web = [ # We don't build anything in web because they take too long and we rarely use them
     { repo = "agentprofile"; build = false; }
@@ -67,18 +67,18 @@
     { repo = "lead-forwarding-proc"; }
     { repo = "lead-routing-api"; }
     { repo = "leadrouting-data-repository"; }
-    { repo = "leadrouting-handler"; shell = ../shells/leadrouting-handler/default.nix; }
+    { repo = "leadrouting-handler"; shell = ../shells/zg-leadrouting-handler/default.nix; }
     { repo = "leadrouting-lib"; }
     { repo = "nav-bundle"; }
-    { repo = "notifications-panel"; }
-    { repo = "paxl-react-pageheader"; }
-    { repo = "paxl-react"; }
+    { repo = "notifications-panel"; shell = ../shells/node/default.nix; }
+    { repo = "paxl-react-pageheader"; shell = ../shells/node/default.nix; }
+    { repo = "paxl-react"; shell = ../shells/node/default.nix; }
     { repo = "paxl"; }
     { repo = "polaris-bethid-api"; }
     { repo = "polaris-lead-events-proc"; }
     { repo = "polaris-to-beth-concierge-proc"; }
-    { repo = "puppetmaster"; }
-    { repo = "styleguide"; }
+    { repo = "puppetmaster"; shell = ../shells/node/default.nix; }
+    { repo = "styleguide"; shell = ../shells/node/default.nix; }
     { repo = "thread-data-repository"; shell = ../shells/php55/default.nix; }
     { repo = "trulia-featured-listings-api-client"; }
     { repo = "trulia-featured-listings-api"; }
