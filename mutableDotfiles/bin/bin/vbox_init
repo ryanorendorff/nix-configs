@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+if [ $(uname) == "Darwin" ]; then
+  projects=~/Projects/nocoolnametom
+else
+  projects=~/projects/nocoolnametom
+fi;
+
+# If the nix-configs repo doesn't exist for some odd reason then put it back.
+if [ ! -d $projects/nix-configs ]; then
+  mkdir -p $projects/nix-configs
+  git clone http://github.com/nocoolnametom/nix-configs $projects/nix-configs ;
+fi ;
+
+# Clear all existing cache/confg files/directories if first run
+if [[ ! -e ~/.local/share/.first_run ]]; then
+  rm -Rf ~/.cache ~/.compose-cache ~/.config ~/.dbus ~/.dmenu_cache ~/.local ~/.pki ~/.vboxclient-* ~/.Xauthority ~/.xsession-errors ;
+fi ;
+
+# Get Nix stuff set up
+if [ -d $projects/nix-configs ]; then
+  cd $projects/nix-configs ;
+  git remote set-url origin ssh://github.com/nocoolnametom/nix-configs.git ;
+  git submodule init ;
+  git submodule update ;
+  git config user.email 'nocoolnametom@gmail.com' ;
+  ./init.sh
+  cd - > /dev/null;
+fi ;
+
+# Run home-manager if first run
+if [[ ! -e ~/.local/share/.first_run && $(command -v nix-channel) ]]; then
+  NIX_PATH=nixpkgs=/nix/var/nix/profiles/per-user/tdoggett/channels/nixos/nixpkgs:nixos-config=/etc/nixos/configuration.nix:/nix/var/nix/profiles/per-user/tdoggett/channels
+  nix-channel --update
+  rm -f ~/.profile ~/.bash_profile ~/.ssh/config ~/.npmrc
+  nix-shell https://github.com/rycee/home-manager/archive/master.tar.gz -A install --run 'home-manager switch' ;
+fi;
+
+# Mark that the first run has finished
+mkdir -p ~/.local/share ;
+touch ~/.local/share/.first_run > /dev/null 2>&1;
+
+# If keys aren't already on machine, get them from Keybase
+if [ ! -e $projects/nix-configs/keys/private/id_rsa ] ; then
+  sudo mkdir -p /tmp/keybase ;
+  sudo chown tdoggett:tdoggett /tmp/keybase ;
+  keybase login ;
+  kbfsfuse /tmp/keybase & sleep 10 && sudo mount -a ;
+  mkdir -p ~/.ssh ;
+  chmod 600 ~/.ssh ;
+  chmod 600 $projects/nix-configs/keys/private ;
+  cp /tmp/keybase/private/nocoolnametom/keys/personal_rsa $projects/nix-configs/keys/private/id_rsa ;
+  cp /tmp/keybase/private/nocoolnametom/keys/trulia_rsa $projects/nix-configs/keys/private/trulia_rsa ;
+  cp /tmp/keybase/private/nocoolnametom/keys/keybase.key $projects/nix-configs/keys/private/keybase-gpg.key ;
+  chmod 700 $projects/nix-configs/keys/private/*_rsa ;
+fi ;
+
+# Use three different parts of key fingerprint to ensure we have the key imported or not
+if [[ -e $projects/nix-configs/keys/private/keybase-gpg.key && ! `gpg --list-keys --fingerprint | grep "\s\?5279\s\?.*\s\?843C\s\?.*\s\?73EB\s\?"` ]]; then
+  gpg --import $projects/nix-configs/keys/private/keybase-gpg.key ;
+  FINGERPRINT=`gpg --list-keys | grep "^\s\{6\}\([0-9A-F]\+\)$" | grep -o "[0-9A-F]\+"` ;
+  TRUST=':6:' ;
+  ENTRY=$FINGERPRINT$TRUST ;
+  echo $ENTRY > ~/.vbox_init_trustfile ;
+  gpg --import-ownertrust ~/.vbox_init_trustfile ;
+  rm ~/.vbox_init_trustfile ;
+  chmod 700 ~/.gnupg
+fi ;
+

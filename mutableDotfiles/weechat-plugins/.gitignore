@@ -1,0 +1,3 @@
+.weechat/perl/*
+.weechat/python/*
+!.weechat/*/autoload/

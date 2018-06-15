@@ -1,7 +1,9 @@
 { lib, config, pkgs, ... }:
 
 with pkgs; let
-  sessionVariables = (recurseIntoAttrs (callPackage ./sessionVariables { })).variables;
+  sessionVariables = (import ./sessionVariables {
+    inherit pkgs;
+  });
 in {
   imports = [
     ./overlays

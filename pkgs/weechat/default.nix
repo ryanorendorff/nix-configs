@@ -2,7 +2,7 @@
 
 pkgs.weechat.override {
   extraBuildInputs = [
-    pkgs.mine.wee-slack
+    pkgs.mine.weechatPlugins.wee-slack
     pkgs.perl
     pkgs.aspellDicts.en
   ];

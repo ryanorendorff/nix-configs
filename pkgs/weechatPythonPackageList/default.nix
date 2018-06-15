@@ -1,8 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 python: python.withPackages(ps: with ps; [
   websocket_client
   xmpppy
-] ++ (if pkgs.stdenv.isDarwin then [
+] ++ lib.optionals pkgs.stdenv.isDarwin [
   pkgs.mine.python27Packages.pync
-] else []))
+])

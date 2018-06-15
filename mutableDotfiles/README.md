@@ -1,0 +1,1 @@
+These are files that are deployed using "stow".  The `vbox_init` script, in particular, is expected to be present and available if the repo has been checked out.  It can be used on a new Virtualized installation to start the process of building the entire home system.

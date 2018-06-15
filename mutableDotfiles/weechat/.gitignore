@@ -1,0 +1,7 @@
+logs
+autoload
+plugins.xml.gz
+*.log
+*.txt
+*.xml.gz
+.weechat/icon.png

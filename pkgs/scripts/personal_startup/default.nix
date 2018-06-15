@@ -7,29 +7,33 @@ let
 in pkgs.writeScript "personal_startup" (
   ''
     #!/usr/bin/env bash
-    mkdir -p ${projectsPath}{fluent,nocoolnametom}
+    mkdir -p ${projectsPath}{nocoolnametom}
 
-    if [ ! -d ${projectsPath}fluent/es6-react-pres ]; then
-      git clone https://github.com/btholt/es6-react-pres.git ${projectsPath}fluent/es6-react-pres ;
-    fi;
-
-    if [ ! -d ${projectsPath}nocoolnametom/cesletter ]; then
-      git clone git@github.com-nocoolnametom:nocoolnametom/cesletter.git ${projectsPath}nocoolnametom/cesletter ;
+    if [ ! -d ${projectsPath}nocoolnametom/home-assistant-config ]; then
+      git clone git@github.com:nocoolnametom/home-assistant-config.git ${projectsPath}nocoolnametom/home-assistant-config ;
     fi;
 
     if [ ! -d ${projectsPath}nocoolnametom/cesletterbox ]; then
-      git clone git@github.com-nocoolnametom:nocoolnametom/cesletterbox.git ${projectsPath}nocoolnametom/cesletterbox ;
+      git clone git@github.com:nocoolnametom/cesletterbox.git ${projectsPath}nocoolnametom/cesletterbox ;
     fi;
 
-    if [ ! -d ${projectsPath}nocoolnametom/nixpkgs ]; then
-      git clone git@github.com-nocoolnametom:nocoolnametom/nixpkgs.git ${projectsPath}nocoolnametom/nixpkgs ;
+    if [ ! -d ${projectsPath}nocoolnametom/dotfiles ]; then
+      git clone git@github.com:nocoolnametom/nixpkgs.git ${projectsPath}nocoolnametom/nixpkgs ;
+    fi;
+
+    if [ ! -d ${projectsPath}nocoolnametom/my-blog ]; then
+      git clone git@github.com:nocoolnametom/my-blog.git ${projectsPath}nocoolnametom/my-blog ;
+    fi;
+
+    if [ ! -d ${projectsPath}nocoolnametom/nix-configs ]; then
+      git clone git@github.com:nocoolnametom/nix-configs.git ${projectsPath}nocoolnametom/nix-configs ;
     fi;
 
     if [ ! -d ${projectsPath}nocoolnametom/wiki_copy ]; then
-      git clone git@github.com-nocoolnametom:nocoolnametom/wiki_copy.git ${projectsPath}nocoolnametom/wiki_copy ;
+      git clone git@github.com:nocoolnametom/wiki_copy.git ${projectsPath}nocoolnametom/wiki_copy ;
     fi;
   '' + (
-    if pkgs.stdenv.isDarwin then "" else ''
+    lib.optionalString (!pkgs.stdenv.isDarwin) ''
       if [[ ! -L ~/Downloads && -d ${downloadsVBoxPath} ]]; then
         if [ -d ~/Downloads ]; then
           mv ~/Downloads ~/Downloads.orig

@@ -20,3 +20,5 @@ fi
 if [ ! -e "$XDG_CONFIG_HOME/nixpkgs/config.nix" ] ; then
   ln -s `pwd`/config.nix "$XDG_CONFIG_HOME/nixpkgs/config.nix"
 fi
+
+git update-index --skip-worktree mutableDotfiles/weechat/.weechat/sec.conf

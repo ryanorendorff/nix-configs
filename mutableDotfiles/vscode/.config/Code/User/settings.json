@@ -1,0 +1,121 @@
+{
+  "editor.fontFamily": "'Fira Code', monospace",
+  "editor.fontLigatures": true,
+  "editor.formatOnSave": false,
+  "editor.lineNumbers": "relative",
+  "editor.minimap.enabled": false,
+  "editor.renderWhitespace": "boundary",
+  "editor.tabSize": 2,
+  "editor.disableTranslate3d": true,
+  "extensions.ignoreRecommendations": true,
+  "git.autofetch": true,
+  "phan.analyzedFileExtensions": ["php"],
+  "phan.analyzeOnlyOnSave": true,
+  "phpfmt.visibility_order": true,
+  "phpfmt.smart_linebreak_after_curly": true,
+  "phpfmt.yoda": true,
+  "phpfmt.psr1": true,
+  "phpfmt.psr2": true,
+  "phpfmt.indent_with_space": 4,
+  "phpfmt.passes":[
+    "AlignGroupDoubleArrow",
+    "AlignEquals",
+    "AlignDoubleSlashComments",
+    "AlignConstVisibilityEquals",
+    "DoubleToSingleQuote",
+    "OrganizeClass",
+    "OrderAndRemoveUseClauses",
+    "OrderMethodAndVisibility",
+    "ShortArray",
+    "TrimSpaceBeforeSemicolon",
+    "WrongConstructorName",
+    "AllmanStyleBraces"
+  ],
+  "php.suggest.basic": false,
+  "terraform.format.enable": false,
+  "update.channel": "none",
+  "vim.autoindent": true,
+  "vim.handleKeys": {
+    "<C-c>": false,
+    "<C-x>": false,
+    "<C-v>": false
+  },
+  "vim.easymotion": true,
+  "vim.insertModeKeyBindings": [
+    {
+      "before": [
+        "j",
+        "j"
+      ],
+      "after": [
+        "<Esc>"
+      ]
+    }
+  ],
+  "vim.statusBarColors": {
+    "normal": "#005f5f",
+    "insert": "#5f0000",
+    "visual": "#5f00af",
+    "visualline": "#005f87",
+    "visualblock": "#86592d",
+    "replace": "#000000"
+  },
+  "vim.statusBarColorControl": true,
+  "vim.useCtrlKeys": true,
+  "window.zoomLevel": -1,
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#005f5f",
+    "statusBar.noFolderBackground": "#005f5f",
+    "statusBar.debuggingBackground": "#005f5f"
+  },
+  "[git-commit]": {
+    "editor.fontFamily": "'iA Writer Duospace', Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontLigatures": false
+  },
+  "[git-rebase]": {
+    "editor.fontFamily": "'iA Writer Duospace', Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontLigatures": false
+  },
+  "[markdown]": {
+    "editor.fontFamily": "'DejaVu Sans Mono for Powerline', Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontLigatures": false
+  },
+  "[php]": {
+    "editor.formatOnSave": false
+  },
+  "[plaintext]": {
+    "editor.fontFamily": "'iA Writer Duospace', Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontLigatures": false
+  },
+  "gitlens.keymap": "none",
+  "gitlens.advanced.messages": {
+    "suppressCommitHasNoPreviousCommitWarning": false,
+    "suppressCommitNotFoundWarning": false,
+    "suppressFileNotUnderSourceControlWarning": false,
+    "suppressGitVersionWarning": false,
+    "suppressLineUncommittedWarning": false,
+    "suppressNoRepositoryWarning": false,
+    "suppressResultsExplorerNotice": false,
+    "suppressShowKeyBindingsNotice": true
+  },
+  "explorer.confirmDelete": false,
+  "cSpell.userWords": [
+    "autoresponder",
+    "capi",
+    "dotloop",
+    "gmail",
+    "leadinbox",
+    "leadrouting",
+    "loggable",
+    "mailgun",
+    "phan",
+    "readwrite",
+    "rofr",
+    "techconnect",
+    "trulia",
+    "twilio",
+    "whitelists",
+    "zillow",
+    "zuid"
+  ]
+}

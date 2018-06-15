@@ -2,7 +2,13 @@
 
 let
   stdenv = pkgs.stdenv;
-  sessionVariables = (pkgs.recurseIntoAttrs (pkgs.callPackage ./sessionVariables { inherit config; })).variables;
+  sessionVariables = (pkgs.recurseIntoAttrs (import ./sessionVariables {
+    inherit pkgs;
+    vim = config.programs.vim.package || pkgs.vim;
+    }));
+  skipString = condition: theString: (lib.optionalString (!condition) "Skip") + theString;
+  optionalDagEntryAfter = condition: prereqs: scriptString: if !condition then (config.lib.dag.entryAnywhere "") else ( config.lib.dag.entryAfter prereqs scriptString);
+  mutableDotfiles = sessionVariables.PROJECTS + "/nocoolnametom/nix-configs/mutableDotfiles";
 in {
   nixpkgs.overlays = [
     (import ./appConfigs/overlays.nix)
@@ -11,6 +17,30 @@ in {
   ];
   programs.home-manager.enable = true;
   programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
+
+  home.activation."tomDoggettInit" = config.lib.dag.entryAfter ["tomDoggettInit"] ''
+    ${pkgs.mine.scripts.zg_startup}
+    ${pkgs.mine.scripts.personal_startup}
+    ln -fs ${pkgs.appConfigs.weechat.icon} ${mutableDotfiles}/weechat/.weechat/icon.png
+    ln -fs ${pkgs.mine.weechatPlugins.autosort}/autosort.py ${mutableDotfiles}/weechat-plugins/.weechat/python/autosort.py
+    ln -fs ${pkgs.mine.weechatPlugins.buffer_autoset}/buffer_autoset.py ${mutableDotfiles}/weechat-plugins/.weechat/python/buffer_autoset.py
+    ln -fs ${pkgs.mine.weechatPlugins.text_item}/text_item.py ${mutableDotfiles}/weechat-plugins/.weechat/python/text_item.py
+    ln -fs ${pkgs.mine.weechatPlugins.urlserver}/urlserver.py ${mutableDotfiles}/weechat-plugins/.weechat/python/urlserver.py
+    ln -fs ${pkgs.mine.weechatPlugins.wee-slack}/wee_slack.py ${mutableDotfiles}/weechat-plugins/.weechat/python/wee_slack.py
+    ln -fs ${pkgs.mine.weechatPlugins.highmon}/highmon.pl ${mutableDotfiles}/weechat-plugins/.weechat/perl/highmon.pl
+    ln -fs ${pkgs.mine.weechatPlugins.perlexec}/perlexec.pl ${mutableDotfiles}/weechat-plugins/.weechat/perl/perlexec.pl
+    stow -d "${mutableDotfiles}" -t ${config.home.homeDirectory} bin weechat weechat-plugins
+  '';
+
+  home.activation."${skipString stdenv.isDarwin "tomDoggettInitDarwin"}" = optionalDagEntryAfter stdenv.isDarwin ["tomDoggettInit"] ''
+    ln -fs ${pkgs.mine.weechatPlugins.notification_center}/notification_center.py ${mutableDotfiles}/weechat-plugins/.weechat/python/notification_center.py
+    stow -d "${mutableDotfiles}" -t ${config.home.homeDirectory} vscode_macos
+  '';
+
+  home.activation."${skipString stdenv.isLinux "tomDoggettInitLinux"}" = optionalDagEntryAfter stdenv.isLinux ["tomDoggettInit"] ''
+    ln -fs ${pkgs.mine.weechatPlugins.notify_send}/notify_send.py ${mutableDotfiles}/weechat-plugins/.weechat/python/notify_send.py
+    stow -d "${mutableDotfiles}" -t ${config.home.homeDirectory} vscode
+  '';
 
   home.file = {}
     // pkgs.myFiles.bin.personal_startup
@@ -46,6 +76,13 @@ in {
       // (
         if pkgs.stdenv.isLinux then {}
           // pkgs.myFiles.xdg.i3blocks
+        else {}
+      )
+    ;
+    dataFile = {}
+      // (
+        if pkgs.stdenv.isDarwin then {}
+          // pkgs.myFiles.xdg.first_run
         else {}
       )
     ;
