@@ -11,7 +11,7 @@ let rtvConfig = {
     enable_media = true;
     max_comment_cols = 120;
     hide_username = false;
-    theme = "solarzed-dark";
+    theme = "solarized-dark";
     oauth_client_id = "E2oEtRQfdfAfNQ";
     oauth_client_secret = "praw_gapfill";
     oauth_redirect_uri = http://127.0.0.1:65000/;
@@ -71,7 +71,13 @@ let rtvConfig = {
       lib.mapAttrsToList (
         section: values: (
           [ "[${section}]\n" ] ++
-          lib.mapAttrsToList ( name: value: "${name} = ${toString value}\n" ) values
+          lib.mapAttrsToList (
+            name: value: "${name} = " + (
+              if lib.isBool value
+              then (if value then "True" else "False")
+              else toString value
+            ) + "\n"
+          ) values
         )
       ) rtvConfig
     )
