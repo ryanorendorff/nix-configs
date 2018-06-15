@@ -20,14 +20,7 @@ let
   monitor2 = "Virtual3";
   monitor3 = "Virtual2";
 in {
-  layouts = {
-    "i3/layout1.json".source = ./layout1.json;
-    "i3/layout2.json".source = ./layout2.json;
-    "i3/layout3.json".source = ./layout3.json;
-    "i3/layout4.json".source = ./layout4.json;
-    "i3/layout5.json".source = ./layout5.json;
-  };
-  i3Config = { xdg, home }: {
+  i3Config = { configHome ? builtins.getEnv "XDG_CONFIG_HOME", home }: {
     enable = true;
     package = pkgs.i3;
     config = ( let
@@ -213,12 +206,12 @@ in {
           hiddenState = "hide";
           position = "top";
           workspaceButtons = true;
-          statusCommand = "${pkgs.i3blocks}/bin/i3blocks -c ${xdg.configHome}/i3blocks/config";
+          statusCommand = "${pkgs.i3blocks}/bin/i3blocks -c ${pkgs.appConfigs.i3blocks}";
         }
       ];
       startup = [
         {
-          command = home.file."bin/chrome".target;
+          command = "${pkgs.mine.scripts.chrome}";
           notification = true;
         }
         {
@@ -226,31 +219,31 @@ in {
           notification = true;
         }
         {
-          command = "${home.homeDirectory}/${home.file."bin/tmutt".target}";
+          command = "${pkgs.mine.scripts.tmutt}";
           notification = true;
         }
         {
-          command = "${home.homeDirectory}/${home.file."bin/tweechat".target}";
+          command = "${pkgs.mine.scripts.tweechat}";
           notification = true;
         }
         {
-          command = "${home.homeDirectory}/${home.file."bin/tncmpc".target}";
+          command = "${pkgs.mine.scripts.tncmpc}";
           notification = true;
         }
         {
-          command = "${home.homeDirectory}/${home.file."bin/trtv".target}";
+          command = "${pkgs.mine.scripts.trtv}";
           notification = true;
         }
         {
-          command = "${home.homeDirectory}/${home.file."bin/todoist".target}";
+          command = "${pkgs.mine.scripts.todoist}";
           notification = true;
         }
         {
-          command = "${home.homeDirectory}/${home.file."bin/thaxor".target}";
+          command = "${pkgs.mine.scripts.thaxor}";
           notification = true;
         }
         {
-          command = "${home.homeDirectory}/${home.file."bin/thtop".target}";
+          command = "${pkgs.mine.scripts.thtop}";
           notification = true;
         }
         {
@@ -262,39 +255,39 @@ in {
           notification = true;
         }
         {
-          command = "${pkgs.termite}/bin/termite -c ${home.homeDirectory}/${xdg.configFile."termite/config".target} -t home --directory=${home.homeDirectory} -e 'zsh'";
+          command = "${pkgs.termite}/bin/termite -c ${xdg.configHome}/termite/config -t home --directory=${home.homeDirectory} -e '${pkgs.zsh}'";
           notification = true;
         }
         {
-          command = "${pkgs.termite}/bin/termite -c ${home.homeDirectory}/${xdg.configFile."termite/config".target} -t npm_start --directory=${home.homeDirectory}/projects/zillow/zrm/web-crm-frontend/ -e 'npm start'";
+          command = "${pkgs.termite}/bin/termite -c ${xdg.configHome}/termite/config -t npm_start --directory=${home.homeDirectory}/projects/zillow/zrm/web-crm-frontend/ -e 'nix-shell --pure --command=\"npm start\"'";
           notification = true;
         }
         {
-          command = "${pkgs.termite}/bin/termite -c ${home.homeDirectory}/${xdg.configFile."termite/config".target} -t web_crm --directory=${home.homeDirectory}/projects/zillow/zrm/web-crm-frontend/ -e 'zsh'";
+          command = "${pkgs.termite}/bin/termite -c ${xdg.configHome}/termite/config -t web_crm --directory=${home.homeDirectory}/projects/zillow/zrm/web-crm-frontend/ -e 'nix-shell --pure'";
           notification = true;
         }
         {
-          command = "${pkgs.termite}/bin/termite -c ${home.homeDirectory}/${xdg.configFile."termite/config".target} -t pa_dev --directory=${home.homeDirectory}/projects/zillow/ -e 'zsh'";
+          command = "${pkgs.termite}/bin/termite -c ${xdg.configHome}/termite/config -t pa_dev --directory=${home.homeDirectory}/projects/zillow/ -e '${pkgs.zsh}'";
           notification = true;
         }
         {
-          command = "i3-msg \"workspace ${MainWS}; append_layout ${home.homeDirectory}/${xdg.configFile."i3/layout1.json".target}\" ";
+          command = "i3-msg \"workspace ${MainWS}; append_layout ${./layout1.json}\" ";
           notification = false;
         }
         {
-          command = "i3-msg \"workspace ${DevWS}; append_layout ${home.homeDirectory}/${xdg.configFile."i3/layout2.json".target}\" ";
+          command = "i3-msg \"workspace ${DevWS}; append_layout ${./layout2.json}\" ";
           notification = false;
         }
         {
-          command = "i3-msg \"workspace ${InfoWS}; append_layout ${home.homeDirectory}/${xdg.configFile."i3/layout3.json".target}\" ";
+          command = "i3-msg \"workspace ${InfoWS}; append_layout ${./layout3.json}\" ";
           notification = false;
         }
         {
-          command = "i3-msg \"workspace ${PersonalWS}; append_layout ${home.homeDirectory}/${xdg.configFile."i3/layout4.json".target}\" ";
+          command = "i3-msg \"workspace ${PersonalWS}; append_layout ${./layout4.json}\" ";
           notification = false;
         }
         {
-          command = "i3-msg \"workspace ${PostmanWS}; append_layout ${home.homeDirectory}/${xdg.configFile."i3/layout5.json".target}\" ";
+          command = "i3-msg \"workspace ${PostmanWS}; append_layout ${./layout5.json}\" ";
           notification = false;
         }
         {

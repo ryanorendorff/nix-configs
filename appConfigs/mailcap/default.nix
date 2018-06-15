@@ -1,6 +1,6 @@
-{pkgs,...}:
+{ pkgs, ...}:
 
-''
+pkgs.writeText "mailcap" ''
   # Example mailcap file for Reddit Terminal Viewer
   # https://github.com/michael-lazar/rtv/
   #

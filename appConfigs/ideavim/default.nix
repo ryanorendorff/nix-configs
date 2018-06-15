@@ -1,6 +1,6 @@
-{ ... }:
+{ pkgs, ...}:
 
-''
+pkgs.writeText "ideavimrc" ''
   filetype plugin indent on
   syntax enable
   set hidden

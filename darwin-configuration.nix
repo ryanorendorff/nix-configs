@@ -1,8 +1,6 @@
 { lib, config, pkgs, ... }:
 
 with pkgs; let
-  dockerHost = "nix-docker";
-  files = callPackage ./files {};
   sessionVariables = (recurseIntoAttrs (callPackage ./sessionVariables { })).variables;
 in {
   imports = [
@@ -11,19 +9,12 @@ in {
 
   environment.systemPackages = callPackage ./installList { };
   environment.variables = sessionVariables;
-  environment.etc."hosts".text = files.etc-hosts;
-  environment.etc."trulia/server.json".text = ''
-    { "SERVER": "DEV" }
-  '';
-  environment.etc."ssh/ssh_config".text = ''
-    Host *
-	    SendEnv LANG LC_*
-    Host ${dockerHost}
-      Port 3022
-      User root
-      IdentityFile /etc/nix/docker_rsa
-      HostName 127.0.0.1
-  '';
+  environment.etc = (
+    {}
+    // pkgs.myFiles.etc.hosts
+    // pkgs.myFiles.etc.ssh_config
+    // pkgs.myFiles.etc.trulia_server
+  );
 
   nixpkgs.config.allowUnsupportedSystem = false;
   nixpkgs.config.allowUnfree = true;
@@ -55,7 +46,7 @@ in {
     if [[ ! -e /etc/nix/docker_rsa ]]; then
       echo "Missing /etc/nix/docker_rsa!"
       echo "Please run the following command:"
-      echo "    sudo cp ${pkgs.mine.nixDocker}/ssh/insecure_rsa /etc/nix/docker_rsa && sudo chmod 0600 /etc/nix/docker_rsa"
+      echo "    sudo cp ${pkgs.mine.nixDocker.pkg}/ssh/insecure_rsa /etc/nix/docker_rsa && sudo chmod 0600 /etc/nix/docker_rsa"
     fi
   '';
 
@@ -212,7 +203,7 @@ in {
   nix.distributedBuilds = true;
   nix.buildMachines = [
     {
-      hostName = dockerHost;
+      hostName = pkgs.mine.nixDocker.hostname;
       sshUser = "root";
       sshKey = "/etc/nix/docker_rsa";
       systems = [ "x86_64-linux" ];

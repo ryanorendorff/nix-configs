@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 
 let rtvConfig = {
   rtv = {
@@ -65,13 +65,15 @@ let rtvConfig = {
     SUBSCRIPTION_SELECT = "l, <LF>, <KEY_ENTER>, <KEY_RIGHT>";
     SUBSCRIPTION_EXIT = "h, s, S, <ESC>, <KEY_LEFT>";
   };
-}; in lib.concatStrings (
-  lib.flatten (
-    lib.mapAttrsToList (
-      section: values: (
-        [ "[${section}]" ] ++
-        lib.mapAttrsToList ( name: value: "${name} = ${toString value}" ) values
-      )
-    ) rtvConfig
+}; in pkgs.writeText "rtv.cfg" (
+  lib.concatStrings (
+    lib.flatten (
+      lib.mapAttrsToList (
+        section: values: (
+          [ "[${section}]\n" ] ++
+          lib.mapAttrsToList ( name: value: "${name} = ${toString value}\n" ) values
+        )
+      ) rtvConfig
+    )
   )
 )

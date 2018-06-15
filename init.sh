@@ -7,12 +7,16 @@ if [[ $(uname) == "Darwin" ]]; then
   fi
 fi
 
-mkdir -p ~/.config/nixpkgs
-
-if [ ! -e ~/.config/nixpkgs/home.nix ] ; then
-  ln -s `pwd`/home.nix ~/.config/nixpkgs/home.nix
+if [[ -z "$XDG_CONFIG_HOME" ]]; then
+  export XDG_CONFIG_HOME=~/.config
 fi
 
-if [ ! -e ~/.config/nixpkgs/config.nix ] ; then
-  ln -s `pwd`/config.nix ~/.config/nixpkgs/config.nix
+mkdir -p "$XDG_CONFIG_HOME/nixpkgs"
+
+if [ ! -e "$XDG_CONFIG_HOME/nixpkgs/home.nix" ] ; then
+  ln -s `pwd`/home.nix "$XDG_CONFIG_HOME/nixpkgs/home.nix"
+fi
+
+if [ ! -e "$XDG_CONFIG_HOME/nixpkgs/config.nix" ] ; then
+  ln -s `pwd`/config.nix "$XDG_CONFIG_HOME/nixpkgs/config.nix"
 fi

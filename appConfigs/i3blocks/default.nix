@@ -1,6 +1,6 @@
 {pkgs, shellcheck, lib, ...}:
 
-''
+pkgs.writeText "config" ''
   # i3blocks config file
   #
   # List of valid properties:

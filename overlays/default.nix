@@ -2,7 +2,8 @@
 
 {
   nixpkgs.overlays = [
-    (import ../pkgs/overlays.nix)
     (import ../appConfigs/overlays.nix)
+    (import ../files/overlays.nix)
+    (import ../pkgs/overlays.nix)
   ];
 }
