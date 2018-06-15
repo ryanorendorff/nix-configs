@@ -17,10 +17,6 @@ in pkgs.writeScript "personal_startup" (
       git clone git@github.com:nocoolnametom/cesletterbox.git ${projectsPath}nocoolnametom/cesletterbox ;
     fi;
 
-    if [ ! -d ${projectsPath}nocoolnametom/dotfiles ]; then
-      git clone git@github.com:nocoolnametom/nixpkgs.git ${projectsPath}nocoolnametom/nixpkgs ;
-    fi;
-
     if [ ! -d ${projectsPath}nocoolnametom/my-blog ]; then
       git clone git@github.com:nocoolnametom/my-blog.git ${projectsPath}nocoolnametom/my-blog ;
     fi;
