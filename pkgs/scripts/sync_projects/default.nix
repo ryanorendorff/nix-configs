@@ -4,11 +4,12 @@ let
   vars = {
     backup-script = pkgs.mine.scripts.zg_backup;
     rsync-options = "-qa --no-links --no-perms --no-owner --no-group --delete";
-    source = "${builtins.getEnv "PROJECTS"}/backup";
   } // (if pkgs.stdenv.isLinux then {
     destination = "/mnt/vmware/googledrive/projects/";
+    source = "/home/tdoggett/projects/backup";
   } else {
     destination = "/Volumes/GoogleDrive/My Drive/projects/backup/";
+    source = "/Users/tdoggett/Projects/backup";
   });
 in pkgs.writeScript "sync_projects" ''
   #!/usr/bin/env bash

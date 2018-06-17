@@ -8,7 +8,6 @@ let
 in
 with pkgs; [
   (python.withPackages myPythonPackages)
-  alarm-clock-applet
   bash-completion
   cava
   compton

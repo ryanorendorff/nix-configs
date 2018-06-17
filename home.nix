@@ -15,6 +15,7 @@ let
 in {
   nixpkgs.overlays = [
     (import ./appConfigs/overlays.nix)
+    (import ./cronJobs/overlays.nix)
     (import ./files/overlays.nix)
     (import ./pkgs/overlays.nix)
   ];
@@ -247,7 +248,7 @@ in {
   services = (
     if isDarwin then {} else {
       compton = {
-        enable = true;
+        enable = false;
       };
       dunst = {
         enable = true;
@@ -364,7 +365,7 @@ in {
         sudo vmhgfs-fuse -o allow_other -o auto_unmount -o uid=1000 -o gid=1000 .host:/tdoggett /mnt/vmware/tdoggett
         sudo vmhgfs-fuse -o allow_other -o auto_unmount -o uid=1000 -o gid=1000 .host:/wallpapers /mnt/vmware/wallpapers
         sudo mount -a && systemctl --user restart random-background
-        systemctl --user start compton.service
+        # systemctl --user start compton.service
         ${pkgs.mine.python36Packages.i3-gnome-pomodoro}/bin/pomodoro-client daemon 4 --nagbar &
         xset dpms 90
         xset s off
