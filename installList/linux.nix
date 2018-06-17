@@ -29,6 +29,7 @@ with pkgs; [
   marp
   mine.python36Packages.i3-gnome-pomodoro
   mine.postman
+  mine.vr180-creator
   mpv
   openssh
   php71

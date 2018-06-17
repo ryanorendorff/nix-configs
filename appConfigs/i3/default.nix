@@ -255,19 +255,19 @@ in {
           notification = true;
         }
         {
-          command = "${pkgs.termite}/bin/termite -c ${xdg.configHome}/termite/config -t home --directory=${home.homeDirectory} -e '${pkgs.zsh}'";
+          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t home --directory=${home.homeDirectory} -e '${pkgs.zsh}'";
           notification = true;
         }
         {
-          command = "${pkgs.termite}/bin/termite -c ${xdg.configHome}/termite/config -t npm_start --directory=${home.homeDirectory}/projects/zillow/zrm/web-crm-frontend/ -e 'nix-shell --pure --command=\"npm start\"'";
+          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t npm_start --directory=${home.homeDirectory}/projects/zillow/zrm/web-crm-frontend/ -e 'nix-shell --pure --command=\"npm start\"'";
           notification = true;
         }
         {
-          command = "${pkgs.termite}/bin/termite -c ${xdg.configHome}/termite/config -t web_crm --directory=${home.homeDirectory}/projects/zillow/zrm/web-crm-frontend/ -e 'nix-shell --pure'";
+          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t web_crm --directory=${home.homeDirectory}/projects/zillow/zrm/web-crm-frontend/ -e 'nix-shell --pure'";
           notification = true;
         }
         {
-          command = "${pkgs.termite}/bin/termite -c ${xdg.configHome}/termite/config -t pa_dev --directory=${home.homeDirectory}/projects/zillow/ -e '${pkgs.zsh}'";
+          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t pa_dev --directory=${home.homeDirectory}/projects/zillow/ -e '${pkgs.zsh}'";
           notification = true;
         }
         {

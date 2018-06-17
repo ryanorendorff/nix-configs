@@ -1,12 +1,15 @@
 { pkgs, config, lib, ... }:
 
 let
+  verifyRepos = false;
   stdenv = pkgs.stdenv;
+  isDarwin = pkgs.stdenv.isDarwin;
+  isLinux = pkgs.stdenv.isLinux;
   sessionVariables = (pkgs.recurseIntoAttrs (import ./sessionVariables {
     inherit pkgs;
-    vim = config.programs.vim.package || pkgs.vim;
+    vim = config.programs.vim.package;
     }));
-  skipString = condition: theString: (lib.optionalString (!condition) "Skip") + theString;
+  skipStringIfNot = condition: theString: (lib.optionalString (!condition) "Skip") + theString;
   optionalDagEntryAfter = condition: prereqs: scriptString: if !condition then (config.lib.dag.entryAnywhere "") else ( config.lib.dag.entryAfter prereqs scriptString);
   mutableDotfiles = sessionVariables.PROJECTS + "/nocoolnametom/nix-configs/mutableDotfiles";
 in {
@@ -18,27 +21,30 @@ in {
   programs.home-manager.enable = true;
   programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
 
-  home.activation."tomDoggettInit" = config.lib.dag.entryAfter ["tomDoggettInit"] ''
-    ${pkgs.mine.scripts.zg_startup}
-    ${pkgs.mine.scripts.personal_startup}
-    ln -fs ${pkgs.appConfigs.weechat.icon} ${mutableDotfiles}/weechat/.weechat/icon.png
-    ln -fs ${pkgs.mine.weechatPlugins.autosort}/autosort.py ${mutableDotfiles}/weechat-plugins/.weechat/python/autosort.py
-    ln -fs ${pkgs.mine.weechatPlugins.buffer_autoset}/buffer_autoset.py ${mutableDotfiles}/weechat-plugins/.weechat/python/buffer_autoset.py
-    ln -fs ${pkgs.mine.weechatPlugins.text_item}/text_item.py ${mutableDotfiles}/weechat-plugins/.weechat/python/text_item.py
-    ln -fs ${pkgs.mine.weechatPlugins.urlserver}/urlserver.py ${mutableDotfiles}/weechat-plugins/.weechat/python/urlserver.py
-    ln -fs ${pkgs.mine.weechatPlugins.wee-slack}/wee_slack.py ${mutableDotfiles}/weechat-plugins/.weechat/python/wee_slack.py
-    ln -fs ${pkgs.mine.weechatPlugins.highmon}/highmon.pl ${mutableDotfiles}/weechat-plugins/.weechat/perl/highmon.pl
-    ln -fs ${pkgs.mine.weechatPlugins.perlexec}/perlexec.pl ${mutableDotfiles}/weechat-plugins/.weechat/perl/perlexec.pl
+  home.activation.tomDoggettInit = config.lib.dag.entryAnywhere ''
+    cp -fL ${pkgs.appConfigs.weechat.icon} ${mutableDotfiles}/weechat/.weechat/icon.png
+    cp -fL ${pkgs.mine.weechatPlugins.autosort}/autosort.py ${mutableDotfiles}/weechat-plugins/.weechat/python/autosort.py
+    cp -fL ${pkgs.mine.weechatPlugins.buffer_autoset}/buffer_autoset.py ${mutableDotfiles}/weechat-plugins/.weechat/python/buffer_autoset.py
+    cp -fL ${pkgs.mine.weechatPlugins.text_item}/text_item.py ${mutableDotfiles}/weechat-plugins/.weechat/python/text_item.py
+    cp -fL ${pkgs.mine.weechatPlugins.urlserver}/urlserver.py ${mutableDotfiles}/weechat-plugins/.weechat/python/urlserver.py
+    cp -fL ${pkgs.mine.weechatPlugins.wee-slack}/wee_slack.py ${mutableDotfiles}/weechat-plugins/.weechat/python/wee_slack.py
+    cp -fL ${pkgs.mine.weechatPlugins.highmon}/highmon.pl ${mutableDotfiles}/weechat-plugins/.weechat/perl/highmon.pl
+    cp -fL ${pkgs.mine.weechatPlugins.perlexec}/perlexec.pl ${mutableDotfiles}/weechat-plugins/.weechat/perl/perlexec.pl
     stow -d "${mutableDotfiles}" -t ${config.home.homeDirectory} bin weechat weechat-plugins
   '';
 
-  home.activation."${skipString stdenv.isDarwin "tomDoggettInitDarwin"}" = optionalDagEntryAfter stdenv.isDarwin ["tomDoggettInit"] ''
-    ln -fs ${pkgs.mine.weechatPlugins.notification_center}/notification_center.py ${mutableDotfiles}/weechat-plugins/.weechat/python/notification_center.py
+  home.activation."${skipStringIfNot verifyRepos "tomDoggettInitVerifyRepos"}" = config.lib.dag.entryAfter ["tomDoggettInit"]''
+    ${pkgs.mine.scripts.zg_startup}
+    ${pkgs.mine.scripts.personal_startup}
+  '';
+
+  home.activation."${skipStringIfNot isDarwin "tomDoggettInitDarwin"}" = optionalDagEntryAfter isDarwin ["tomDoggettInit"] ''
+    cp -fL ${pkgs.mine.weechatPlugins.notification_center}/notification_center.py ${mutableDotfiles}/weechat-plugins/.weechat/python/notification_center.py
     stow -d "${mutableDotfiles}" -t ${config.home.homeDirectory} vscode_macos
   '';
 
-  home.activation."${skipString stdenv.isLinux "tomDoggettInitLinux"}" = optionalDagEntryAfter stdenv.isLinux ["tomDoggettInit"] ''
-    ln -fs ${pkgs.mine.weechatPlugins.notify_send}/notify_send.py ${mutableDotfiles}/weechat-plugins/.weechat/python/notify_send.py
+  home.activation."${skipStringIfNot isLinux "tomDoggettInitLinux"}" = optionalDagEntryAfter isLinux ["tomDoggettInit"] ''
+    cp -fL ${pkgs.mine.weechatPlugins.notify_send}/notify_send.py ${mutableDotfiles}/weechat-plugins/.weechat/python/notify_send.py
     stow -d "${mutableDotfiles}" -t ${config.home.homeDirectory} vscode
   '';
 
@@ -53,7 +59,7 @@ in {
     // pkgs.myFiles.home.npmrc
     // pkgs.myFiles.home.zsh_themes_powerlevel9k
     // (
-      if pkgs.stdenv.isLinux then {}
+      if isLinux then {}
         // pkgs.myFiles.bin.chrome
         // pkgs.myFiles.bin.chrome-personal
         // pkgs.myFiles.bin.thaxor
@@ -74,21 +80,21 @@ in {
     configFile = {}
       // pkgs.myFiles.xdg.rtv
       // (
-        if pkgs.stdenv.isLinux then {}
+        if isLinux then {}
           // pkgs.myFiles.xdg.i3blocks
         else {}
       )
     ;
     dataFile = {}
       // (
-        if pkgs.stdenv.isDarwin then {}
+        if isDarwin then {}
           // pkgs.myFiles.xdg.first_run
         else {}
       )
     ;
   };
 
-  home.packages = if stdenv.isDarwin then [] else pkgs.callPackage ./installList {};
+  home.packages = if isDarwin then [] else pkgs.callPackage ./installList {};
 
   programs.git = {
     enable = true;
@@ -129,7 +135,7 @@ in {
   };
 
   programs.bash = (
-    if stdenv.isDarwin then {
+    if isDarwin then {
       enable = false; # We handle bash in darwin-configuration for Mac OS
     } else {
       enable = true;
@@ -141,7 +147,7 @@ in {
   );
 
   programs.feh = (
-    if stdenv.isDarwin then {
+    if isDarwin then {
       enable = false;
     } else {
       enable = true;
@@ -149,7 +155,7 @@ in {
   );
 
   programs.vim = (
-    if stdenv.isDarwin then {
+    if isDarwin then {
       enable = false;
     } else {
       enable = true;
@@ -159,7 +165,7 @@ in {
   );
 
   programs.termite = (
-    if stdenv.isDarwin then {
+    if isDarwin then {
       enable = false;
     } else {
       enable = true;
@@ -217,7 +223,7 @@ in {
   );
 
   programs.zsh = (
-    if stdenv.isDarwin then {
+    if isDarwin then {
       enable = false; # We handle zsh in darwin-configuration for Mac OS
     } else {
       enable = true;
@@ -239,7 +245,7 @@ in {
   );
 
   services = (
-    if stdenv.isDarwin then {} else {
+    if isDarwin then {} else {
       compton = {
         enable = true;
       };
@@ -342,7 +348,7 @@ in {
   );
 
   xsession = (
-    if stdenv.isDarwin then {
+    if isDarwin then {
       enable = false;
     } else {
       enable = true;

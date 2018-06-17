@@ -9,17 +9,17 @@ in pkgs.writeScript "personal_startup" (
     #!/usr/bin/env bash
     mkdir -p ${projectsPath}{nocoolnametom}
 
-    if [ ! -d ${projectsPath}nocoolnametom/home-assistant-config ]; then
-      git clone git@github.com:nocoolnametom/home-assistant-config.git ${projectsPath}nocoolnametom/home-assistant-config ;
-    fi;
+    # if [ ! -d ${projectsPath}nocoolnametom/home-assistant-config ]; then
+    #   git clone git@github.com:nocoolnametom/home-assistant-config.git ${projectsPath}nocoolnametom/home-assistant-config ;
+    # fi;
 
     if [ ! -d ${projectsPath}nocoolnametom/cesletterbox ]; then
       git clone git@github.com:nocoolnametom/cesletterbox.git ${projectsPath}nocoolnametom/cesletterbox ;
     fi;
 
-    if [ ! -d ${projectsPath}nocoolnametom/my-blog ]; then
-      git clone git@github.com:nocoolnametom/my-blog.git ${projectsPath}nocoolnametom/my-blog ;
-    fi;
+    # if [ ! -d ${projectsPath}nocoolnametom/my-blog ]; then
+    #   git clone git@github.com:nocoolnametom/my-blog.git ${projectsPath}nocoolnametom/my-blog ;
+    # fi;
 
     if [ ! -d ${projectsPath}nocoolnametom/nix-configs ]; then
       git clone git@github.com:nocoolnametom/nix-configs.git ${projectsPath}nocoolnametom/nix-configs ;
