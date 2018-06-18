@@ -1,7 +1,7 @@
 { pkgs, config, lib, ... }:
 
 let
-  verifyRepos = false;
+  verifyRepos = true;
   stdenv = pkgs.stdenv;
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
@@ -34,7 +34,7 @@ in {
     stow -d "${mutableDotfiles}" -t ${config.home.homeDirectory} bin weechat weechat-plugins
   '';
 
-  home.activation."${skipStringIfNot verifyRepos "tomDoggettInitVerifyRepos"}" = config.lib.dag.entryAfter ["tomDoggettInit"]''
+  home.activation."${skipStringIfNot verifyRepos "tomDoggettInitVerifyRepos"}" = optionalDagEntryAfter verifyRepos ["tomDoggettInit"]''
     ${pkgs.mine.scripts.zg_startup}
     ${pkgs.mine.scripts.personal_startup}
   '';

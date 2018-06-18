@@ -23,6 +23,7 @@ stdenv.mkDerivation rec {
   shellHook = ''
     export PROJECT_HOME=`pwd`
     export PATH=$PROJECT_HOME/.node/bin:$PROJECT_HOME/node_modules/.bin:$PATH
+    mkdir -p $PROJECT_HOME/.node
     rm -f $PROJECT_HOME/.node/bin && ln -s $env/bin $PROJECT_HOME/.node/bin
   '';
 

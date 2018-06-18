@@ -9,6 +9,7 @@
         + (if lib.hasAttrByPath ["new-name"] project then " -n \"${project.new-name}\"" else "")
         + (if lib.hasAttrByPath ["directory"] project then " -d \"${project.directory}\"" else "")
         + (if lib.hasAttrByPath ["build"] project then (if project.build then "" else " --no-build") else "")
+        + " --make-shell=$SHOULD_BUILD"
         + (if lib.hasPrefix "~" namespace then " \"" else " ") + "${namespace}" + (if lib.hasPrefix "~" namespace then "\"" else "")
         + " ${project.repo}"
         + "\n"

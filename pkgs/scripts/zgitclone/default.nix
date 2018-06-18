@@ -2,6 +2,7 @@
 
 pkgs.writeScript "zgitclone" (
   let
+    nixpkgsChannel = "nixpkgs-unstable";
     myhome = if pkgs.stdenv.isDarwin then "/Users/tdoggett" else "/home/tdoggett";
     projects = if pkgs.stdenv.isDarwin then "${myhome}/Projects" else "${myhome}/projects";
     zillow = "${projects}/zillow";
@@ -11,6 +12,7 @@ pkgs.writeScript "zgitclone" (
     export NAME=""
     export SHOULD_BUILD=1
     export NIX_SHELL=""
+    export MAKE_SHELL=0
     script="${"$"}{0##*/}"
     while test $# -gt 0; do
     case "$1" in
@@ -25,6 +27,7 @@ pkgs.writeScript "zgitclone" (
         echo "-d, --output-dir=DIR      specify an absolute directory path (default is $ZILLOW/<teamName>/<projectName>)"
         echo "--no-build                do not run automatic dependency building"
         echo "-N, --nix-shell=<path>    path to a nix file to copy as default.nix"
+        echo "--make-shell=[0,1]        whether or not to build the shell environment"
         exit 0
         ;;
       -n)
@@ -73,6 +76,10 @@ pkgs.writeScript "zgitclone" (
         export NIX_SHELL=`echo $1 | sed -e 's/^[^=]*=//g'`
         shift
         ;;
+      --make-shell*)
+        export MAKE_SHELL=`echo $1 | sed -e 's/^[^=]*=//g'`
+        shift
+        ;;
       *)
         break
         ;;
@@ -114,6 +121,8 @@ pkgs.writeScript "zgitclone" (
 
     if [[ ! -z "$NIX_SHELL" && -e "$NIX_SHELL" && ! -e ./default.nix ]]; then
       cp "$NIX_SHELL" ./default.nix
+      latestHash=`git ls-remote git://github.com/NixOS/nixpkgs-channels.git | grep refs/heads/${nixpkgsChannel} | cut -f 1`
+      sed -i.bak "s~<nixpkgs>~(fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/$latestHash.tar.gz)~" default.nix && rm -f default.nix.bak
       if [[ ! `git ls-files -o | grep default.nix` ]] ; then
         git update-index --skip-worktree default.nix
       fi
@@ -122,7 +131,11 @@ pkgs.writeScript "zgitclone" (
     mkdir -p .git/info && touch .git/info/exclude && echo "default.nix" >> .git/info/exclude
 
     if [[ $SHOULD_BUILD -eq 1 ]] ; then
-      if [[ ! -z "$NIX_SHELL" ]]; then
+      if [[ ! -z "$NIX_SHELL" ]] ; then
+        if [[ $MAKE_SHELL -eq 1 ]] ; then
+          nix-shell --pure --command ":"
+        fi
+
         if [[ -e package.json && ! -d node_modules ]] ; then
           nix-shell --pure --command "npm install --progress=false --silent --quiet > /dev/null 2>&1"
         fi

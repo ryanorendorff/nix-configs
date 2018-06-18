@@ -29,6 +29,7 @@
   lemmy = [
     { repo = "goodcop"; shell = ../shells/zg-goodcop/default.nix; }
     { repo = "l2-functional-tests"; }
+    { repo = "l2-queue-essentials"; }
     { repo = "lead-model"; }
     { repo = "lead-model-serialization"; }
   ];
