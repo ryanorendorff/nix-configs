@@ -1,5 +1,5 @@
 let
-  # Set the variable "local_dir" to the project directory for the rest of the file.
+  # Set the variable "local_dir" to the project directory for the rest of the file!
   local_dir = builtins.toString ./.;
 in with import <nixpkgs> { };
 

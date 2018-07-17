@@ -26,7 +26,7 @@ pkgs.writeScript "zgitclone" (
         echo "-n, --name=NAME           specify the directory name (default is projectName)"
         echo "-d, --output-dir=DIR      specify an absolute directory path (default is $ZILLOW/<teamName>/<projectName>)"
         echo "--no-build                do not run automatic dependency building"
-        echo "-N, --nix-shell=<path>    path to a nix file to copy as default.nix"
+        echo "-N, --nix-shell=<path>    path to a nix file to copy as shell.nix"
         echo "--make-shell=[0,1]        whether or not to build the shell environment"
         exit 0
         ;;
@@ -86,10 +86,20 @@ pkgs.writeScript "zgitclone" (
       esac
     done
 
-    export TEAM_NAME=${"$"}{1//\~/_}
-    export PROJECT_NAME=${"$"}{2//\~/_}
+    export STASH_TEAM_NAME=$1
+    export STASH_PROJECT_NAME=$2
+    export TEAM_NAME=${"$"}{STASH_TEAM_NAME//\~/_}
+    export PROJECT_NAME=${"$"}{STASH_PROJECT_NAME//\~/_}
     if [[ -z "$NAME" ]] ; then
       export NAME="$PROJECT_NAME"
+    fi
+
+    if [[ ! -z "$NIX_SHELL" && ${"$"}{NIX_SHELL: -4} != ".nix" ]] ; then
+      export NIX_SHELL="$NIX_SHELL/default.nix"
+    fi
+
+    if [[ ! -z "$NIX_SHELL" && ! -e "$NIX_SHELL" ]] ; then
+      export NIX_SHELL=""
     fi
     
     if [[ $# -eq 0 || $# -eq 1 ]] ; then
@@ -105,7 +115,7 @@ pkgs.writeScript "zgitclone" (
 
     if [ ! -d "$DIR" ] ; then
       mkdir -p "$DIR"
-      git clone -q --recurse-submodules "ssh://stash.sv2.trulia.com/$TEAM_NAME/$PROJECT_NAME.git" "$DIR"
+      git clone -q --recurse-submodules "ssh://stash.sv2.trulia.com/$STASH_TEAM_NAME/$STASH_PROJECT_NAME.git" "$DIR"
     fi
     if [ ! -d "$DIR/.git" ] ; then
       exit
@@ -119,16 +129,16 @@ pkgs.writeScript "zgitclone" (
     git config user.name "Tom Doggett"
     git config user.email "tdoggett@zillowgroup.com"
 
-    if [[ ! -z "$NIX_SHELL" && -e "$NIX_SHELL" && ! -e ./default.nix ]]; then
-      cp "$NIX_SHELL" ./default.nix
+    if [[ ! -z "$NIX_SHELL" && -e "$NIX_SHELL" && ! -e ./shell.nix ]]; then
+      cp "$NIX_SHELL" ./shell.nix
       latestHash=`git ls-remote git://github.com/NixOS/nixpkgs-channels.git | grep refs/heads/${nixpkgsChannel} | cut -f 1`
-      sed -i.bak "s~<nixpkgs>~(fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/$latestHash.tar.gz)~" default.nix && rm -f default.nix.bak
-      if [[ ! `git ls-files -o | grep default.nix` ]] ; then
-        git update-index --skip-worktree default.nix
+      sed -i.bak "s~<nixpkgs>~(fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/$latestHash.tar.gz)~" shell.nix && rm -f shell.nix.bak
+      if [[ ! `git ls-files -o | grep shell.nix` ]] ; then
+        git update-index --skip-worktree shell.nix
       fi
     fi
 
-    mkdir -p .git/info && touch .git/info/exclude && echo "default.nix" >> .git/info/exclude
+    mkdir -p .git/info && touch .git/info/exclude && echo "shell.nix" >> .git/info/exclude
 
     if [[ $SHOULD_BUILD -eq 1 ]] ; then
       if [[ ! -z "$NIX_SHELL" ]] ; then

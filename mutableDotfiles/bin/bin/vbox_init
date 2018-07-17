@@ -21,8 +21,6 @@ fi ;
 if [ -d $projects/nix-configs ]; then
   cd $projects/nix-configs ;
   git remote set-url origin ssh://github.com/nocoolnametom/nix-configs.git ;
-  git submodule init ;
-  git submodule update ;
   git config user.email 'nocoolnametom@gmail.com' ;
   ./init.sh
   cd - > /dev/null;
@@ -31,6 +29,9 @@ fi ;
 # Run home-manager if first run
 if [[ ! -e ~/.local/share/.first_run && $(command -v nix-channel) ]]; then
   NIX_PATH=nixpkgs=/nix/var/nix/profiles/per-user/tdoggett/channels/nixos/nixpkgs:nixos-config=/etc/nixos/configuration.nix:/nix/var/nix/profiles/per-user/tdoggett/channels
+  if [[ ! -z ${"$"}{nix-channel --list} ]]; then
+    nix-channel --add https://nixos.org/channels/nixpkgs-unstable
+  fi
   nix-channel --update
   rm -f ~/.profile ~/.bash_profile ~/.ssh/config ~/.npmrc
   nix-shell https://github.com/rycee/home-manager/archive/master.tar.gz -A install --run 'home-manager switch' ;

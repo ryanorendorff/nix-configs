@@ -5,12 +5,30 @@ let
   stdenv = pkgs.stdenv;
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
+  configHome = if (lib.hasAttrByPath ["xdg" "configHome"] config) then config.xdg.configHome else "~/.config";
+  homeDirectory = if (lib.hasAttrByPath ["home" "homeDirectory"] config) then config.home.homeDirectory else "~";
   sessionVariables = (pkgs.recurseIntoAttrs (import ./sessionVariables {
     inherit pkgs;
-    vim = config.programs.vim.package;
+    vim = if (lib.hasAttrByPath ["programs" "vim" "package"] config) then config.programs.vim.package else pkgs.vim;
     }));
+  dagEntryAnywhere = data: {
+    inherit data;
+    before = [];
+    after = [];
+  };
+  dagEntryBetween = before: after: data: {
+    inherit data before after;
+  };
+  dagEntryAfter = after: data: {
+    inherit data after;
+    before = [];
+  };
+  dagEntryBefore = before: data: {
+    inherit data before;
+    after = [];
+  };
   skipStringIfNot = condition: theString: (lib.optionalString (!condition) "Skip") + theString;
-  optionalDagEntryAfter = condition: prereqs: scriptString: if !condition then (config.lib.dag.entryAnywhere "") else ( config.lib.dag.entryAfter prereqs scriptString);
+  optionalDagEntryAfter = condition: prereqs: scriptString: if !condition then (dagEntryAnywhere "") else ( dagEntryAfter prereqs scriptString);
   mutableDotfiles = sessionVariables.PROJECTS + "/nocoolnametom/nix-configs/mutableDotfiles";
 in {
   nixpkgs.overlays = [
@@ -22,7 +40,7 @@ in {
   programs.home-manager.enable = true;
   programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
 
-  home.activation.tomDoggettInit = config.lib.dag.entryAnywhere ''
+  home.activation.tomDoggettInit = dagEntryAnywhere ''
     cp -fL ${pkgs.appConfigs.weechat.icon} ${mutableDotfiles}/weechat/.weechat/icon.png
     cp -fL ${pkgs.mine.weechatPlugins.autosort}/autosort.py ${mutableDotfiles}/weechat-plugins/.weechat/python/autosort.py
     cp -fL ${pkgs.mine.weechatPlugins.buffer_autoset}/buffer_autoset.py ${mutableDotfiles}/weechat-plugins/.weechat/python/buffer_autoset.py
@@ -31,7 +49,7 @@ in {
     cp -fL ${pkgs.mine.weechatPlugins.wee-slack}/wee_slack.py ${mutableDotfiles}/weechat-plugins/.weechat/python/wee_slack.py
     cp -fL ${pkgs.mine.weechatPlugins.highmon}/highmon.pl ${mutableDotfiles}/weechat-plugins/.weechat/perl/highmon.pl
     cp -fL ${pkgs.mine.weechatPlugins.perlexec}/perlexec.pl ${mutableDotfiles}/weechat-plugins/.weechat/perl/perlexec.pl
-    stow -d "${mutableDotfiles}" -t ${config.home.homeDirectory} bin weechat weechat-plugins
+    stow -d "${mutableDotfiles}" -t ${homeDirectory} bin weechat weechat-plugins
   '';
 
   home.activation."${skipStringIfNot verifyRepos "tomDoggettInitVerifyRepos"}" = optionalDagEntryAfter verifyRepos ["tomDoggettInit"]''
@@ -41,12 +59,12 @@ in {
 
   home.activation."${skipStringIfNot isDarwin "tomDoggettInitDarwin"}" = optionalDagEntryAfter isDarwin ["tomDoggettInit"] ''
     cp -fL ${pkgs.mine.weechatPlugins.notification_center}/notification_center.py ${mutableDotfiles}/weechat-plugins/.weechat/python/notification_center.py
-    stow -d "${mutableDotfiles}" -t ${config.home.homeDirectory} vscode_macos
+    stow -d "${mutableDotfiles}" -t ${homeDirectory} vscode_macos
   '';
 
   home.activation."${skipStringIfNot isLinux "tomDoggettInitLinux"}" = optionalDagEntryAfter isLinux ["tomDoggettInit"] ''
     cp -fL ${pkgs.mine.weechatPlugins.notify_send}/notify_send.py ${mutableDotfiles}/weechat-plugins/.weechat/python/notify_send.py
-    stow -d "${mutableDotfiles}" -t ${config.home.homeDirectory} vscode
+    stow -d "${mutableDotfiles}" -t ${homeDirectory} vscode
   '';
 
   home.file = {}
@@ -171,7 +189,7 @@ in {
     } else {
       enable = true;
       allowBold = true;
-      browser = config.home.file."bin/chrome-personal".target;
+      browser = "${pkgs.mine.scripts.chrome-personal}";
       clickableUrl = true;
       cursorBlink = "on";
       cursorShape = "block";
@@ -354,7 +372,7 @@ in {
     } else {
       enable = true;
       windowManager = {
-        i3 = pkgs.appConfigs.i3.i3Config { configHome = config.xdg.configHome; home = config.home; };
+        i3 = pkgs.appConfigs.i3.i3Config { inherit configHome; inherit homeDirectory; };
       };
       initExtra = ''
         sudo mkdir -p /mnt/vmware/{downloads,googledrive,googledrivezillow,projects,tdoggett}

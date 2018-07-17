@@ -1,6 +1,6 @@
 {
   afra = [
-    { repo = "apops"; shell = ../shells/zg-apops/default.nix; }
+    { repo = "apops"; shell = ../shells/zg-apops; }
   ];
   aps = [
     { repo = "api-authentication-handler"; }
@@ -83,6 +83,7 @@
     { repo = "thread-data-repository"; shell = ../shells/php55/default.nix; }
     { repo = "trulia-featured-listings-api-client"; }
     { repo = "trulia-featured-listings-api"; }
+    { repo = "url-signer"; }
     { repo = "video-message-template-provisioner"; }
     { repo = "video-message-template-service"; }
     { repo = "web-crm-frontend"; }

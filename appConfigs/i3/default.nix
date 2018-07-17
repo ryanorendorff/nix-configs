@@ -20,7 +20,7 @@ let
   monitor2 = "Virtual3";
   monitor3 = "Virtual2";
 in {
-  i3Config = { configHome ? builtins.getEnv "XDG_CONFIG_HOME", home }: {
+  i3Config = { configHome ? builtins.getEnv "XDG_CONFIG_HOME", homeDirectory ? builtins.getEnv "HOME" }: {
     enable = true;
     package = pkgs.i3;
     config = ( let
@@ -255,19 +255,19 @@ in {
           notification = true;
         }
         {
-          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t home --directory=${home.homeDirectory} -e '${pkgs.zsh}'";
+          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t home --directory=${homeDirectory} -e '${pkgs.zsh}'";
           notification = true;
         }
         {
-          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t npm_start --directory=${home.homeDirectory}/projects/zillow/zrm/web-crm-frontend/ -e 'nix-shell --pure --command=\"npm start\"'";
+          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t npm_start --directory=${homeDirectory}/projects/zillow/zrm/web-crm-frontend/ -e 'nix-shell --pure --command=\"npm start\"'";
           notification = true;
         }
         {
-          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t web_crm --directory=${home.homeDirectory}/projects/zillow/zrm/web-crm-frontend/ -e 'nix-shell --pure'";
+          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t web_crm --directory=${homeDirectory}/projects/zillow/zrm/web-crm-frontend/ -e 'nix-shell --pure'";
           notification = true;
         }
         {
-          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t pa_dev --directory=${home.homeDirectory}/projects/zillow/ -e '${pkgs.zsh}'";
+          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t pa_dev --directory=${homeDirectory}/projects/zillow/ -e '${pkgs.zsh}'";
           notification = true;
         }
         {
