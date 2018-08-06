@@ -1,11 +1,11 @@
 { pkgs, appName, mkDarwinApp, fetchurl, ... }:
 
 mkDarwinApp rec {
-  inherit appName; 
-  version = "3.1.6";
+  inherit appName;
+  version = "3.1.7";
   src = fetchurl {
     url = "https://iterm2.com/downloads/stable/iTerm2-${builtins.replaceStrings ["."] ["_"] version}.zip";
-    sha256 = "11q0dg26nm9kx8v2lfn4wxlqzj4zjddf9fafpd4xp7pr90mh3ksa";
+    sha256 = "1phy5dcfh8gq8crzchphs663xpicd3bddxzyprjsybpy88y6njfm";
     name = "${ appName }.zip";
   };
 

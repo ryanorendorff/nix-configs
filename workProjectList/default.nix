@@ -24,6 +24,7 @@
   ];
   ean = [
     { repo = "agent-phone-provisioning-service"; shell = ../shells/zg-agent-phone-provisioning-service/default.nix; }
+    { repo = "ean-data-repository"; }
     { repo = "wiggum"; }
   ];
   lemmy = [
@@ -55,6 +56,7 @@
   ];
   zrm = [
     { repo = "agent-platform-core-clients"; }
+    { repo = "agent-platform-tools-endpoints"; }
     { repo = "agent-teams-utilities"; }
     { repo = "agent-teams"; shell = ../shells/php55/default.nix; build = false; }
     { repo = "agenthub-api-client"; }

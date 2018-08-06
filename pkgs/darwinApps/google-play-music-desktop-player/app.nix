@@ -2,10 +2,10 @@
 
 mkDarwinApp rec {
   appName = "Google Play Music Desktop Player";
-  version = "4.5.0";
+  version = "4.6.1";
   src = fetchurl {
     url = "https://github.com/MarshallOfSound/Google-Play-Music-Desktop-Player-UNOFFICIAL-/releases/download/v${version}/Google.Play.Music.Desktop.Player.OSX.zip";
-    sha256 = "09nv4xd5xznpqnjyisdcscjyb6ybaawvq4dpdji913d3kz3b0hrd";
+    sha256 = "0bpsl61r498gznsyi1yr7nvxr4598kf0y7bcnf3vf0n3h57szfql";
     name = "${ builtins.replaceStrings [" "] ["_"]  appName }.zip";
   };
 

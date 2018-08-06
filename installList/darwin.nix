@@ -18,6 +18,7 @@ in with pkgs; [
   mine.darwinApps.firefox
   mine.darwinApps.google-play-music-desktop-player
   mine.darwinApps.iterm
+  mine.darwinApps.postman
   mine.darwinApps.teensy
   mosh
   php
