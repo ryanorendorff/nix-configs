@@ -1,7 +1,11 @@
+with import <nixpkgs> {};
 let
   # Set the variable "local_dir" to the project directory for the rest of the file!
   local_dir = builtins.toString ./.;
-in with import <nixpkgs> { };
+  myhome = if pkgs.stdenv.isDarwin then "/Users/tdoggett" else "/home/tdoggett";
+  projects = if pkgs.stdenv.isDarwin then "${myhome}/Projects" else "${myhome}/projects";
+  my_overlay = import "${projects}/nocoolnametom/nix-configs/pkgs/overlays.nix";
+in with import <nixpkgs> { overlays = [ my_overlay ]; };
 
 stdenv.mkDerivation rec {
   # This name isn't really very important, but can help identify the project this derivation file
@@ -16,6 +20,7 @@ stdenv.mkDerivation rec {
     terraform_0_10-full
     ansible
     docker
+    (python.withPackages (pythonPackages: with pythonPackages; [ pkgs.mine.python27Packages.apopscli ]))
   ];
 
   # This sets up the environment within the shell, places the composer `vendor/bin` directory within

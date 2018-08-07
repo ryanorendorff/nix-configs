@@ -1,8 +1,10 @@
 { pkgs, ...}:
 
-with pkgs; with python27Packages; with { myPackages = mine.python27Packages; };
-
-buildPythonPackage rec {
+with {
+  myPackages = pkgs.mine.python27Packages;
+  pythonPackages = pkgs.python27Packages;
+};
+pythonPackages.buildPythonPackage rec {
   pname = "apopscli";
   version = "0.8.1";
 
@@ -15,15 +17,15 @@ buildPythonPackage rec {
   doCheck = false;
 
   propagatedBuildInputs = [
+    myPackages.consul
     myPackages.yamlordereddictloader
     myPackages.zcookiecutter
-    beautifulsoup4
-    boto3
-    python-jenkins
-    consul
-    cement
-    sh
-    semver
+    pythonPackages.beautifulsoup4
+    pythonPackages.boto3
+    pythonPackages.python-jenkins
+    pythonPackages.cement
+    pythonPackages.sh
+    pythonPackages.semver
   ];
 
   meta = with stdenv.lib; {

@@ -3,12 +3,12 @@
 [
   {
     host = "bastion.stage.ap.truaws.com";
+    user = "apops";
+    identityFile = toString ../../keys/private/stage-apops;
+    identitiesOnly = true;
     port = null;
     forwardX11 = false;
     forwardX11Trusted = false;
-    identitiesOnly = true;
-    identityFile = toString ../../keys/private/apd;
-    user = "apd";
     hostname = "bastion.stage.ap.truaws.com";
     serverAliveInterval = 0;
     compression = null;
@@ -18,6 +18,17 @@
       ControlMaster = "auto";
       ControlPath = "~/.ssh/stage-%r@%h:%p";
       ControlPersist = "5m";
+    };
+  }
+  {
+    host = "10.130.128.* 10.130.129.* 10.130.13?.* 10.130.14?.* 10.130.15?.* 10.130.16?.* 10.130.17?.* 10.130.18?.* 10.130.190.* 10.130.191.*";
+    proxyCommand = "ssh bastion.stage.ap.truaws.com -W %h:%p";
+    identityFile = toString ../../keys/private/stage-apops;
+    identitiesOnly = true;
+    user = "apops";
+    extraOptions = {
+      UserKnownHostsFile = "/dev/null";
+      StrictHostKeyChecking = "no";
     };
   }
   {
