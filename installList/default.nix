@@ -1,6 +1,12 @@
 { lib, pkgs, config, ... }:
 
-with pkgs; [
+with pkgs;
+with {
+  sharedPythonPackages = [
+    pkgs.mine.python27Packages.apopscli
+  ];
+};
+[
   ctags
   curl
   fasd
@@ -41,5 +47,5 @@ with pkgs; [
   youtube-dl
   zsh
 ]
-  ++ lib.optionals pkgs.stdenv.isDarwin ( callPackage ./darwin.nix { config = config; } )
-  ++ lib.optionals pkgs.stdenv.isLinux ( callPackage ./linux.nix { config = config; } )
+  ++ lib.optionals pkgs.stdenv.isDarwin ( callPackage ./darwin.nix { inherit config; inherit sharedPythonPackages; } )
+  ++ lib.optionals pkgs.stdenv.isLinux ( callPackage ./linux.nix { inherit config; inherit sharedPythonPackages; } )

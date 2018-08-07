@@ -1,8 +1,8 @@
-{ pkgs, config, ... }:
+{ pkgs, config, sharedPythonPackages ? [], ... }:
 
 let
   myPythonPackages = pythonPackages: with pythonPackages; [
-  ];
+  ] ++ sharedPythonPackages;
 in
 with pkgs; [
   wget

@@ -1,8 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, sharedPythonPackages ? [], ... }:
 
 let
   myPythonPackages = pythonPackages: with pythonPackages; [
-  ];
+  ] ++ sharedPythonPackages;
   php = pkgs.php72;
   phpPackages = pkgs.php72Packages;
 in with pkgs; [
