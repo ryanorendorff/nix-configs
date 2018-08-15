@@ -40,6 +40,84 @@ in {
   programs.home-manager.enable = true;
   programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
 
+  accounts.email = {
+    maildirBasePath = config.home.homeDirectory + "/Mail";
+
+    accounts = {
+      Zillow = {
+        primary = true;
+        address = "tdoggett@zillowgroup.com";
+        userName = "tdoggett@zillowgroup.com";
+        realName = "Tom Doggett";
+        flavor = "plain";
+        folders = {
+          drafts = "Drafts";
+          inbox = "Inbox";
+          sent = "Sent";
+          trash = "Trash";
+        };
+        imap = {
+          host = "outlook.office365.com";
+          port = 993;
+          tls = {
+            enable = true;
+            useStartTls = true;
+          };
+        };
+        smtp = {
+          host = "outlook.office365.com";
+          port = 587;
+          tls = {
+            enable = true;
+            useStartTls = true;
+          };
+        };
+        maildir = {
+          path = "zillow";
+        };
+        mbsync = {
+          enable = true;
+          patterns = [ "*" "!Archives" ];
+        };
+        notmuch = {
+          enable = true;
+        };
+      };
+      Gmail = {
+        flavor = "plain";
+        address = "nocoolnametom@gmail.com";
+        userName = "nocoolnametom@gmail.com";
+        realName = "Tom Doggett";
+        imap = {
+          host = "imap.gmail.com";
+          port = 993;
+          tls = {
+            enable = true;
+            useStartTls = true;
+          };
+        };
+        smtp = {
+          host = "smtp.gmail.com";
+          port = 587;
+          tls = {
+            enable = true;
+            useStartTls = true;
+          };
+        };
+        maildir = {
+          path = "gmail";
+        };
+        mbsync = {
+          enable = true;
+          patterns = [ "*" "!Archives" ];
+        };
+        notmuch = {
+          enable = true;
+        };
+      };
+    };
+  };
+
   home.activation.tomDoggettInit = dagEntryAnywhere ''
     cp -fL ${pkgs.appConfigs.weechat.icon} ${mutableDotfiles}/weechat/.weechat/icon.png
     cp -fL ${pkgs.mine.weechatPlugins.autosort}/autosort.py ${mutableDotfiles}/weechat-plugins/.weechat/python/autosort.py
@@ -55,6 +133,10 @@ in {
   home.activation."${skipStringIfNot verifyRepos "tomDoggettInitVerifyRepos"}" = optionalDagEntryAfter verifyRepos ["tomDoggettInit"]''
     ${pkgs.mine.scripts.zg_startup}
     ${pkgs.mine.scripts.personal_startup}
+  '';
+
+  home.activation."tomDoggettUpdateNpmrc" = dagEntryAnywhere ''
+    touch ~/.npmrc && $(sed "/^[^/]/ d" ~/.npmrc > ~/.npmrcnew) && cat ~/.npmrc.immutable > ~/.npmrc && cat ~/.npmrcnew >> ~/.npmrc && rm ~/.npmrcnew
   '';
 
   home.activation."${skipStringIfNot isDarwin "tomDoggettInitDarwin"}" = optionalDagEntryAfter isDarwin ["tomDoggettInit"] ''

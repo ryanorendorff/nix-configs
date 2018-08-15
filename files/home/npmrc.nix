@@ -1,7 +1,7 @@
 { prefix ? "", pkgs, ... }:
 
 {
-  "${prefix}.npmrc" = {
+  "${prefix}.npmrc.immutable" = {
     source = pkgs.appConfigs.npm;
   };
 }
