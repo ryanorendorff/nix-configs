@@ -19,27 +19,12 @@ with pkgs; recurseIntoAttrs (callPackage ./chunkwm {
     '';
     "tiling".config = ''
       chunkc set global_desktop_mode           bsp
-      # chunkc set 2_desktop_mode                monocle
-      # chunkc set 5_desktop_mode                float
 
-      # chunkc set 1_desktop_tree                ~/.chunkwm_layouts/dev_1
-
-      chunkc set global_desktop_offset_top     25
-      chunkc set global_desktop_offset_bottom  15
-      chunkc set global_desktop_offset_left    15
-      chunkc set global_desktop_offset_right   15
-      chunkc set global_desktop_offset_gap     15
-
-      chunkc set 1_desktop_offset_top          25
-      chunkc set 1_desktop_offset_bottom       15
-      chunkc set 1_desktop_offset_left         15
-      chunkc set 1_desktop_offset_right        15
-      chunkc set 1_desktop_offset_gap          15
-
-      chunkc set 3_desktop_offset_top          15
-      chunkc set 3_desktop_offset_bottom       15
-      chunkc set 3_desktop_offset_left         15
-      chunkc set 3_desktop_offset_right        15
+      chunkc set global_desktop_offset_top     10
+      chunkc set global_desktop_offset_bottom  10
+      chunkc set global_desktop_offset_left    10
+      chunkc set global_desktop_offset_right   10
+      chunkc set global_desktop_offset_gap     20
 
       chunkc set desktop_padding_step_size     10.0
       chunkc set desktop_gap_step_size         5.0

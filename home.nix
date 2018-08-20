@@ -29,7 +29,7 @@ let
   };
   skipStringIfNot = condition: theString: (lib.optionalString (!condition) "Skip") + theString;
   optionalDagEntryAfter = condition: prereqs: scriptString: if !condition then (dagEntryAnywhere "") else ( dagEntryAfter prereqs scriptString);
-  mutableDotfiles = sessionVariables.PROJECTS + "/nocoolnametom/nix-configs/mutableDotfiles";
+  mutableDotfiles = toString ./mutableDotfiles;
 in {
   nixpkgs.overlays = [
     (import ./appConfigs/overlays.nix)
@@ -173,6 +173,8 @@ in {
         // pkgs.myFiles.bin.youtube
         // pkgs.myFiles.home.mailcap
       else {}
+        // pkgs.myFiles.bitbar.calendar
+        // pkgs.myFiles.bitbar.google_music
     )
   ;
 

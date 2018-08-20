@@ -3,20 +3,14 @@
 with lib;
 
 let
-  pluginLangs = {
-    guile = "guile";
-    javascript = "javascript";
-    lua = "lua";
-    perl = "perl";
-    python = "ruby";
-    tcl = "tcl";
-  };
-  mkWeechatPluginFromMainGithub = {
-      lang,
+  mkBitbarPluginFromMainGithub = {
+      category,
       baseName,
+      fileExtension,
       inputs ? [],
-      rev ? "bceced8b2bd7ac42396d225b3cc304afc624dc11",
-      sha256 ? "1k7ryx8z8xrngy5dmcmvdfqvx5cn0kclmz25khff3cink5wrqqqp"
+      propagatedInputs ? [],
+      rev ? "60befeebb91bc1c743e062090c67b16b62eaed77",
+      sha256 ? "0014h5rkw5j20ww5gzk4banidkfmkg2r8v620dzlngjf411pk8r8"
     }: with pkgs; stdenv.mkDerivation rec {
     inherit baseName;
     version = rev;
@@ -25,23 +19,26 @@ let
     src = fetchFromGitHub {
       inherit rev;
       inherit sha256;
-      owner = "weechat";
-      repo = "scripts";
+      owner = "matryer";
+      repo = "bitbar-plugins";
     };
 
-    buildInputs = [ weechat ] ++ inputs ++ (lib.optionals (lang == "python") [(pkgs.mine.weechatPythonPackageList pkgs.python)]);
-    phases = [ "installPhase" ];
+    unpackPhase = "true";
+
+    buildInputs = [ makeWrapper ] ++ inputs;
+    propagatedBuildInputs = [ ] ++ propagatedInputs;
 
     installPhase = ''
-      mkdir -p $out
-      cp $src/${lang}/${baseName}* $out/
+      mkdir -p $out/bin
+      cp $src/${category}/${baseName}.${fileExtension} $out/bin/${baseName}
+      wrapProgram $out/bin/${baseName} --prefix PYTHONPATH : "$PYTHONPATH"
     '';
   };
 in mapAttrs' (name: type: {
   name = removeSuffix ".nix" name;
   value = let file = ./. + "/${name}"; in
   lib.callPackageWith (pkgs // {
-    inherit mkWeechatPluginFromMainGithub ;
+    inherit mkBitbarPluginFromMainGithub ;
     inherit debug;
     # passwords = import ../../../external/private/passwords/gen.nix;
   }) file {};

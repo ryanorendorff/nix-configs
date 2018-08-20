@@ -1,11 +1,11 @@
-{ pkgs, mkDarwinApp, fetchurl, ... }:
+{ pkgs, mkDarwinApp, fetchurl, appName, ... }:
 
 mkDarwinApp rec {
-  appName = "Postman";
-  version = "6.1.4";
+  inherit appName;
+  version = "6.2.4";
   src = fetchurl {
     url = "https://dl.pstmn.io/download/latest/osx";
-    sha256 = "0yi905v1mclpz5bcl9gs0bd89066303491267xx0141xdyb6ilq7";
+    sha256 = "051cn6whp5jm4rd9ywk8h279bb80fc9bql2dpy3ylkpzik3qbq4z";
     name = "${ builtins.replaceStrings [" "] ["_"]  appName }-osx-${version}.zip";
   };
 

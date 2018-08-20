@@ -133,6 +133,7 @@ pkgs.writeScript "zgitclone" (
       cp "$NIX_SHELL" ./shell.nix
       latestHash=`git ls-remote git://github.com/NixOS/nixpkgs-channels.git | grep refs/heads/${nixpkgsChannel} | cut -f 1`
       sed -i.bak "s~<nixpkgs>~(fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/$latestHash.tar.gz)~" shell.nix && rm -f shell.nix.bak
+      sed -i.bak "s~my_overlay = import.*;~my_overlay = import ${toString ../../overlays.nix};~" shell.nix && rm -f shell.nix.bak
       if [[ ! `git ls-files -o | grep shell.nix` ]] ; then
         git update-index --skip-worktree shell.nix
       fi

@@ -1,19 +1,20 @@
 {pkgs, ...}:
 
 pkgs.writeScript "calendar" ''
-  #!/usr/bin/env bash
+    #!/usr/bin/env bash
 
-  # Get the next event from google calendar
-  # Extracted from https://blog.hauck.io/get-your-google-calendar-into-tmux/
-  #
-  # version: 1.0.0
-  # license: MIT
+    # <bitbar.title>My Next Event</bitbar.title>
+    # <bitbar.version>v1.0</bitbar.version>
+    # <bitbar.author>Tom Doggett</bitbar.author>
+    # <bitbar.author.github>nocoolnametom</bitbar.author.github>
+    # <bitbar.desc>Displays my next event.</bitbar.desc>
+    # <bitbar.dependencies>bash, gcalcli, cut, head, sed</bitbar.dependencies>
 
-  ${pkgs.gcalcli}/bin/gcalcli --nostarted --noallday --nocolor --calendar "Calendar" --calendar "nocoolnametom@gmail.com" \
-    agenda "'`date +%Y%m%dT00`'" "'`date +%Y%m%dT2359`'" \
-  | cut -d " " -f 4- \
-  | head -2 \
-  | tail -1 \
-  | sed "s/^ *//g" \
-  | sed "s/    / /g" \
+    ${pkgs.gcalcli}/bin/gcalcli --nostarted --noallday --nocolor --calendar "Calendar" --calendar "nocoolnametom@gmail.com" \
+       agenda "'`date +%Y%m%dT00`'" "'`date +%Y%m%dT2359`'" \
+     | cut -d " " -f 4- \
+     | head -2 \
+     | tail -1 \
+     | ${pkgs.gnused}/bin/sed "s/^ *//g" \
+     | ${pkgs.gnused}/bin/sed "s/    / /g" \
 ''

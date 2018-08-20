@@ -1,11 +1,11 @@
-{ pkgs, mkDarwinApp, fetchurl, ... }:
+{ pkgs, mkDarwinApp, fetchurl, appName, ... }:
 
 mkDarwinApp rec {
-  appName = "Firefox";
-  version = "61.0.1";
+  inherit appName;
+  version = "61.0.2";
   src = fetchurl {
     url =  "https://archive.mozilla.org/pub/firefox/releases/${version}/mac/en-US/Firefox%20${version}.dmg";
-    sha256 = "13sx6y6585dgvy4rrmcsilbvqblzn6fyi7nz1h3jbyh56ws4fbkc";
+    sha256 = "1ibdjf22pxklk2y9awxznxvi0386rbyayxh5vl2jd0rlmrczc8xz";
     name = "${ appName }.dmg";
   };
 

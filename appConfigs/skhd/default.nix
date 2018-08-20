@@ -1,6 +1,6 @@
-{ pkgs, config, ...}:
+{ ... }:
 
-pkgs.writeText "skhdrc" ''
+''
   # enter fullscreen mode for the focused container
   alt - f : chunkc tiling::window --toggle fullscreen
 

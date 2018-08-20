@@ -2,9 +2,7 @@ with import <nixpkgs> {};
 let
   # Set the variable "local_dir" to the project directory for the rest of the file!
   local_dir = builtins.toString ./.;
-  myhome = if pkgs.stdenv.isDarwin then "/Users/tdoggett" else "/home/tdoggett";
-  projects = if pkgs.stdenv.isDarwin then "${myhome}/Projects" else "${myhome}/projects";
-  my_overlay = import "${projects}/nocoolnametom/nix-configs/pkgs/overlays.nix";
+  my_overlay = import (builtins.toString ../../pkgs/overlays.nix);
 in with import <nixpkgs> { overlays = [ my_overlay ]; };
 
 stdenv.mkDerivation rec {

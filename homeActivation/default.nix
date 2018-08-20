@@ -5,7 +5,7 @@ let
   sessionVariables = (pkgs.recurseIntoAttrs (import ../sessionVariables {}));
   skipStringIfNot = condition: theString: (lib.optionalString (!condition) "Skip") + theString;
   optionalDagEntryAfter = condition: prereqs: scriptString: if !condition then (config.lib.dag.entryAnywhere "") else ( config.lib.dag.entryAfter prereqs scriptString);
-  mutableDotfiles = sessionVariables.PROJECTS + "/nocoolnametom/nix-configs/mutableDotfiles"; 
+  mutableDotfiles = toString ../mutableDotfiles;
 in {
   tomDoggettInit = config.lib.dag.entryAnywhere ''
     cp -fL ${pkgs.appConfigs.weechat.icon} ${mutableDotfiles}/weechat/.weechat/icon.png

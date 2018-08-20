@@ -62,7 +62,7 @@
   },
   "vim.statusBarColorControl": true,
   "vim.useCtrlKeys": true,
-  "window.zoomLevel": -1,
+  "window.zoomLevel": 0,
   "workbench.colorCustomizations": {
     "statusBar.background": "#005f5f",
     "statusBar.noFolderBackground": "#005f5f",

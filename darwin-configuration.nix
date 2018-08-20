@@ -142,14 +142,13 @@ in {
   services.chunkwm = with pkgs.mine.chunkwm; {
     inherit extraConfig;
     inherit plugins;
-    enable = false;
+    enable = true;
     package = core;
     hotload = true;
   };
 
   services.skhd = {
-    enable = false;
-    package = skhd;
+    enable = true;
     skhdConfig = pkgs.appConfigs.skhd;
   };
 

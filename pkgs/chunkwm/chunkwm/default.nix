@@ -2,8 +2,8 @@
 
 let
   repoName = "chunkwm";
-  repoV = "0.3.7";
-  repoSha = "0fmm6hdqxayxcx6i0d75b2h3myn6h8rn4m1bwmv8gyh7yxmvy67r";
+  repoV = "0.4.6";
+  repoSha = "0hqgdj1jsn1xwbj70izflqhvqnr4rk7mfzmgbnspdlassk3cbf78";
 
   self = chunkwm;
   callPackage = newScope self;

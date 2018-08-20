@@ -1,7 +1,7 @@
-{ pkgs, mkDarwinApp, fetchurl, ... }:
+{ pkgs, mkDarwinApp, fetchurl, appName, ... }:
 
 mkDarwinApp rec {
-  appName = "Google Play Music Desktop Player";
+  inherit appName;
   version = "4.6.1";
   src = fetchurl {
     url = "https://github.com/MarshallOfSound/Google-Play-Music-Desktop-Player-UNOFFICIAL-/releases/download/v${version}/Google.Play.Music.Desktop.Player.OSX.zip";
