@@ -54,17 +54,31 @@ in {
     fi
   '';
 
-  launchd.user.agents.fetch-nixpkgs = {
-    command = "${git}/bin/git -C ~/.nix-defexpr/nixpkgs fetch origin master";
-    environment.GIT_SSL_CAINFO = "${cacert}/etc/ssl/certs/ca-bundle.crt";
+  # This keeps the local copy of nixpkgs up to date, but currently it's not doing anything
+  # launchd.user.agents.fetch-nixpkgs = {
+  #   command = "${git}/bin/git -C ~/.nix-defexpr/nixpkgs fetch origin master";
+  #   environment.GIT_SSL_CAINFO = "${cacert}/etc/ssl/certs/ca-bundle.crt";
+  #   serviceConfig.KeepAlive = false;
+  #   serviceConfig.ProcessType = "Background";
+  #   serviceConfig.StartInterval = 360;
+  # };
+
+  launchd.user.agents.chwm-sa = {
+    command = "${pkgs.mine.chunkwm.core}/bin/chunkwm --load-sa";
     serviceConfig.KeepAlive = false;
     serviceConfig.ProcessType = "Background";
-    serviceConfig.StartInterval = 360;
+    serviceConfig.RunAtLoad = true;
   };
 
   # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
+  services.activate-system.enable = true;
+  services.nix-daemon = {
+    enable = true;
+    enableSocketListener = true; # Not sure about this option
+  };
+  nix.gc.automatic = true;
   nix.package = nix;
+  nix.useSandbox = true; # This might be causing problems with an initial build process.
 
   programs.vim = with pkgs.appConfigs.vim; {
     inherit vimConfig;
