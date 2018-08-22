@@ -74,11 +74,10 @@ in {
   services.activate-system.enable = true;
   services.nix-daemon = {
     enable = true;
-    enableSocketListener = true; # Not sure about this option
   };
   nix.gc.automatic = true;
   nix.package = nix;
-  nix.useSandbox = true; # This might be causing problems with an initial build process.
+  nix.useSandbox = true;
 
   programs.vim = with pkgs.appConfigs.vim; {
     inherit vimConfig;
