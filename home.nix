@@ -175,6 +175,7 @@ in {
       else {}
         // pkgs.myFiles.bitbar.calendar
         // pkgs.myFiles.bitbar.google_music
+        // pkgs.myFiles.bitbar.chunkwm_skhd
     )
   ;
 

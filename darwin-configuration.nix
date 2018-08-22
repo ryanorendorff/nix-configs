@@ -77,7 +77,6 @@ in {
   };
   nix.gc.automatic = true;
   nix.package = nix;
-  nix.useSandbox = true;
 
   programs.vim = with pkgs.appConfigs.vim; {
     inherit vimConfig;
