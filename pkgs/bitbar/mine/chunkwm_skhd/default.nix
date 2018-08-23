@@ -20,13 +20,13 @@ in pkgs.writeScript "chunkwm_skhd" ''
     launchctl stop org.nixos.skhd
   fi
 
-  if [[ "$1" = "start" ]]; then
-    launchctl start org.nixos.chunkwm
-    launchctl start org.nixos.skhd
+  if [[ "$1" = "restart" ]]; then
+    launchctl kickstart -k gui/$UID/org.nixos.chunkwm
+    launchctl kickstart -k gui/$UID/org.nixos.skhd
   fi
 
   echo "$(${chunkc} tiling::query --desktop id):$(${chunkc} tiling::query --desktop mode) | length=5"
   echo "---"
-  echo "Start chunkwm & skhd | bash='$0' param1=start terminal=false"
+  echo "Restart chunkwm & skhd | bash='$0' param1=restart terminal=false"
   echo "Stop chunkwm & skhd | bash='$0' param1=stop terminal=false"
 ''

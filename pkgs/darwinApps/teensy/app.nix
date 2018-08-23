@@ -1,19 +1,14 @@
-{ pkgs, appName, mkDarwinApp, fetchurl, ... }:
+{ pkgs, mkDarwinApp, fetchurl, appName, appMeta, version, sha256, ... }:
 
 mkDarwinApp rec {
   inherit appName;
-  version = "2018-06-09";
-  src = fetchurl {
-    url = "https://s3.ca-central-1.amazonaws.com/ergodox-ez-configurator/executables/teensy.dmg";
-    sha256 = "02vljpvg60n99mvqw70aklljpdbbv7wxqlky2rq8k870lgmp8w8l";
-    name = "${ appName }.dmg";
-  };
+  inherit appMeta;
+  inherit version;
 
-  appMeta = with pkgs.stdenv.lib; {
-    description = "The Teensy Loader loads configurations for the Ergodox EZ";
-    homepage = https://configure.ergodox-ez.com/;
-    license = {
-      free = false;
-    };
+  src = fetchurl {
+    inherit sha256;
+    url  = "https://s3.ca-central-1.amazonaws.com/ergodox-ez-configurator/executables/teensy.dmg";
+    # Get the hash by running `nix-prefetch-url --unpack <url>` on the above url
+    name = "${ appName }.dmg";
   };
 }

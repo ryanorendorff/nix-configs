@@ -1,11 +1,14 @@
-{ pkgs, mkDarwinApp, fetchurl, appName, ... }:
+{ pkgs, mkDarwinApp, fetchurl, appName, appMeta, version, sha256, ... }:
 
 mkDarwinApp rec {
   inherit appName;
-  version = "1.26.0";
+  inherit appMeta;
+  inherit version;
+
   src = fetchurl {
-    url = "https://vscode-update.azurewebsites.net/${version}/darwin/stable";
-    sha256 = "1hzvgq0gkx1zlx7i77yqd7qip1a6dlmdgdrmvw5iykkfb5wddhh7";
+    inherit sha256;
+    url  = "https://vscode-update.azurewebsites.net/${version}/darwin/stable";
+    # Get the hash by running `nix-prefetch-url --unpack <url>` on the above url
     name = "${ builtins.replaceStrings [" "] ["_"]  appName }.zip";
   };
 
@@ -13,11 +16,5 @@ mkDarwinApp rec {
   installPhase = false;
 
   buildInputs = [ pkgs.undmg pkgs.unzip ];
-
-  appMeta = with pkgs.stdenv.lib; {
-    description = "A lightweight but powerful source code editor";
-    homepage = https://code.visualstudio.com/;
-    license = "mit";
-  };
 }
 

@@ -22,7 +22,7 @@ let
         platforms = platforms.darwin;
       };
     };
-  darwinAppWrapper = { appName, app }: pkgs.stdenv.mkDerivation rec {
+  darwinAppWrapper = { appName, app, ... }: pkgs.stdenv.mkDerivation rec {
     name = "${builtins.replaceStrings [" "] ["_"] (lib.toLower appName)}-app";
     src = ./.;
 

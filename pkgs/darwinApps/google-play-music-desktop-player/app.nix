@@ -1,11 +1,14 @@
-{ pkgs, mkDarwinApp, fetchurl, appName, ... }:
+{ pkgs, mkDarwinApp, fetchurl, appName, appMeta, version, sha256, ... }:
 
 mkDarwinApp rec {
   inherit appName;
-  version = "4.6.1";
+  inherit appMeta;
+  inherit version;
+
   src = fetchurl {
-    url = "https://github.com/MarshallOfSound/Google-Play-Music-Desktop-Player-UNOFFICIAL-/releases/download/v${version}/Google.Play.Music.Desktop.Player.OSX.zip";
-    sha256 = "0bpsl61r498gznsyi1yr7nvxr4598kf0y7bcnf3vf0n3h57szfql";
+    inherit sha256;
+    url  = "https://github.com/MarshallOfSound/Google-Play-Music-Desktop-Player-UNOFFICIAL-/releases/download/v${version}/Google.Play.Music.Desktop.Player.OSX.zip";
+    # Get the hash by running `nix-prefetch-url --unpack <url>` on the above url
     name = "${ builtins.replaceStrings [" "] ["_"]  appName }.zip";
   };
 
@@ -13,10 +16,4 @@ mkDarwinApp rec {
   installPhase = false;
 
   buildInputs = [ pkgs.undmg pkgs.unzip ];
-
-  appMeta = with pkgs.stdenv.lib; {
-    description = "A beautiful cross platform Desktop Player for Google Play Music";
-    homepage = https://www.googleplaymusicdesktopplayer.com/;
-    license = "mit";
-  };
 }

@@ -109,6 +109,8 @@ in {
   };
 
   nix.extraOptions = ''
+    keep-derivations = true
+    keep-outputs = true
     gc-keep-derivations = true
     gc-keep-outputs = true
   '';

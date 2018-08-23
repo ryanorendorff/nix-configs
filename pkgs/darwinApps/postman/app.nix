@@ -1,11 +1,14 @@
-{ pkgs, mkDarwinApp, fetchurl, appName, ... }:
+{ pkgs, mkDarwinApp, fetchurl, appName, appMeta, version, sha256, ... }:
 
 mkDarwinApp rec {
   inherit appName;
-  version = "6.2.4";
+  inherit appMeta;
+  inherit version;
+
   src = fetchurl {
-    url = "https://dl.pstmn.io/download/latest/osx";
-    sha256 = "051cn6whp5jm4rd9ywk8h279bb80fc9bql2dpy3ylkpzik3qbq4z";
+    inherit sha256;
+    url  = "https://dl.pstmn.io/download/latest/osx";
+    # Get the hash by running `nix-prefetch-url --unpack <url>` on the above url
     name = "${ builtins.replaceStrings [" "] ["_"]  appName }-osx-${version}.zip";
   };
 
@@ -13,13 +16,4 @@ mkDarwinApp rec {
   installPhase = false;
 
   buildInputs = [ pkgs.undmg pkgs.unzip ];
-
-  appMeta = with pkgs.stdenv.lib; {
-    description = "Postman Makes API Development Simple";
-    homepage = https://www.getpostman.com/;
-    license = {
-      free = false;
-      url = https://www.getpostman.com/licenses/postman_eula;
-    };
-  };
 }
