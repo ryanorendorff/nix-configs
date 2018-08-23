@@ -5,7 +5,7 @@ let
     backup-script = pkgs.mine.scripts.zg_backup;
     rsync-options = "-qa --no-links --no-perms --no-owner --no-group --delete";
   } // (if pkgs.stdenv.isLinux then {
-    destination = "/mnt/vmware/googledrive/projects/";
+    destination = "/mnt/googledrive/projects/";
     source = "/home/tdoggett/projects/backup";
   } else {
     destination = "/Volumes/GoogleDrive/My Drive/projects/backup/";

@@ -1,6 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, isVmware ? false, ... }:
 
 let
+  isVmwareGlobal = isVmware;
   MainWS = "\"1: Main \"";
   DevWS = "\"2: Dev \"";
   InfoWS = "\"3: Info \"";
@@ -11,16 +12,11 @@ let
   ws8 = "8";
   ws9 = "9";
   ws10 = "10";
-  # Virtualbox Monitors
-  # monitor1 = "VGA-1";
-  # monitor2 = "VGA-2";
-  # monitor3 = "VGA-3";
-  # VMWare Monitors
-  monitor1 = "Virtual1";
-  monitor2 = "Virtual3";
-  monitor3 = "Virtual2";
+  monitor1 = if isVmware then "Virtual1" else "VGA-1";
+  monitor2 = if isVmware then "Virtual3" else "VGA-2";
+  monitor3 = if isVmware then "Virtual2" else "VGA-3";
 in {
-  i3Config = { configHome ? builtins.getEnv "XDG_CONFIG_HOME", homeDirectory ? builtins.getEnv "HOME" }: {
+  i3Config = { isVmware ? isVmwareGlobal, configHome ? builtins.getEnv "XDG_CONFIG_HOME", homeDirectory ? builtins.getEnv "HOME" }: {
     enable = true;
     package = pkgs.i3;
     config = ( let

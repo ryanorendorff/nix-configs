@@ -5,6 +5,7 @@ let
   stdenv = pkgs.stdenv;
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
+  isVmware = true;
   configHome = if (lib.hasAttrByPath ["xdg" "configHome"] config) then config.xdg.configHome else "~/.config";
   homeDirectory = if (lib.hasAttrByPath ["home" "homeDirectory"] config) then config.home.homeDirectory else "~";
   sessionVariables = (pkgs.recurseIntoAttrs (import ./sessionVariables {
@@ -432,7 +433,7 @@ in {
       };
       random-background = {
         enable = true;
-        imageDirectory = "/mnt/vmware/wallpapers/";
+        imageDirectory = "${homeDirectory}/wallpapers/";
         interval = "30 min";
       };
       screen-locker = {
@@ -457,17 +458,11 @@ in {
     } else {
       enable = true;
       windowManager = {
-        i3 = pkgs.appConfigs.i3.i3Config { inherit configHome; inherit homeDirectory; };
+        i3 = pkgs.appConfigs.i3.i3Config { inherit isVmware; inherit configHome; inherit homeDirectory; };
       };
       initExtra = ''
-        sudo mkdir -p /mnt/vmware/{downloads,googledrive,googledrivezillow,projects,tdoggett}
-        sudo vmhgfs-fuse -o allow_other -o auto_unmount -o uid=1000 -o gid=1000 .host:/downloads /mnt/vmware/downloads
-        sudo vmhgfs-fuse -o allow_other -o auto_unmount -o uid=1000 -o gid=1000 .host:/googledrive /mnt/vmware/googledrive
-        sudo vmhgfs-fuse -o allow_other -o auto_unmount -o uid=1000 -o gid=1000 .host:/googledrivezillow /mnt/vmware/googledrivezillow
-        sudo vmhgfs-fuse -o allow_other -o auto_unmount -o uid=1000 -o gid=1000 .host:/projects /mnt/vmware/projects
-        sudo vmhgfs-fuse -o allow_other -o auto_unmount -o uid=1000 -o gid=1000 .host:/tdoggett /mnt/vmware/tdoggett
-        sudo vmhgfs-fuse -o allow_other -o auto_unmount -o uid=1000 -o gid=1000 .host:/wallpapers /mnt/vmware/wallpapers
-        sudo mount -a && systemctl --user restart random-background
+        ${if isVmware then "sudo ${pkgs.mine.scripts.vmware_login_mount};" else ""}
+        systemctl --user restart random-background
         # systemctl --user start compton.service
         ${pkgs.mine.python36Packages.i3-gnome-pomodoro}/bin/pomodoro-client daemon 4 --nagbar &
         xset dpms 90

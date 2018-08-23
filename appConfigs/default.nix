@@ -1,4 +1,4 @@
-{ pkgs, config ? {}, lib ? pkgs.lib, debug ? false, ... }:
+{ pkgs, config ? {}, lib ? pkgs.lib, debug ? false, isVmware ? false, ... }:
 
 with lib;
 
@@ -8,6 +8,7 @@ mapAttrs' (name: type: {
   lib.callPackageWith (pkgs // {
     inherit debug;
     inherit config;
+    inherit isVmware;
     # passwords = import ../../external/private/passwords/gen.nix;
   }) file {};
 }) (filterAttrs (name: type:
