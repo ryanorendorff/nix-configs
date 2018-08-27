@@ -159,6 +159,7 @@ in {
     // pkgs.myFiles.home.ideavim
     // pkgs.myFiles.home.muttrc
     // pkgs.myFiles.home.npmrc
+    // pkgs.myFiles.home.wtfutil_gcal_token
     // pkgs.myFiles.home.zsh_themes_powerlevel9k
     // (
       if isLinux then {}
@@ -184,6 +185,7 @@ in {
     enable = true;
     configFile = {}
       // pkgs.myFiles.xdg.rtv
+      // pkgs.myFiles.xdg.wtfutil
       // (
         if isLinux then {}
           // pkgs.myFiles.xdg.i3blocks

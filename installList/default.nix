@@ -26,6 +26,7 @@ with {
   links2
   lsof
   mine.weechat
+  mine.wtfutil
   mopidy
   mpc_cli
   ncdu
