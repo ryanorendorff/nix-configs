@@ -4,7 +4,7 @@ with lib; with {
   pythonPackages = pkgs.python36Packages;
   myPythonPackages = pkgs.mine.python36Packages;
 };
-( pkgs.callPackage ./python-packages.nix { inherit pkgs; inherit pythonPackages; inherit myPythonPackages; }) //
+( pkgs.callPackage ../python-modules/python-packages.nix { inherit pkgs; inherit pythonPackages; inherit myPythonPackages; }) //
 mapAttrs' (name: type: {
   name = removeSuffix ".nix" name;
   value = let file = ./. + "/${name}"; in
