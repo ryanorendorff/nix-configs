@@ -1,6 +1,6 @@
 { pkgs, ...}:
 
-with pkgs; with python27Packages; with mine.python27Packages;
+with pkgs; with python36Packages; with mine.python36Packages;
 
 callPackage ../../python-modules/yamlordereddictloader {
   inherit pyyaml;

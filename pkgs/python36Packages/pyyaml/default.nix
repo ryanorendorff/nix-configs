@@ -1,5 +1,5 @@
 { pkgs, ...}:
 
-with pkgs; with python27Packages;
+with pkgs; with python36Packages;
 
 callPackage ../../python-modules/pyyaml {  }

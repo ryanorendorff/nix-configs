@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
     terraform_0_10-full
     ansible
     docker
-    (python.withPackages (pythonPackages: with pythonPackages; [ pkgs.mine.python27Packages.apopscli ]))
+    (python.withPackages (pythonPackages: with pythonPackages; with pkgs.mine.python27Packages; [ apopscli ]))
   ];
 
   # This sets up the environment within the shell, places the composer `vendor/bin` directory within

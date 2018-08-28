@@ -25,8 +25,8 @@ pkgs.writeText "muttrc" ''
   unset imap_passive
 
   # Keep IMAP connection alive by polling intermittently (time in seconds).
-  set imap_keepalive = 120
-  set imap_idle      = yes
+  set imap_keepalive = 60
+  # set imap_idle      = yes
 
   # How often to check for new mail (time in seconds).
   set mail_check = 60
@@ -80,6 +80,9 @@ pkgs.writeText "muttrc" ''
   #       path     - mailbox path
   #       unsorted - do not sort the mailboxes
   set sidebar_sort_method = 'unsorted'
+
+  # Refresh IMAP connection information
+  bind index,pager I imap-fetch-mail
 
   # Move the highlight to the previous mailbox
   bind index,pager \Cp sidebar-prev
