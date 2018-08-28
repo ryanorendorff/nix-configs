@@ -11,5 +11,5 @@ mapAttrs' (name: type: {
   }) file {};
 }) (filterAttrs (name: type:
   (type == "directory" && builtins.pathExists "${toString ./.}/${name}/default.nix") ||
-  (type == "regular" && hasSuffix ".nix" name && ! (name == "default.nix") && ! (name == "overlays.nix"))
+  (type == "regular" && hasSuffix ".nix" name && ! (name == "default.nix") && ! (name == "overlays.nix") && ! (name == "python-packages.nix"))
 ) (builtins.readDir ./.))
