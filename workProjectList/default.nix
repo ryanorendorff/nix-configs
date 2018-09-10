@@ -57,6 +57,7 @@
   zrm = [
     { repo = "agent-platform-core-clients"; }
     { repo = "agent-platform-tools-endpoints"; }
+    { repo = "agent-platform-tools"; shell = ../shells/node/default.nix; }
     { repo = "agent-teams-utilities"; }
     { repo = "agent-teams"; shell = ../shells/php55/default.nix; build = false; }
     { repo = "agenthub-api-client"; }
@@ -67,6 +68,7 @@
     { repo = "crm-data-repository"; shell = ../shells/php55/default.nix; }
     { repo = "ean-client"; }
     { repo = "hybrid-thread-orchestration"; }
+    { repo = "home-recommendations-service"; shell = ../shells/php71/default.nix; }
     { repo = "lead-forwarding-proc"; }
     { repo = "lead-routing-api"; }
     { repo = "leadrouting-data-repository"; }

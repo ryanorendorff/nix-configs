@@ -18,8 +18,7 @@ let
 in
 
 stdenv.mkDerivation {
-  inherit name;
-  inherit src python;
+  inherit name src python;
 
   unpackPhase = ''
     mkdir tmp

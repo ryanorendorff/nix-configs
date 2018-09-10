@@ -1,35 +1,16 @@
 { pkgs, pythonPackages, myPythonPackages, ... }:
 
-with pkgs; with pythonPackages; with myPythonPackages;
-{
-
+with pkgs; with pythonPackages;
+rec {
   apopscli = callPackage ./apopscli {
-    inherit cement;
-    inherit consul;
-    inherit fetchpypi;
-    inherit python-gitlab;
-    inherit yamlordereddictloader;
-    inherit zcookiecutter;
+    inherit myPythonPackages;
   };
-
-  cement = callPackage ./cement { };
-
-  consul = callPackage ./consul { };
 
   fetchpypi = callPackage ./fetchpypi { };
 
-  pync = callPackage ./pync { };
+  pync2 = callPackage ./pync2 { };
 
   python-gitlab = callPackage ./python-gitlab { };
 
-  pyyaml = callPackage ./pyyaml { };
-
-  yamlordereddictloader = callPackage ./yamlordereddictloader {
-    inherit pyyaml;
-  };
-
-  zcookiecutter = callPackage ./zcookiecutter { 
-    inherit fetchpypi;
-  };
-
+  yamlordereddictloader = callPackage ./yamlordereddictloader { };
 }
