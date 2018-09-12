@@ -13,6 +13,9 @@ pkgs.writeScript "zgitclone" (
     export SHOULD_BUILD=1
     export NIX_SHELL=""
     export MAKE_SHELL=0
+    # Default service is Stash
+    export USE_STASH=1
+    export USE_BITBUCKET=0
     script="${"$"}{0##*/}"
     while test $# -gt 0; do
     case "$1" in
@@ -23,12 +26,24 @@ pkgs.writeScript "zgitclone" (
         echo " "
         echo "options:"
         echo "-h, --help                show brief help"
+        echo "-s, --stash               use Stash as the remote service [default]"
+        echo "-b, --bitbucket           use Bitbucket as the remote service"
         echo "-n, --name=NAME           specify the directory name (default is projectName)"
         echo "-d, --output-dir=DIR      specify an absolute directory path (default is $ZILLOW/<teamName>/<projectName>)"
         echo "--no-build                do not run automatic dependency building"
         echo "-N, --nix-shell=<path>    path to a nix file to copy as shell.nix"
         echo "--make-shell=[0,1]        whether or not to build the shell environment"
         exit 0
+        ;;
+      -s|--stash)
+        export USE_STASH=1
+        export USE_BITBUCKET=0
+        shift
+        ;;
+      -b|--bitbucket)
+        export USE_STASH=0
+        export USE_BITBUCKET=1
+        shift
         ;;
       -n)
         shift
@@ -94,6 +109,15 @@ pkgs.writeScript "zgitclone" (
       export NAME="$PROJECT_NAME"
     fi
 
+    if [[ $USE_STASH -eq 1 ]] ; then
+      export SERVICE_HOST="stash.sv2.trulia.com"
+      export MY_SERVICE_PATH="$SERVICE_HOST/~tdoggett"
+    fi
+    if [[ $USE_BITBUCKET -eq 1 ]] ; then
+      export SERVICE_HOST="bitbucket.host"
+      export MY_SERVICE_PATH="$SERVICE_HOST/~tdoggett"
+    fi
+
     if [[ ! -z "$NIX_SHELL" && ${"$"}{NIX_SHELL: -4} != ".nix" ]] ; then
       export NIX_SHELL="$NIX_SHELL/default.nix"
     fi
@@ -115,7 +139,7 @@ pkgs.writeScript "zgitclone" (
 
     if [ ! -d "$DIR" ] ; then
       mkdir -p "$DIR"
-      git clone -q --recurse-submodules "ssh://stash.sv2.trulia.com/$STASH_TEAM_NAME/$STASH_PROJECT_NAME.git" "$DIR"
+      git clone -q --recurse-submodules "ssh://$SERVICE_HOST/$STASH_TEAM_NAME/$STASH_PROJECT_NAME.git" "$DIR"
     fi
     if [ ! -d "$DIR/.git" ] ; then
       exit
@@ -125,7 +149,7 @@ pkgs.writeScript "zgitclone" (
 
     cd "$DIR"
 
-    git remote set-url --push origin "ssh://stash.sv2.trulia.com/~tdoggett/$PROJECT_NAME.git"
+    git remote set-url --push origin "ssh://$MY_SERVICE_PATH/$PROJECT_NAME.git"
     git config user.name "Tom Doggett"
     git config user.email "tdoggett@zillowgroup.com"
 
