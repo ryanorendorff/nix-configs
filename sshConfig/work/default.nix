@@ -44,6 +44,12 @@
     user = "mysqlaccess";
   }
   {
+    host = "gitlab-zillow";
+    hostname = "gitlab.int.ap.truaws.com";
+    identityFile = toString ../../keys/private/trulia_rsa;
+    user = "git";
+  }
+  {
     host = "stash.sv2.trulia.com";
     hostname = "stash.sv2.trulia.com";
     identityFile = toString ../../keys/private/trulia_rsa;

@@ -110,12 +110,12 @@ pkgs.writeScript "zgitclone" (
     fi
 
     if [[ $USE_STASH -eq 1 ]] ; then
-      export SERVICE_HOST="stash.sv2.trulia.com"
-      export MY_SERVICE_PATH="$SERVICE_HOST/~tdoggett"
+      export SERVICE_HOST="stash"
+      export MY_SERVICE_PATH="$SERVICE_HOST:~tdoggett"
     fi
     if [[ $USE_BITBUCKET -eq 1 ]] ; then
-      export SERVICE_HOST="bitbucket.host"
-      export MY_SERVICE_PATH="$SERVICE_HOST/~tdoggett"
+      export SERVICE_HOST="gitlab-zillow"
+      export MY_SERVICE_PATH="$SERVICE_HOST:tdoggett"
     fi
 
     if [[ ! -z "$NIX_SHELL" && ${"$"}{NIX_SHELL: -4} != ".nix" ]] ; then
@@ -139,7 +139,7 @@ pkgs.writeScript "zgitclone" (
 
     if [ ! -d "$DIR" ] ; then
       mkdir -p "$DIR"
-      git clone -q --recurse-submodules "ssh://$SERVICE_HOST/$STASH_TEAM_NAME/$STASH_PROJECT_NAME.git" "$DIR"
+      git clone -q --recurse-submodules "$SERVICE_HOST:$STASH_TEAM_NAME/$STASH_PROJECT_NAME.git" "$DIR"
     fi
     if [ ! -d "$DIR/.git" ] ; then
       exit
@@ -149,7 +149,7 @@ pkgs.writeScript "zgitclone" (
 
     cd "$DIR"
 
-    git remote set-url --push origin "ssh://$MY_SERVICE_PATH/$PROJECT_NAME.git"
+    git remote set-url --push origin "$MY_SERVICE_PATH/$PROJECT_NAME.git"
     git config user.name "Tom Doggett"
     git config user.email "tdoggett@zillowgroup.com"
 

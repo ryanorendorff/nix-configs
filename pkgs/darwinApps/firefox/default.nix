@@ -7,8 +7,8 @@ darwinAppWrapper rec {
     inherit mkDarwinApp;
     inherit appName;
     inherit appMeta;
-    version = "61.0.2";
-    sha256  = "1ibdjf22pxklk2y9awxznxvi0386rbyayxh5vl2jd0rlmrczc8xz";
+    version = "62.0.2";
+    sha256  = "185nbvnarddq594x1nwac70bg4r116ybw57xvwbmpaidvv54kgyf";
   };
 
   appMeta = with pkgs.stdenv.lib; {

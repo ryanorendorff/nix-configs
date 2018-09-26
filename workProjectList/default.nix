@@ -1,5 +1,9 @@
 {
-  bitbucket = {};
+  bitbucket = {
+    apops = [
+      { repo = "apops-cli"; }
+    ];
+  };
   stash = {
     afra = [
       { repo = "apops"; shell = ../shells/zg-apops; }
