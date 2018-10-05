@@ -2,11 +2,11 @@
 
 with pkgs; stdenv.mkDerivation rec {
     name = "vr180-creator-${version}";
-    version = "1.0.0";
+    version = "2.0.0";
 
     src = fetchurl {
       url = "https://storage.googleapis.com/vr180-creator/download/VR180_Creator_linux_${version}.tar.gz";
-      sha1 = "5761qi32mxvligd364y6vkqh3cc64lza";
+      sha1 = "91j2f8jq6vhk8znn9s9kvgwja73y16xy";
       name = "${name}.tar.gz";
     };
 

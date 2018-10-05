@@ -3,7 +3,7 @@
 with pkgs;
 with {
   sharedPythonPackages = [
-    pkgs.mine.python27Packages.apopscli
+    # pkgs.mine.python27Packages.apopscli
   ];
 };
 [

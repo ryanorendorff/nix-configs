@@ -12,16 +12,17 @@ with pkgs; [
   cava
   compton
   dmenu
+  firefox
   glibcLocales
   gnome3.pomodoro # This is a dependency for i3-gnome-pomodoro-mine; need to get it as part of the derivation
   gnupg
   gnupg1compat
-  google-chrome
   i3
   i3blocks
   i3status
   jetbrains.phpstorm
   keepassx-community
+  keybase
   kpcli
   libnotify
   lm_sensors
@@ -30,6 +31,7 @@ with pkgs; [
   mine.postman
   mine.vr180-creator
   mpv
+  networkmanagerapplet
   openssh
   php71
   phpPackages.composer

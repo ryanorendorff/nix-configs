@@ -1,8 +1,8 @@
 { prefix ? "", pkgs, ... }:
 
 {
-  "${prefix}personal_startup" = {
-    source = pkgs.mine.scripts.personal_startup;
+  "${prefix}zgitclone" = {
+    source = pkgs.mine.scripts.zgitclone;
     executable = true;
   };
 }

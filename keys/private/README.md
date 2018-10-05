@@ -25,7 +25,8 @@ I'm also currently storing secrets (API keys, namespaces, etc) in this directory
 # example.nix
 "1d7b64b05c8fa771fa04afe0854a913e"
 ```
-
+ * `google_mopidy_key.nix`
+   * My app password for connecting mopidy to Google Music
  * `jenkins_api_key.nix`
    * My API key for the agent platform Jenkins server
  * `openweathermap_key.nix`
