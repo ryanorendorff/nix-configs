@@ -47,6 +47,9 @@ in {
       assigns = {};
       keybindings = {
         # exit i3 and logout
+        "${mod}+Shift+h" = "exec \"i3-nagbar -t warning -m 'You pressed the hibernate shortcut. Do you really want to hiberate? This will close the encrypted drive.' -b 'Yes, hibernate' 'systemctl hibernate'\" ";
+
+        # exit i3 and logout
         "${mod}+Shift+e" = "exec \"i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'poweroff'\" ";
 
         # start a terminal
@@ -206,10 +209,6 @@ in {
       startup = [
         {
           command = "${pkgs.qscreenshot}/bin/qScreenshot";
-          notification = true;
-        }
-        {
-          command = "";
           notification = true;
         }
         {
