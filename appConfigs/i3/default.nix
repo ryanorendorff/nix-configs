@@ -1,7 +1,6 @@
-{ pkgs, isVmware ? false, ... }:
+{ pkgs, lib, ... }:
 
 let
-  isVmwareGlobal = isVmware;
   MainWS = "\"1: Main \"";
   DevWS = "\"2: Dev \"";
   InfoWS = "\"3: Info \"";
@@ -9,15 +8,14 @@ let
   PostmanWS = "\"5: Postman\"";
   MusicWS = "\"6: Music \"";
   DatabaseWS = "\"7: Database \"";
-  ws8 = "8";
+  KeepassWS = "\"8: Keepass \"";
   ws9 = "9";
   ws10 = "10";
-  monitor1 = if isVmware then "Virtual1" else "VGA-1";
-  monitor2 = if isVmware then "Virtual3" else "VGA-2";
-  monitor3 = if isVmware then "Virtual2" else "VGA-3";
+  monitor1 = "Virtual1";
+  monitor2 = "Virtual3";
+  monitor3 = "Virtual2";
 in {
-  i3Config = { isVmware ? isVmwareGlobal, configHome ? builtins.getEnv "XDG_CONFIG_HOME", homeDirectory ? builtins.getEnv "HOME" }: {
-    enable = true;
+  i3Config = { isVmware ? false }: {
     package = pkgs.i3;
     config = ( let
       hyper = "Shift+Mod1+Control+Mod4";
@@ -111,7 +109,7 @@ in {
         "${mod}+5" = "workspace ${PostmanWS}";
         "${mod}+6" = "workspace ${MusicWS}";
         "${mod}+7" = "workspace ${DatabaseWS}";
-        "${mod}+8" = "workspace ${ws8}";
+        "${mod}+8" = "workspace ${KeepassWS}";
         "${mod}+9" = "workspace ${ws9}";
         "${mod}+0" = "workspace ${ws10}";
 
@@ -123,7 +121,7 @@ in {
         "${mod}+Shift+5" = "move container to workspace ${PostmanWS}";
         "${mod}+Shift+6" = "move container to workspace ${MusicWS}";
         "${mod}+Shift+7" = "move container to workspace ${DatabaseWS}";
-        "${mod}+Shift+8" = "move container to workspace ${ws8}";
+        "${mod}+Shift+8" = "move container to workspace ${KeepassWS}";
         "${mod}+Shift+9" = "move container to workspace ${ws9}";
         "${mod}+Shift+0" = "move container to workspace ${ws10}";
 
@@ -207,69 +205,26 @@ in {
       ];
       startup = [
         {
-          command = "${pkgs.mine.scripts.chrome}";
-          notification = true;
-        }
-        {
-          command = "${pkgs.vscode}/bin/code";
-          notification = true;
-        }
-        {
-          command = "${pkgs.mine.scripts.tmutt}";
-          notification = true;
-        }
-        {
-          command = "${pkgs.mine.scripts.tweechat}";
-          notification = true;
-        }
-        {
-          command = "${pkgs.mine.scripts.tncmpc}";
-          notification = true;
-        }
-        {
-          command = "${pkgs.mine.scripts.trtv}";
-          notification = true;
-        }
-        {
-          command = "${pkgs.mine.scripts.todoist}";
-          notification = true;
-        }
-        {
-          command = "${pkgs.mine.scripts.thaxor}";
-          notification = true;
-        }
-        {
-          command = "${pkgs.mine.scripts.thtop}";
-          notification = true;
-        }
-        {
-          command = "${pkgs.mine.postman}/bin/postman";
-          notification = true;
-        }
-        {
           command = "${pkgs.qscreenshot}/bin/qScreenshot";
           notification = true;
         }
         {
-          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t home --directory=${homeDirectory} -e '${pkgs.zsh}'";
+          command = "";
           notification = true;
         }
         {
-          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t npm_start --directory=${homeDirectory}/projects/zillow/zrm/web-crm-frontend/ -e 'nix-shell --pure --command=\"npm start\"'";
-          notification = true;
-        }
-        {
-          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t web_crm --directory=${homeDirectory}/projects/zillow/zrm/web-crm-frontend/ -e 'nix-shell --pure'";
-          notification = true;
-        }
-        {
-          command = "${pkgs.termite}/bin/termite -c ${configHome}/termite/config -t pa_dev --directory=${homeDirectory}/projects/zillow/ -e '${pkgs.zsh}'";
-          notification = true;
-        }
-        {
-          command = "i3-msg \"workspace ${MainWS}; append_layout ${./layout1.json}\" ";
+          command = "i3-msg \"workspace ${KeepassWS}; exec ${pkgs.keepassxc}/bin/keepassxc\" ";
           notification = false;
         }
+        {
+          command = "i3-msg \"workspace ${MainWS};\"; exec ${pkgs.termite}/bin/termite -c ~/.config/termite/config -t home --directory=~ -e '${pkgs.zsh}'";
+          notification = false;
+        }
+        {
+          command = "insync start";
+          notification = false;
+        }
+      ] ++ lib.optionals isVmware [
         {
           command = "i3-msg \"workspace ${DevWS}; append_layout ${./layout2.json}\" ";
           notification = false;
@@ -287,12 +242,21 @@ in {
           notification = false;
         }
         {
-          command = "i3-msg \"workspace ${MainWS};\" ";
+          command = "i3-msg \"workspace ${MainWS}; append_layout ${./layout1.json}\" ";
           notification = false;
         }
       ];
     });
     extraConfig = ''
+      # Pulse Audio controls
+      bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+      bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+      bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+
+      # Sreen brightness controls
+      bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
+      bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightness
+    '' + (if isVmware then ''
       workspace ${MainWS} output ${monitor1}
       workspace ${PostmanWS} output ${monitor1}
       workspace ${PersonalWS} output ${monitor1}
@@ -300,6 +264,6 @@ in {
       workspace ${InfoWS} output ${monitor3}
       workspace ${MusicWS} output ${monitor3}
       workspace ${DatabaseWS} output ${monitor2}
-    '';
+    '' else "");
   };
 }

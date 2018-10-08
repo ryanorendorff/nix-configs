@@ -12,7 +12,6 @@ with pkgs; [
   cava
   compton
   dmenu
-  firefox
   glibcLocales
   gnome3.pomodoro # This is a dependency for i3-gnome-pomodoro-mine; need to get it as part of the derivation
   gnupg
@@ -20,8 +19,9 @@ with pkgs; [
   i3
   i3blocks
   i3status
+  insync
   jetbrains.phpstorm
-  keepassx-community
+  keepassxc
   keybase
   kpcli
   libnotify
