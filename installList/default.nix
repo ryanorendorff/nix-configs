@@ -37,6 +37,7 @@ with {
   openssl
   perl
   playerctl
+  silver-searcher
   stow
   styx
   terraform

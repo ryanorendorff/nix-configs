@@ -138,10 +138,16 @@ in {
         "${mod}+r" = "mode \"resize\" ";
 
         # mopidy music server control
-        "${shalt}+h" = "exec ${pkgs.mpc_cli}/bin/mpc volume +1";
-        "${shalt}+j" = "exec ${pkgs.mpc_cli}/bin/mpc toggle";
-        "${shalt}+k" = "exec ${pkgs.mpc_cli}/bin/mpc next";
-        "${shalt}+l" = "exec ${pkgs.mpc_cli}/bin/mpc volume -1";
+        # "${shalt}+h" = "exec ${pkgs.mpc_cli}/bin/mpc volume +1";
+        # "${shalt}+j" = "exec ${pkgs.mpc_cli}/bin/mpc toggle";
+        # "${shalt}+k" = "exec ${pkgs.mpc_cli}/bin/mpc next";
+        # "${shalt}+l" = "exec ${pkgs.mpc_cli}/bin/mpc volume -1";
+      
+        # Google Play Music Desktop Player control
+        "${shalt}+h" = "exec ${pkgs.playerctl}/bin/playerctl volume +1";
+        "${shalt}+j" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
+        "${shalt}+k" = "exec ${pkgs.playerctl}/bin/playerctl next";
+        "${shalt}+l" = "exec ${pkgs.playerctl}/bin/playerctl volume -1";
       };
       colors = {
         background = "$ffffff";
@@ -248,9 +254,9 @@ in {
     });
     extraConfig = ''
       # Pulse Audio controls
-      bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
-      bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
-      bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+      bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% && pkill -RTMIN+10 i3blocks
+      bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% && pkill -RTMIN+10 i3blocks
+      bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle && pkill -RTMIN+10 i3blocks
 
       # Sreen brightness controls
       bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness

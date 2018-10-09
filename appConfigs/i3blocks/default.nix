@@ -1,4 +1,4 @@
-{pkgs, shellcheck, lib, ...}:
+{pkgs, lib, ...}:
 
 pkgs.writeText "config" ''
   # i3blocks config file
@@ -53,6 +53,7 @@ pkgs.writeText "config" ''
   # Volume indicator
   [volume]
   label=♪
+  #MIXER=pulse
   instance=Master
   interval=once
   signal=10

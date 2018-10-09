@@ -376,13 +376,13 @@ in lib.mkMerge [
     };
 
     xsession = {
-      enable = true;
       windowManager = {
         i3 = pkgs.appConfigs.i3.i3Config { inherit isVmware; };
       };
       initExtra = ''
         ${if isVmware then "sudo ${pkgs.mine.scripts.vmware_login_mount};" else ""}
         # systemctl --user restart random-background
+        [ -e /dev/mmcblk0p1 ] && udiskctl mount -b /dev/mmcblk0p1
         systemctl --user start compton.service
         systemctl --user start keybase.service
         systemctl --user start kbfs.service
@@ -456,10 +456,10 @@ in lib.mkMerge [
     '';
   })
 
-  # (lib.mkIf verifyRepos {
-  #   home.activation.tomDoggettInitVerifyRepos = dagEntryAfter ["tomDoggettInit"] ''
-  #     ${pkgs.mine.scripts.zg_startup}
-  #     ${pkgs.mine.scripts.personal_startup}
-  #   '';
-  # })
+  (lib.mkIf (verifyRepos && (pkgs.stdenv.isDarwin || isVmware)) {
+    home.activation.tomDoggettInitVerifyRepos = dagEntryAfter ["tomDoggettInit"] ''
+      ${pkgs.mine.scripts.zg_startup}
+      ${pkgs.mine.scripts.personal_startup}
+    '';
+  })
 ]

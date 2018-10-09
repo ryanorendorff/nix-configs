@@ -16,6 +16,7 @@ with pkgs; [
   gnome3.pomodoro # This is a dependency for i3-gnome-pomodoro-mine; need to get it as part of the derivation
   gnupg
   gnupg1compat
+  google-play-music-desktop-player
   i3
   i3blocks
   i3status
@@ -44,5 +45,6 @@ with pkgs; [
   vscode
   whois
   xautolock
+  xorg.xbacklight
   xterm
 ]
