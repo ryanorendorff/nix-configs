@@ -125,7 +125,7 @@ pkgs.writeScript "zgitclone" (
     if [[ ! -z "$NIX_SHELL" && ! -e "$NIX_SHELL" ]] ; then
       export NIX_SHELL=""
     fi
-    
+
     if [[ $# -eq 0 || $# -eq 1 ]] ; then
       script="${"$"}{0##*/}"
       echo "Missing teamName and/or projectName"
@@ -145,6 +145,7 @@ pkgs.writeScript "zgitclone" (
       exit
     fi
 
+    mkdir -p "${myhome}/.local/share"
     echo "$DIR" >> "${myhome}/.local/share/zillowgits"
 
     cd "$DIR"

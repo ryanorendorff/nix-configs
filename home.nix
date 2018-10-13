@@ -382,7 +382,7 @@ in lib.mkMerge [
       initExtra = ''
         ${if isVmware then "sudo ${pkgs.mine.scripts.vmware_login_mount};" else ""}
         # systemctl --user restart random-background
-        [ -e /dev/mmcblk0p1 ] && udiskctl mount -b /dev/mmcblk0p1
+        [ -e /dev/mmcblk0p1 ] && udisksctl mount -b /dev/mmcblk0p1
         systemctl --user start compton.service
         systemctl --user start keybase.service
         systemctl --user start kbfs.service
