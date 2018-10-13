@@ -29,6 +29,10 @@ pkgs.writeScript "zg_startup" (
       esac
     done
 
+    export URLS_ACTIVE=0 && ping -q -w1 -c1 stash.sv2.trulia.com &>/dev/null && export URLS_ACTIVE=1
+
+    if [ $URLS_ACTIVE -eq 1 ]; then
+
     # Remove listing of current zillow git repos
     if [ -e ${builtins.getEnv "HOME"}/.local/share/zillowgits ]; then
       rm ${builtins.getEnv "HOME"}/.local/share/zillowgits
@@ -38,5 +42,5 @@ pkgs.writeScript "zg_startup" (
     inherit lib;
     inherit pkgs;
     projectList = import ../../../workProjectList;
-  } )
+  } ) + "\nfi"
 )

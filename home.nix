@@ -456,7 +456,7 @@ in lib.mkMerge [
     '';
   })
 
-  (lib.mkIf (verifyRepos && (pkgs.stdenv.isDarwin || isVmware)) {
+  (lib.mkIf verifyRepos {
     home.activation.tomDoggettInitVerifyRepos = dagEntryAfter ["tomDoggettInit"] ''
       ${pkgs.mine.scripts.zg_startup}
       ${pkgs.mine.scripts.personal_startup}
