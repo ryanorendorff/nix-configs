@@ -23,6 +23,11 @@
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = pkgs.callPackage ../installList/linuxSystem.nix { };
 
+  # Virtualbox Stuff
+  virtualisation.virtualbox.host.enable = true;
+  nixpkgs.config.virtualbox.host.enableExtensionPack = true;
+  nixpkgs.config.virtualbox.host.addNetworkInterface = true;
+
   environment.etc = lib.mkMerge([
     pkgs.myFiles.etc.hosts
     pkgs.myFiles.etc.ssh_config
