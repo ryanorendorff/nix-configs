@@ -45,6 +45,5 @@ with pkgs; [
   vscode
   whois
   xautolock
-  xorg.xbacklight
   xterm
 ]

@@ -59,6 +59,11 @@
 
   # List services that you want to enable:
 
+  # Enable changing keyboard backlight brightness
+  services.udev.extraRules = ''
+    DEVPATH=="/devices/platform/asus-nb-wmi/leds/asus::kbd_backlight", RUN+="${pkgs.coreutils}/bin/chmod 0666 /sys/class/leds/asus::kbd_backlight/brightness"
+  '';
+
   # Enable the Mopidy Music Server.
   services.mopidy = with pkgs.appConfigs.mopidy; {
     inherit extensionPackages;
