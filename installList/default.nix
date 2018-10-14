@@ -33,6 +33,7 @@ with {
   ncmpc
   neomutt
   nix-repl
+  nixops
   nodejs
   openssl
   perl
