@@ -259,8 +259,8 @@ in {
       bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle && pkill -RTMIN+10 i3blocks
 
       # Sreen brightness controls
-      bindsym XF86MonBrightnessUp exec ${pkgs.xorg.xbacklight}/bin/xbacklight -inc 10 # increase screen brightness
-      bindsym XF86MonBrightnessDown exec ${pkgs.xorg.xbacklight}/bin/xbacklight -dec 10 # decrease screen brightness
+      bindsym XF86MonBrightnessUp exec ${pkgs.xorg.xbacklight}/bin/xbacklight -inc 5 # increase screen brightness
+      bindsym XF86MonBrightnessDown exec ${pkgs.xorg.xbacklight}/bin/xbacklight -dec 5 # decrease screen brightness
 
       # Keyboard brightness controls
       bindsym XF86KbdBrightnessUp exec ${pkgs.mine.scripts.asus-keyboard} up
