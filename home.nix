@@ -417,7 +417,7 @@ in lib.mkMerge [
 
     home.activation.tomDoggettInitDarwin = dagEntryAfter ["tomDoggettInit"] ''
       cp -fL ${pkgs.mine.weechatPlugins.notification_center}/notification_center.py ${mutableDotfiles}/weechat-plugins/.weechat/python/notification_center.py
-      stow -d "${mutableDotfiles}" -t ${homeDirectory} vscode_macos
+      stow -d "${mutableDotfiles}" -t ${homeDirectory} vscode_macos vscode_fix_symlinks_macos
     '';
   })
 
@@ -452,7 +452,7 @@ in lib.mkMerge [
 
     home.activation.tomDoggettInitLinux = dagEntryAfter ["tomDoggettInit"] ''
       cp -fL ${pkgs.mine.weechatPlugins.notify_send}/notify_send.py ${mutableDotfiles}/weechat-plugins/.weechat/python/notify_send.py
-      stow -d "${mutableDotfiles}" -t ${homeDirectory} vscode
+      stow -d "${mutableDotfiles}" -t ${homeDirectory} vscode vscode_fix_symlinks
     '';
   })
 
