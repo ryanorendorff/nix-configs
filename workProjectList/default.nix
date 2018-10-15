@@ -93,6 +93,7 @@
       { repo = "thread-data-repository"; shell = ../shells/php55/default.nix; }
       { repo = "trulia-featured-listings-api-client"; }
       { repo = "trulia-featured-listings-api"; }
+      { repo = "universal-nav-ui"; }
       { repo = "url-signer"; }
       { repo = "video-message-template-provisioner"; }
       { repo = "video-message-template-service"; }

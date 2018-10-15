@@ -117,5 +117,6 @@
     "whitelists",
     "zillow",
     "zuid"
-  ]
+  ],
+  "php-cs-fixer.executablePath": "${extensionPath}/php-cs-fixer.phar"
 }
