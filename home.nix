@@ -5,6 +5,13 @@ let
   isVmware = false;
   configHome = if (lib.hasAttrByPath ["xdg" "configHome"] config) then config.xdg.configHome else "~/.config";
   homeDirectory = if (lib.hasAttrByPath ["home" "homeDirectory"] config) then config.home.homeDirectory else "~";
+  myLocation = "home";
+  locations = {
+    home = { lat = 37.8858; long = 122.1180; };
+    london = { lat = 51.5074; long = 0.1278; };
+    orem = { lat = 40.2969; long = 111.6946; };
+  };
+  latlong = location: if (lib.hasAttrByPath [ location ] locations) then locations.${location} else locations.home;
   sessionVariables = (pkgs.recurseIntoAttrs (import ./sessionVariables {
     inherit pkgs;
     vim = if (lib.hasAttrByPath ["programs" "vim" "package"] config) then config.programs.vim.package else pkgs.vim;
@@ -289,6 +296,11 @@ in lib.mkMerge [
     };
 
     services = {
+      redshift = {
+        latitude = toString (latlong myLocation).lat;
+        longitude = toString (latlong myLocation).long;
+        tray = true;
+      };
       dunst = {
         settings = {
           global = {
@@ -439,6 +451,7 @@ in lib.mkMerge [
     services.kbfs.enable = true;
     services.network-manager-applet.enable = true;
     # services.random-background.enable = true;
+    services.redshift.enable = true;
     services.screen-locker.enable = false;
     services.unclutter.enable = true;
 
