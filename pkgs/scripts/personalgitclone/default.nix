@@ -1,11 +1,10 @@
 { pkgs, ... }:
 
-pkgs.writeScript "zgitclone" (
+pkgs.writeScript "personalgitclone" (
   let
     nixpkgsChannel = "nixpkgs-unstable";
     myhome = if pkgs.stdenv.isDarwin then "/Users/tdoggett" else "/home/tdoggett";
     projects = if pkgs.stdenv.isDarwin then "${myhome}/Projects" else "${myhome}/projects";
-    zillow = "${projects}/zillow";
   in ''
     #!/usr/bin/env bash
     export DIR=""
@@ -13,35 +12,35 @@ pkgs.writeScript "zgitclone" (
     export SHOULD_BUILD=1
     export NIX_SHELL=""
     export MAKE_SHELL=0
-    # Default service is Stash
-    export USE_STASH=1
+    # Default service is Github
+    export USE_GITHUB=1
     export USE_GITLAB=0
     script="${"$"}{0##*/}"
     while test $# -gt 0; do
     case "$1" in
       -h|--help)
-        echo "$script - Clone a Zillow git project"
+        echo "$script - Clone a personal git project"
         echo " "
-        echo "$script [options] teamName projectName"
+        echo "$script [options] username repoName"
         echo " "
         echo "options:"
         echo "-h, --help                show brief help"
-        echo "-s, --stash               use Stash as the remote service [default]"
+        echo "-g, --github              use Github as the remote service [default]"
         echo "-b, --gitlab              use Gitlab as the remote service"
-        echo "-n, --name=NAME           specify the directory name (default is projectName)"
-        echo "-d, --output-dir=DIR      specify an absolute directory path (default is $ZILLOW/<teamName>/<projectName>)"
+        echo "-n, --name=NAME           specify the directory name (default is repoName)"
+        echo "-d, --output-dir=DIR      specify an absolute directory path (default is $PROJECTS/<userName>/<repoName>)"
         echo "--no-build                do not run automatic dependency building"
         echo "-N, --nix-shell=<path>    path to a nix file to copy as shell.nix"
         echo "--make-shell=[0,1]        whether or not to build the shell environment"
         exit 0
         ;;
-      -s|--stash)
-        export USE_STASH=1
+      -g|--github)
+        export USE_GITHUB=1
         export USE_GITLAB=0
         shift
         ;;
       -b|--gitlab)
-        export USE_STASH=0
+        export USE_GITHUB=0
         export USE_GITLAB=1
         shift
         ;;
@@ -101,21 +100,19 @@ pkgs.writeScript "zgitclone" (
       esac
     done
 
-    export STASH_TEAM_NAME=$1
-    export STASH_PROJECT_NAME=$2
-    export TEAM_NAME=${"$"}{STASH_TEAM_NAME//\~/_}
-    export PROJECT_NAME=${"$"}{STASH_PROJECT_NAME//\~/_}
+    export REMOTE_USER_NAME=$1
+    export REMOTE_PROJECT_NAME=$2
+    export TEAM_NAME=${"$"}{REMOTE_USER_NAME//\~/_}
+    export PROJECT_NAME=${"$"}{REMOTE_PROJECT_NAME//\~/_}
     if [[ -z "$NAME" ]] ; then
       export NAME="$PROJECT_NAME"
     fi
 
-    if [[ $USE_STASH -eq 1 ]] ; then
-      export SERVICE_HOST="stash"
-      export MY_SERVICE_PATH="$SERVICE_HOST:~tdoggett"
+    if [[ $USE_GITHUB -eq 1 ]] ; then
+      export SERVICE_HOST="github"
     fi
     if [[ $USE_GITLAB -eq 1 ]] ; then
-      export SERVICE_HOST="gitlab-zillow"
-      export MY_SERVICE_PATH="$SERVICE_HOST:tdoggett"
+      export SERVICE_HOST="gitlab"
     fi
 
     if [[ ! -z "$NIX_SHELL" && ${"$"}{NIX_SHELL: -4} != ".nix" ]] ; then
@@ -128,31 +125,30 @@ pkgs.writeScript "zgitclone" (
 
     if [[ $# -eq 0 || $# -eq 1 ]] ; then
       script="${"$"}{0##*/}"
-      echo "Missing teamName and/or projectName"
+      echo "Missing userName and/or repoName"
       $script --help
       exit 0
     fi
 
     if [[ -z "$DIR" ]] ; then
-      export DIR="${zillow}/$TEAM_NAME/$NAME"
+      export DIR="${projects}/$TEAM_NAME/$NAME"
     fi
 
     if [ ! -d "$DIR" ] ; then
       mkdir -p "$DIR"
-      git clone -q --recurse-submodules "$SERVICE_HOST:$STASH_TEAM_NAME/$STASH_PROJECT_NAME.git" "$DIR"
+      git clone -q --recurse-submodules "$SERVICE_HOST:$REMOTE_USER_NAME/$REMOTE_PROJECT_NAME.git" "$DIR"
     fi
     if [ ! -d "$DIR/.git" ] ; then
       exit
     fi
 
     mkdir -p "${myhome}/.local/share"
-    echo "$DIR" >> "${myhome}/.local/share/zillowgits"
+    echo "$DIR" >> "${myhome}/.local/share/personalgits"
 
     cd "$DIR"
 
-    git remote set-url --push origin "$MY_SERVICE_PATH/$PROJECT_NAME.git"
     git config user.name "Tom Doggett"
-    git config user.email "tdoggett@zillowgroup.com"
+    git config user.email "nocoolnametom@gmail.com"
 
     if [[ ! -z "$NIX_SHELL" && -e "$NIX_SHELL" && ! -e ./shell.nix ]]; then
       cp "$NIX_SHELL" ./shell.nix

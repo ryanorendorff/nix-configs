@@ -1,5 +1,5 @@
 {
-  bitbucket = {
+  gitlab = {
     apops = [
       { repo = "apops-cli"; }
     ];

@@ -18,6 +18,8 @@ let
     }));
   addHomeFiles = myFiles: newFiles: lib.mkMerge([
     myFiles.bin.personal_startup
+    myFiles.bin.personalgitclone
+    myFiles.bin.personal_repos
     myFiles.bin.sync_projects
     myFiles.bin.zg_backup
     myFiles.bin.zg_startup

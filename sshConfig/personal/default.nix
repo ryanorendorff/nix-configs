@@ -8,13 +8,13 @@
     user = "root";
   }
   {
-    host = "gitlab.com";
+    host = "gitlab";
     hostname = "gitlab.com";
     identityFile = toString ../../keys/private/id_rsa;
     user = "git";
   }
   {
-    host = "github.com";
+    host = "github";
     hostname = "github.com";
     identityFile = toString ../../keys/private/id_rsa;
     user = "git";

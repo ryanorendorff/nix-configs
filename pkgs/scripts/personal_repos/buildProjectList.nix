@@ -7,8 +7,8 @@
       lib.concatStrings (
         lib.mapAttrsToList ( namespace: projects:
           lib.concatMapStrings ( project:
-            "${pkgs.mine.scripts.zgitclone}"
-            + (if service == "stash" then " -s" else "")
+            "${pkgs.mine.scripts.personalgitclone}"
+            + (if service == "github" then " -g" else "")
             + (if service == "gitlab" then " -b" else "")
             + (if lib.hasAttrByPath ["shell"] project then " -N ${project.shell}" else "")
             + (if lib.hasAttrByPath ["new-name"] project then " -n \"${project.new-name}\"" else "")
