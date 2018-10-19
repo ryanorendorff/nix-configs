@@ -122,7 +122,6 @@ in {
   programs.tmux.enableMouse = true;
   programs.tmux.enableFzf = true;
   programs.tmux.enableVim = true;
-  programs.tmux.iTerm2 = true;
 
   programs.tmux.tmuxConfig = ''
     bind-key -n M-r run "tmux send-keys -t .+ C-l Up Enter"
