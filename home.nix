@@ -416,6 +416,7 @@ in lib.mkMerge [
     programs.termite.enable = false;
     programs.zsh.enable = false;
     xsession.enable = false;
+    services.xscreensaver = false;
 
     home.file = addHomeFiles pkgs.myFiles [
       pkgs.myFiles.bitbar.calendar
@@ -456,6 +457,7 @@ in lib.mkMerge [
     services.redshift.enable = true;
     services.screen-locker.enable = false;
     services.unclutter.enable = true;
+    services.xscreensaver.enable = true;
 
     home.file = addHomeFiles pkgs.myFiles [
       pkgs.myFiles.home.mailcap
