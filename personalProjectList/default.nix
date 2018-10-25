@@ -4,15 +4,15 @@
       { repo = "journalofdiscourses"; }
       { repo = "mormonquotes"; }
       { repo = "mormoncanon"; }
+      { repo = "nix-configs"; }
+      { repo = "cesletterbox"; }
+      { repo = "lds-beacon-pages"; }
     ];
   };
   github = {
     nocoolnametom = [
-      { repo = "cesletterbox"; }
-      { repo = "nix-configs"; }
       { repo = "wiki_copy"; }
       { repo = "nixos-linode"; }
-      { repo = "lds-beacon-pages"; }
       { repo = "cesletter"; }
       { repo = "OpenMicNight"; }
     ];
@@ -21,3 +21,4 @@
     ];
   };
 }
+

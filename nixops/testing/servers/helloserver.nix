@@ -4,7 +4,7 @@ let
   cesletterbox = pkgs.callPackage ./apps/cesletterbox {};
 in {
   services.nixosManual.enable = false;
-  
+
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [ 80 22 ];
   networking.firewall.allowPing = true;
