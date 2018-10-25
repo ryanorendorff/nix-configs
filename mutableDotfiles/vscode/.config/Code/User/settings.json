@@ -118,5 +118,6 @@
     "zillow",
     "zuid"
   ],
-  "php-cs-fixer.executablePath": "${extensionPath}/php-cs-fixer.phar"
+  "php-cs-fixer.executablePath": "${extensionPath}/php-cs-fixer.phar",
+  "php-cs-fixer.lastDownload": 1539668865346
 }

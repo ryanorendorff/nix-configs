@@ -9,6 +9,7 @@ in
 with pkgs; [
   (python.withPackages myPythonPackages)
   bash-completion
+  blueman
   cava
   compton
   dmenu
@@ -22,6 +23,7 @@ with pkgs; [
   i3status
   insync
   jetbrains.phpstorm
+  jmtpfs
   keepassxc
   keybase
   kpcli

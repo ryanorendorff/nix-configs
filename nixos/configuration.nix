@@ -43,6 +43,7 @@
 
   # Hardware
   hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.package = pkgs.pulseaudioFull;
   hardware.pulseaudio.zeroconf.publish.enable = true;
   hardware.pulseaudio.tcp = {
     enable = true;
@@ -50,6 +51,11 @@
       "127.0.0.1"
     ];
   };
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.extraConfig = "
+    [General]
+    Enable=Source,Sink,Media,Socket
+  ";
 
   # Security
   security.initialRootPassword = "$6$Y38Cw.Nj$KCnCKYw0BCBaRXUlfnAt7ZwWjhiuaPFBAh1sv1hC9qkUH55CJte96YUallWG8mAa391MQmnJYufCGGxPucnO81";

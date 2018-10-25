@@ -457,7 +457,9 @@ in lib.mkMerge [
     services.screen-locker.enable = false;
     services.unclutter.enable = true;
 
-    home.file = addHomeFiles pkgs.myFiles [];
+    home.file = addHomeFiles pkgs.myFiles [
+      pkgs.myFiles.home.mailcap
+    ];
 
     xdg.configFile = addConfigFiles pkgs.myFiles [
       pkgs.myFiles.xdg.i3blocks
