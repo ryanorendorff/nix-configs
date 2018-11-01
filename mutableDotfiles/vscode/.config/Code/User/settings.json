@@ -119,5 +119,5 @@
     "zuid"
   ],
   "php-cs-fixer.executablePath": "${extensionPath}/php-cs-fixer.phar",
-  "php-cs-fixer.lastDownload": 1539668865346
+  "php-cs-fixer.lastDownload": 1541092198602
 }

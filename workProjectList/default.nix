@@ -3,10 +3,13 @@
     apops = [
       { repo = "apops-cli"; }
     ];
+    tdoggett = [
+      { repo = "innovation_week_voter_client"; }
+    ];
   };
   stash = {
     afra = [
-      { repo = "apops"; shell = ../shells/zg-apops; }
+      { repo = "apops"; shell = ../shells/zg-apops; build = false; }
     ];
     aps = [
       { repo = "api-authentication-handler"; }
@@ -100,9 +103,6 @@
       { repo = "web-crm-frontend"; }
       { repo = "web-crm"; }
       { repo = "zillow-readiness-handler"; }
-    ];
-    "~tdoggett" = [
-      { repo = "innovation_week_voter_client"; }
     ];
   };
 }
