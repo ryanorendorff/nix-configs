@@ -29,7 +29,7 @@
   nixpkgs.config.virtualbox.host.addNetworkInterface = true;
 
   environment.etc = lib.mkMerge([
-    pkgs.myFiles.etc.hosts
+    (pkgs.myFiles.etc.hosts { extraHosts = import ./hosts.nix; hostName = "${config.networking.hostName}.local"; })
     pkgs.myFiles.etc.ssh_config
     pkgs.myFiles.etc.trulia_server
     pkgs.myFiles.etc.trulia_api_local

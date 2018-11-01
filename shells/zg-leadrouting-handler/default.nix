@@ -1,7 +1,4 @@
-let
-  # Set the variable "local_dir" to the project directory for the rest of the file.
-  local_dir = builtins.toString ./.;
-in with import <nixpkgs> {
+with import <nixpkgs> {
   # Overwrite the PHP packages to load config from $PROJECT_ROOT/.php/config - requires compilation
   overlays = [
     (self: super: {
@@ -68,20 +65,16 @@ let
   # This is the config.ini for this project; it links the extensions required
   configIniFile = pkgs.writeText "env_config.ini" ''
     log_errors = 1
-    error_log = ${local_dir}/.php/php_errors.log
+    error_log = ${builtins.toString ./.}/.php/php_errors.log
     date.timezone = America/Los_Angeles
-    extension_dir = ${local_dir}/.php/extensions
+    extension_dir = ${builtins.toString ./.}/.php/extensions
     extension = ${packages.redis}/lib/php/extensions/redis.so
     extension = ${packages.memcached}/lib/php/extensions/memcached.so
     zend_extension = ${packages.xdebug}/lib/php/extensions/xdebug.so
     xdebug.remote_enable = 1
     xdebug.remote_autostart = 1
   '';
-in stdenv.mkDerivation rec {
-  # This name isn't really very important, but can help identify the project this derivation file
-  # belongs to.
-  name = "zg-dispatcher-env";
-
+in pkgs.mkShell rec {
   # This is the list of packages used for this environment. If it's here then it's available within
   # the shell:
   buildInputs = with pkgs; [
@@ -102,27 +95,11 @@ in stdenv.mkDerivation rec {
     export PROJECT_HOME=`pwd`
     export PATH="$PROJECT_HOME/.php/bin":"$PROJECT_HOME/vendor/bin":"$PATH"
     mkdir -p "$PROJECT_HOME/.php/extensions"
+    [[ -e $PROJECT_HOME/.git/info/exclude && ! `grep "^\.php$" $PROJECT_HOME/.git/info/exclude` ]] && echo ".php" >> ./.git/info/exclude
     rm -f "$PROJECT_HOME/.php/bin" && ln -s $env/bin "$PROJECT_HOME/.php/bin"
     if [[ ! -e "$PROJECT_HOME/config/app/dev/elasticmq.conf" ]]; then
       mkdir -p "$PROJECT_HOME/config/app/dev" && \
         cp "$PROJECT_HOME/config/app/example/elasticmq.conf" "$PROJECT_HOME/config/app/dev/elasticmq.conf"
     fi
-  '';
-
-  # This contains instructions to wrap the redis-server with the typical dev port so we can just run
-  # "redis-server" for running tests
-  env = buildEnv {
-    name = name;
-    paths = buildInputs;
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      mkdir $out/bin.writable && cp --symbolic-link `readlink $out/bin`/* $out/bin.writable/ > /dev/null 2>&1 && \
-        rm $out/bin && mv $out/bin.writable $out/bin
-      wrapProgram $out/bin/redis-server --add-flags ""
-    '';
-  };
-
-  builder = builtins.toFile "builder.sh" ''
-    source $stdenv/setup; ln -s $env $out
   '';
 }

@@ -5,6 +5,8 @@ let
 in {
   services.nixosManual.enable = false;
 
+  system.nixos.stateVersion = "18.03";
+  
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [ 80 22 ];
   networking.firewall.allowPing = true;

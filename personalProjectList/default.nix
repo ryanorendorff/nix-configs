@@ -19,6 +19,9 @@
     facebook = [
       { repo = "create-react-app"; }
     ];
+    skidding = [
+      { repo = "jobs-done"; }
+    ];
   };
 }
 

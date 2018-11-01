@@ -177,11 +177,11 @@ pkgs.writeScript "personalgitclone" (
         fi
       else
         if [[ -e package.json && ! -d node_modules ]] ; then
-          npm install --progress=false --silent --quiet > /dev/null 2>&1
+          ${pkgs.nodejs}/bin/npm install --progress=false --silent --quiet > /dev/null 2>&1
         fi
 
         if [[ -e composer.json && ! -d vendor ]] ; then
-          composer install -n -q
+          ${pkgs.phpPackages.composer}/bin/composer install -n -q
         fi
       fi
     fi

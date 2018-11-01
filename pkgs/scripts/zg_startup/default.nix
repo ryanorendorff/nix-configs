@@ -29,7 +29,7 @@ pkgs.writeScript "zg_startup" (
       esac
     done
 
-    export URLS_ACTIVE=0 && ping -q -w1 -c1 stash.sv2.trulia.com &>/dev/null && export URLS_ACTIVE=1
+    export URLS_ACTIVE=0 && ping -q -W1 -c1 stash.sv2.trulia.com &>/dev/null && export URLS_ACTIVE=1
 
     if [ $URLS_ACTIVE -eq 1 ]; then
 

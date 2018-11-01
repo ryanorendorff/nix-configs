@@ -164,7 +164,7 @@ pkgs.writeScript "zgitclone" (
       fi
     fi
 
-    mkdir -p .git/info && touch .git/info/exclude && echo "shell.nix" >> .git/info/exclude
+    mkdir -p .git/info && touch .git/info/exclude && [[ ! `grep "^shell.nix$" .git/info/exclude`  ]] && echo "shell.nix" >> .git/info/exclude
 
     if [[ $SHOULD_BUILD -eq 1 ]] ; then
       if [[ ! -z "$NIX_SHELL" ]] ; then
@@ -181,11 +181,11 @@ pkgs.writeScript "zgitclone" (
         fi
       else
         if [[ -e package.json && ! -d node_modules ]] ; then
-          npm install --progress=false --silent --quiet > /dev/null 2>&1
+          ${pkgs.nodejs}/bin/npm install --progress=false --silent --quiet > /dev/null 2>&1
         fi
 
         if [[ -e composer.json && ! -d vendor ]] ; then
-          composer install -n -q
+          ${pkgs.phpPackages.composer}/bin/composer install -n -q
         fi
       fi
     fi

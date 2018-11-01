@@ -29,7 +29,7 @@ pkgs.writeScript "personal_repos" (
       esac
     done
 
-    export URLS_ACTIVE=0 && ping -q -w1 -c1 github.com &>/dev/null && export URLS_ACTIVE=1
+    export URLS_ACTIVE=0 && ping -q -W1 -c1 github.com &>/dev/null && export URLS_ACTIVE=1
 
     if [ $URLS_ACTIVE -eq 1 ]; then
 

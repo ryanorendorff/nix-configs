@@ -4,16 +4,56 @@ with pkgs; let
   sessionVariables = (import ./sessionVariables {
     inherit pkgs;
   });
+  extraHosts = ''
+    # NixOps Testing
+    192.168.56.101  cesletterbox.com www.cesletterbox.com
+
+    # These are because the office DNS doesn't work well with ChunkWM,
+    # so I preceed it with Google's 8.8.8.8 in settings, but that
+    # breaks the following URIs.
+    10.202.8.69     splunk.zillow.local lyn-splunk.zillow.local
+    172.19.13.128   jira.corp.trulia.com
+    172.19.14.104   fedevdb3.sv2.trulia.com
+    172.19.51.98    feutil1.sv2.trulia.com
+    172.19.56.41    stage-user-profile-service.sv2.trulia.com user-profile-service.sv2.trulia.com
+    172.19.56.53    stash.sv2.trulia.com
+    172.19.56.81    artifact-repo.sv2.trulia.com
+    172.19.58.214   npm-int-0-1.sv2.trulia.com
+    172.19.58.234   agentplatform-jenkins-master.sv2.trulia.com
+    172.22.14.78    ric-zit-jet-001.zillow.local
+    192.168.245.78  zwiki.zillowgroup.net
+    10.130.128.216  gitlab.int.ap.truaws.com
+  '';
 in {
   imports = [
     ./overlays
+  ];
+
+  networking.hostName = "tdoggett4";
+  networking.knownNetworkServices = [
+    # "LPSS Serial Adapter (1)"
+    # "LPSS Serial Adapter (2)"
+    "USB 10/100/1000 LAN"
+    "Thunderbolt Ethernet Slot 1"
+    "Wi-Fi"
+    # "Bluetooth PAN"
+    # "Thunderbolt Bridge"
+  ];
+  networking.dns = [
+    "8.8.8.8"
+    "8.8.4.4"
+    "10.6.106.138"
+    "10.6.106.139"
+  ];
+  networking.search = [
+    "zillow.local"
   ];
 
   environment.systemPackages = callPackage ./installList { };
   environment.variables = sessionVariables;
   environment.etc = (
     {}
-    // pkgs.myFiles.etc.hosts
+    // (pkgs.myFiles.etc.hosts { inherit extraHosts; hostName = "${config.networking.hostName}.local"; })
     // pkgs.myFiles.etc.ssh_config
     // pkgs.myFiles.etc.trulia_server
     # This is just so we can run the nixos-config files from MacOS for testing without worrying about referencing a missing file

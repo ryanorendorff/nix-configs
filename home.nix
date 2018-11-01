@@ -3,7 +3,6 @@
 let
   verifyRepos = true;
   isVmware = false;
-  configHome = if (lib.hasAttrByPath ["xdg" "configHome"] config) then config.xdg.configHome else "~/.config";
   homeDirectory = if (lib.hasAttrByPath ["home" "homeDirectory"] config) then config.home.homeDirectory else "~";
   myLocation = "home";
   locations = {
@@ -416,7 +415,7 @@ in lib.mkMerge [
     programs.termite.enable = false;
     programs.zsh.enable = false;
     xsession.enable = false;
-    services.xscreensaver = false;
+    # services.xscreensaver = false;
 
     home.file = addHomeFiles pkgs.myFiles [
       pkgs.myFiles.bitbar.calendar
