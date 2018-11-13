@@ -155,8 +155,6 @@ in {
     gc-keep-outputs = true
   '';
 
-  programs.nix-index.enable = true;
-
   programs.tmux.enable = true;
   programs.tmux.enableSensible = true;
   programs.tmux.enableMouse = true;
@@ -180,6 +178,7 @@ in {
     enableCompletion = false;
     interactiveShellInit = ''
       eval "$(${fasd}/bin/fasd --init auto)"
+      export NIX_PATH=darwin=$NIX_USER_PROFILE_DIR/channels/darwin:darwin-config=$HOME/.nixpkgs/darwin-configuration.nix:$NIX_PATH
     '';
   };
   # programs.zsh.enable = true;

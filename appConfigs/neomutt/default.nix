@@ -25,8 +25,8 @@ pkgs.writeText "muttrc" ''
   unset imap_passive
 
   # Keep IMAP connection alive by polling intermittently (time in seconds).
-  set imap_keepalive = 60
-  # set imap_idle      = yes
+  set imap_keepalive = 30
+  set imap_idle      = yes
 
   # How often to check for new mail (time in seconds).
   set mail_check = 60

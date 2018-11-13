@@ -27,12 +27,10 @@ with {
   lsof
   mine.weechat
   mine.wtfutil
-  mopidy
   mpc_cli
   ncdu
   ncmpc
   neomutt
-  nix-repl
   nixops
   nodejs
   openssl

@@ -9,6 +9,7 @@ with pkgs; [
   rsync
   tmux
   screen
+  mopidy
   unzip
   glibcLocales
   gitAndTools.gitFull

@@ -41,7 +41,7 @@ with import <nixpkgs> {
             mkdir -p $out/{bin,lib}
             install -D $src $out/lib/elasticmq-server.jar
             makeWrapper ${self.jre}/bin/java $out/bin/elasticmq \
-              --add-flags "-Dconfig.file=${local_dir}/config/app/dev/elasticmq.conf -jar $out/lib/elasticmq-server.jar"
+              --add-flags "-Dconfig.file=${./.}/config/app/dev/elasticmq.conf -jar $out/lib/elasticmq-server.jar"
           '';
         };
       }

@@ -45,7 +45,7 @@
   }
   {
     host = "gitlab-zillow";
-    hostname = "gitlab.int.ap.truaws.com";
+    hostname = "git.agentplatform.net";
     identityFile = toString ../../keys/private/trulia_rsa;
     user = "git";
   }

@@ -119,5 +119,10 @@
     "zuid"
   ],
   "php-cs-fixer.executablePath": "${extensionPath}/php-cs-fixer.phar",
-  "php-cs-fixer.lastDownload": 1541092198602
+  "php-cs-fixer.lastDownload": 1542043001636,
+  "gitlab.instanceUrl": "https://git.agentplatform.net",
+  "gitlab.ignoreCertificateErrors": true,
+  "gitlab-ci-validator.gitLabURL": "https://git.agentplatform.net",
+  "gitlab-ci-validator.ignoreCertificateErrors": true,
+  "gitlab.showIssueLinkOnStatusBar": false
 }

@@ -23,7 +23,7 @@ with import <nixpkgs> {
               --add-flags "-d memory_limit=-1 $out/libexec/${packageName}/${packageName}.phar"
           '';
         });
-        php55 = self.lib.overrideDerivation super.php56 (old: rec {
+        php55 = self.lib.overrideDerivation super.php71 (old: rec {
           version = "5.5.37";
           name = "php-${version}";
           src = self.fetchurl {
