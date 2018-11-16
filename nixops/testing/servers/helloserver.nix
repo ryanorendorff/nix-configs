@@ -3,11 +3,11 @@
 let
   phpPort = "9000";
   dbName = "journalofdiscourses";
+  dbUser = "journal_ro";
   cesletterbox = pkgs.callPackage ./apps/cesletterbox {};
   journalofdiscourses = import ./apps/journalofdiscourses {
-    inherit pkgs dbName;
-    dbUser = "journal_ro";
-    dbPassword = "nottherealpassword";
+    inherit pkgs dbName dbUser;
+    dbHost = "localhost";
   };
 in {
   services.nixosManual.enable = false;
@@ -25,14 +25,25 @@ in {
 
   services.mysql = {
     enable = true;
-    package = pkgs.mariadb;
+    package = pkgs.mysql;
     initialDatabases = [
       {
         name = dbName;
         schema = journalofdiscourses.sqlDataFile;
       }
     ];
-    initialScript = journalofdiscourses.permissionsSql;
+    ensureDatabases = [
+      dbName
+    ];
+    ensureUsers = [
+      {
+        name = dbUser;
+        ensurePermissions = {
+          "*.*" = "ALL PRIVILEGES";
+          # "${dbName}.*" = "SELECT";
+        };
+      }
+    ];
   };
 
   services.phpfpm.poolConfigs.mypool = ''

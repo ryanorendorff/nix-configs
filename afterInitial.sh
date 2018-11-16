@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 export ME="nocoolnametom@gmail.com"
-insync start && insync pause_syncing && insync move_folder "~/$ME" ~/google_drive && insync manage_selective_sync $ME && insync resume_syncing && sleep 30 && echo "Open keepassxc for keybase password!" &&
+[[ ! -e ~/google_drive ]] && insync add_account -n -p ~/google_drive
+insync start && insync pause_syncing && insync manage_selective_sync $ME && insync resume_syncing && sleep 30 && echo "Open keepassxc for keybase password!" &&
 keybase login &&
 gpg --import ~/keybase/private/nocoolnametom/keys/keybase_secret.asc &&
 gpg --change-passphrase 5279843C73EB8029F9F6AF0EC4252D5677A319CA &&
