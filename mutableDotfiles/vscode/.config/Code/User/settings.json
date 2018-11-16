@@ -124,5 +124,7 @@
   "gitlab.ignoreCertificateErrors": true,
   "gitlab-ci-validator.gitLabURL": "https://git.agentplatform.net",
   "gitlab-ci-validator.ignoreCertificateErrors": true,
-  "gitlab.showIssueLinkOnStatusBar": false
+  "gitlab.showIssueLinkOnStatusBar": false,
+  "gitlab.pipelineGitRemoteName": "zgitlab",
+  "gitlab.remoteName": "zgitlab"
 }

@@ -23,6 +23,7 @@ with pkgs; let
     172.22.14.78    ric-zit-jet-001.zillow.local
     192.168.245.78  zwiki.zillowgroup.net
     10.130.128.216  gitlab.int.ap.truaws.com
+    10.202.8.73     splunk.zillowgroup.net
   '';
 in {
   imports = [

@@ -150,6 +150,10 @@ pkgs.writeScript "zgitclone" (
 
     cd "$DIR"
 
+    if [[ $USE_GITLAB -eq 1 && -z `git remote get-url zgitlab 2> /dev/null` ]]; then
+      git remote add zgitlab "https://git.agentplatform.net/$STASH_TEAM_NAME/$STASH_PROJECT_NAME.git"
+    fi
+
     git remote set-url --push origin "$MY_SERVICE_PATH/$PROJECT_NAME.git"
     git config user.name "Tom Doggett"
     git config user.email "tdoggett@zillowgroup.com"
