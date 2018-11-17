@@ -1,7 +1,8 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
-  phpPort = "9000";
+  jodUrl = "journalofdiscourses.com";
+  cesboxUrl = "cesletterbox.com";
   dbName = "journalofdiscourses";
   dbUser = "journal_ro";
   cesletterbox = pkgs.callPackage ./apps/cesletterbox {};
@@ -10,17 +11,17 @@ let
     dbHost = "localhost";
   };
 in {
-  services.nixosManual.enable = false;
+  documentation.nixos.enable = false;
 
-  system.nixos.stateVersion = "18.03";
+  system.stateVersion = "18.03";
   
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 80 22 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 22 ];
   networking.firewall.allowPing = true;
 
   security.acme.certs = {
-    # "cesletterbox.com".email = "nocoolnametom@gmail.com";
-    # "journalofdiscourses.com".email = "nocoolnametom@gmail.com";
+    # "${cesboxUrl}".email = "nocoolnametom@gmail.com";
+    # "${jodUrl}".email = "nocoolnametom@gmail.com";
   };
 
   services.mysql = {
@@ -39,22 +40,32 @@ in {
       {
         name = dbUser;
         ensurePermissions = {
-          "*.*" = "ALL PRIVILEGES";
-          # "${dbName}.*" = "SELECT";
+          "${dbName}.*" = "SELECT";
         };
       }
     ];
   };
 
-  services.phpfpm.poolConfigs.mypool = ''
-    listen = 127.0.0.1:${phpPort}
-    user = nobody
+  users.extraUsers.${dbUser} = {
+    uid = 1001;
+  };
+
+  services.phpfpm.poolConfigs.${jodUrl} = ''
+    listen = /var/run/${jodUrl}-phpfpm.sock
+    user = ${dbUser}
     pm = dynamic
-    pm.max_children = 5
-    pm.start_servers = 2
-    pm.min_spare_servers = 1
-    pm.max_spare_servers = 3
+    pm.max_children = 32
     pm.max_requests = 500
+    pm.start_servers = 2
+    pm.min_spare_servers = 2
+    pm.max_spare_servers = 5
+    listen.owner = nginx
+    listen.group = nginx
+    listen.mode = 0660
+    php_admin_value[error_log] = 'stderr'
+    php_admin_flag[log_errors] = on
+    env[PATH] = ${lib.makeBinPath [ pkgs.php ]}
+    catch_workers_output = yes
   '';
 
   services.nginx = {
@@ -72,7 +83,7 @@ in {
 
     commonHttpConfig = ''
       # Enable CSP for your services.
-      add_header Content-Security-Policy "script-src 'self'; object-src 'none'; base-uri 'none';" always;
+      #  add_header Content-Security-Policy "script-src 'self'; object-src 'none'; base-uri 'none';" always;
 
       # Minimize information leaked to other domains
       add_header 'Referrer-Policy' 'origin-when-cross-origin';
@@ -93,22 +104,76 @@ in {
     '';
 
     virtualHosts = {
-      "cesletterbox.com" = {
+      "${cesboxUrl}" = {
+        # addSSL = true;
         # forceSSL = true;
         # enableACME = true;
-        serverAliases = [ "www.cesletterbox.com" "cesletterbox.com" ];
+        serverAliases = [ "www.${cesboxUrl}" cesboxUrl ];
         root = "${cesletterbox}";
+        locations = {
+          "/favicon.ico" = {
+            extraConfig = ''
+              log_not_found off;
+              access_log off;
+            '';
+          };
+          "/robots.txt" = {
+            extraConfig = ''
+              allow all;
+              log_not_found off;
+              access_log off;
+            '';
+          };
+          "~* \.(css|js|gif|jpe?g|png)$" = {
+            extraConfig = ''
+              expires 168h;
+              add_header Pragma public;
+              add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+            '';
+          };
+        };
       };
-      "journalofdiscourses.com" = {
-        ###### NEED TO USE THE ROUTS IN journalofdiscourses.rewrites! ###########
+      "${jodUrl}" = {
+        # addSSL = true;
         # forceSSL = true;
         # enableACME = true;
-        serverAliases = [ "www.journalofdiscourses.com" "journalofdiscourses.com" ];
+        serverAliases = [ "www.${jodUrl}" jodUrl ];
         root = "${journalofdiscourses.package}/public";
-        locations."~ \.php$".extraConfig = ''
-          fastcgi_pass 127.0.0.1:${phpPort};
-          fastcgi_index index.php;
-        '';
+        locations = {
+          "/favicon.ico" = {
+            extraConfig = ''
+              log_not_found off;
+              access_log off;
+            '';
+          };
+          "/robots.txt" = {
+            extraConfig = ''
+              allow all;
+              log_not_found off;
+              access_log off;
+            '';
+          };
+          "~* \.(css|js|gif|jpe?g|png)$" = {
+            extraConfig = ''
+              expires 168h;
+              add_header Pragma public;
+              add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+            '';
+          };
+          "~ \.(php|phtml)$" = {
+            extraConfig = ''
+              fastcgi_pass unix:/var/run/${jodUrl}-phpfpm.sock;
+              fastcgi_index index.php;
+              fastcgi_split_path_info ^(.+\.php)(/.+)$;
+              include ${pkgs.nginx}/conf/fastcgi_params;
+              include ${pkgs.nginx}/conf/fastcgi.conf;
+              expires -1;
+            '';
+          };
+        } // (
+          # This converts the URL Regex patterns from the JournalOfDiscourses package into NGINX rewrites
+          lib.mapAttrs' (regex: target: lib.nameValuePair ("~* " + regex) { extraConfig = ("rewrite " + regex + " " + target + ";"); }) journalofdiscourses.rewrites
+        );
       };
     };
   };

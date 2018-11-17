@@ -8,7 +8,7 @@
 }:
 
 let
-  codeVersion = "1.1.0";
+  codeVersion = "1.1.1";
   sqlVersion = "sqldump_1.2";
   sourceForCode = (builtins.fetchTarball "https://gitlab.com/nocoolnametom/journalofdiscourses/-/archive/${codeVersion}/journalofdiscourses-${codeVersion}.tar.gz");
   injectValuesIntoSource = import (builtins.toPath (sourceForCode + "/release.nix"));
