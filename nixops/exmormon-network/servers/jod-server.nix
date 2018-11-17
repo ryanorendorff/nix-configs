@@ -2,16 +2,14 @@
 
 let
   jodUrl = "journalofdiscourses.com";
-  cesboxUrl = "cesletterbox.com";
   dbName = "journalofdiscourses";
   dbUser = "journal_ro";
-  cesletterbox = pkgs.callPackage ./apps/cesletterbox {};
   journalofdiscourses = import ./apps/journalofdiscourses {
     inherit pkgs dbName dbUser;
     dbHost = "localhost";
   };
 in {
-  documentation.nixos.enable = false;
+  # documentation.nixos.enable = false;
 
   system.stateVersion = "18.03";
   
@@ -20,7 +18,6 @@ in {
   networking.firewall.allowPing = true;
 
   security.acme.certs = {
-    # "${cesboxUrl}".email = "nocoolnametom@gmail.com";
     # "${jodUrl}".email = "nocoolnametom@gmail.com";
   };
 
@@ -104,35 +101,6 @@ in {
     '';
 
     virtualHosts = {
-      "${cesboxUrl}" = {
-        # addSSL = true;
-        # forceSSL = true;
-        # enableACME = true;
-        serverAliases = [ "www.${cesboxUrl}" cesboxUrl ];
-        root = "${cesletterbox}";
-        locations = {
-          "/favicon.ico" = {
-            extraConfig = ''
-              log_not_found off;
-              access_log off;
-            '';
-          };
-          "/robots.txt" = {
-            extraConfig = ''
-              allow all;
-              log_not_found off;
-              access_log off;
-            '';
-          };
-          "~* \.(css|js|gif|jpe?g|png)$" = {
-            extraConfig = ''
-              expires 168h;
-              add_header Pragma public;
-              add_header Cache-Control "public, must-revalidate, proxy-revalidate";
-            '';
-          };
-        };
-      };
       "${jodUrl}" = {
         # addSSL = true;
         # forceSSL = true;
