@@ -4,6 +4,7 @@ let
   useSSL = true;
   cesletterboxConfig = pkgs.callPackage ./configs/cesletterbox.nix { inherit useSSL; };
   jodConfig = pkgs.callPackage ./configs/journalofdiscourses.nix { inherit useSSL; };
+  beaconConfig = pkgs.callPackage ./configs/lds-beacon-pages.nix { inherit useSSL; };
 in {
   # documentation.nixos.enable = false;
 
@@ -16,6 +17,7 @@ in {
   security.acme.certs = {}
     // jodConfig.acme.certs
     // cesletterboxConfig.acme.certs
+    // beaconConfig.acme.certs
   ;
 
   services.mysql.enable = true;
@@ -71,5 +73,6 @@ in {
   services.nginx.virtualHosts = {}
     // jodConfig.nginx.virtualHosts
     // cesletterboxConfig.nginx.virtualHosts
+    // beaconConfig.nginx.virtualHosts
   ;
 }
