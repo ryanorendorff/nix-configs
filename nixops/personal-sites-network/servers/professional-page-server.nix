@@ -2,9 +2,7 @@
 
 let
   useSSL = true;
-  cesletterboxConfig = pkgs.callPackage ./configs/cesletterbox.nix { inherit useSSL; };
-  jodConfig = pkgs.callPackage ./configs/journalofdiscourses.nix { inherit useSSL; };
-  beaconConfig = pkgs.callPackage ./configs/lds-beacon-pages.nix { inherit useSSL; };
+  professionalPageConfig = pkgs.callPackage ./configs/professional-page.nix { inherit useSSL; };
 in {
   # documentation.nixos.enable = false;
 
@@ -15,26 +13,8 @@ in {
   networking.firewall.allowPing = true;
 
   security.acme.certs = {}
-    // jodConfig.acme.certs
-    // cesletterboxConfig.acme.certs
-    // beaconConfig.acme.certs
+    // professionalPageConfig.acme.certs
   ;
-
-  services.mysql.enable = true;
-  services.mysql.package = pkgs.mysql;
-  services.mysql.initialDatabases = []
-    ++ jodConfig.mysql.initialDatabases
-  ;
-  services.mysql.ensureDatabases = []
-    ++ jodConfig.mysql.ensureDatabases
-  ;
-  services.mysql.ensureUsers = []
-    ++ jodConfig.mysql.ensureUsers
-  ;
-
-  users.extraUsers = jodConfig.users.extraUsers;
-
-  services.phpfpm.poolConfigs = jodConfig.phpfpm.poolConfigs;
 
   services.nginx.enable = true;
   services.nginx.statusPage = true;
@@ -71,8 +51,6 @@ in {
   '';
 
   services.nginx.virtualHosts = {}
-    // jodConfig.nginx.virtualHosts
-    // cesletterboxConfig.nginx.virtualHosts
-    // beaconConfig.nginx.virtualHosts
+    // professionalPageConfig.nginx.virtualHosts
   ;
 }
