@@ -5,6 +5,7 @@ let
   professionalPageConfig = pkgs.callPackage ./configs/professional-page.nix { inherit useSSL; };
 in {
   # documentation.nixos.enable = false;
+  services.nixosManual.enable = false;
 
   system.stateVersion = "18.09";
   

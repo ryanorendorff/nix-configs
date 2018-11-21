@@ -217,7 +217,7 @@ in lib.mkMerge [
     };
 
     programs.firefox = {
-      enableAdobeFlash = true;
+      # enableAdobeFlash = true; # Currently broken, 404 when trying to load flash player package
       enableGoogleTalk = true;
       enableIcedTea = true;
     };
