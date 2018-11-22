@@ -9,7 +9,7 @@
 
 let
   codeVersion = "1.0.0";
-  sqlVersion = "sqldump_1.0";
+  sqlVersion = "sqldump_1.1";
   sourceForCode = (builtins.fetchTarball "https://gitlab.com/nocoolnametom/mormonquotes/-/archive/${codeVersion}/mormonquotes-${codeVersion}.tar.gz");
   injectValuesIntoSource = import (builtins.toPath (sourceForCode + "/release.nix"));
   sourceForSql = (builtins.fetchTarball "https://gitlab.com/nocoolnametom/mormonquotes/-/archive/${sqlVersion}/mormonquotes-${sqlVersion}.tar.gz");

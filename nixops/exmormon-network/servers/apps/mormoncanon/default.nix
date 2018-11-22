@@ -8,7 +8,7 @@
 }:
 
 let
-  codeVersion = "1.0.0";
+  codeVersion = "1.0.2";
   sqlVersion = "sqldump_1.0";
   sourceForCode = (builtins.fetchTarball "https://gitlab.com/nocoolnametom/mormoncanon/-/archive/${codeVersion}/mormoncanon-${codeVersion}.tar.gz");
   injectValuesIntoSource = import (builtins.toPath (sourceForCode + "/release.nix"));

@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  useSSL = false;
+  useSSL = true;
   cesletterboxConfig = pkgs.callPackage ./configs/cesletterbox.nix { inherit useSSL; };
   jodConfig = pkgs.callPackage ./configs/journalofdiscourses.nix { inherit useSSL; };
   mormonQuotesConfig = pkgs.callPackage ./configs/mormonquotes.nix { inherit useSSL; };
@@ -59,7 +59,7 @@ in {
 
   services.nginx = {
     enable = true;
-    statusPage = true;
+    statusPage = false;
 
     # Use recommended settings
     recommendedGzipSettings = true;

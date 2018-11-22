@@ -74,14 +74,20 @@ in {
         '';
       };
       "~ \.(php|phtml)$" = {
+        tryFiles = "$uri =404";
         extraConfig = ''
           fastcgi_pass unix:/var/run/${jodUrl}-phpfpm.sock;
           fastcgi_index index.php;
           fastcgi_split_path_info ^(.+\.php)(/.+)$;
           include ${pkgs.nginx}/conf/fastcgi_params;
           include ${pkgs.nginx}/conf/fastcgi.conf;
+          fastcgi_intercept_errors on;
           expires -1;
         '';
+      };
+      "/" = {
+        index = "index.php";
+        tryFiles = "$uri $uri/ $uri.php";
       };
     } // (
       # This converts the URL Regex patterns from the JournalOfDiscourses package into NGINX rewrites
