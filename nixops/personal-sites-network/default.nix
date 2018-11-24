@@ -4,6 +4,6 @@
   # Enable rolling back to previous versions of our infrastructure
   network.enableRollback = true;
 
-  # professional-page-server = import ./servers/professional-page-server.nix;
+  professional-page-server = import ./servers/professional-page-server.nix;
   znc-server = import ./servers/znc-server.nix;
 }

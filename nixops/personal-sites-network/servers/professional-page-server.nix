@@ -18,7 +18,7 @@ in {
   ;
 
   services.nginx.enable = true;
-  services.nginx.statusPage = true;
+  services.nginx.statusPage = false;
 
   # Use recommended settings
   services.nginx.recommendedGzipSettings = true;

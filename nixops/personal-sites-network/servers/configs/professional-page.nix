@@ -1,7 +1,7 @@
 { pkgs, useSSL ? false, ... }:
 
 let
-  professionalPageUrl = "lds.tech";
+  professionalPageUrl = "tomdoggett.net";
 in {
   acme.certs = if useSSL then { "${professionalPageUrl}".email = "nocoolnametom@gmail.com"; } else {};
   nginx.virtualHosts."${professionalPageUrl}" = {
