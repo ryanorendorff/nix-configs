@@ -1,6 +1,10 @@
-{ pkgs ? import <nixpkgs> {}, lib ? pkgs.lib, wordpressConfig ? pkgs.hello, dbName ? "", dbUser ? "", uploadsDir ? "", themes ? [ (pkgs.callPackage ../../themes/kens-twenty-ten {}) ], plugins ? [], ... }:
+{ pkgs ? import <nixpkgs> {}, lib ? pkgs.lib, wordpressConfig ? pkgs.hello, dbName ? "", dbUser ? "", uploadsDir ? "", saltsFile ? "", themes ? [ "kens-twentyten" ], plugins ? [ "akismet" ], ... }:
 
-pkgs.stdenv.mkDerivation rec {
+let
+  wordpressConfig = pkgs.callPackage ./wordpress-config { inherit dbName dbUser saltsFile; };
+  themePkgs = builtins.map (name: pkgs.callPackage (../../themes + "/${name}") {}) themes;
+  pluginPkgs = builtins.map (name: pkgs.callPackage (../../plugins + "/${name}") {}) plugins;
+in pkgs.stdenv.mkDerivation rec {
   name = "wordpress";
   src = pkgs.wordpress;
   installPhase = ''
@@ -20,8 +24,8 @@ pkgs.stdenv.mkDerivation rec {
     # remove useless wp-config-sample.php file
     rm -Rf $out/public/wp-config-sample.php
     # symlink additional theme(s)
-    ${lib.concatMapStrings (theme: "ln -s ${theme} $out/public/wp-content/themes/${theme.themeName}\n") themes}
+    ${lib.concatMapStrings (theme: "ln -s ${theme} $out/public/wp-content/themes/${theme.themeName}\n") themePkgs}
     # symlink additional plugin(s)
-    ${lib.concatMapStrings (plugin: "ln -s ${plugin} $out/public/wp-content/plugins/${plugin.pluginName}\n") (plugins) }
+    ${lib.concatMapStrings (plugin: "ln -s ${plugin} $out/public/wp-content/plugins/${plugin.pluginName}\n") pluginPkgs }
   '';
 }

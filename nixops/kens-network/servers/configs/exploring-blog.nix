@@ -2,42 +2,27 @@
 
 let
   exploringBlogUrl = "exploringmormonism.com";
-  kensTwentySeventeenTheme = pkgs.callPackage ../themes/twentyseventeen {};
-  kensTwentyTenTheme = pkgs.callPackage ../themes/kens-twentyten {};
-  akismetPlugin = pkgs.callPackage ../plugins/akismet {};
-  classicEditorPlugin = pkgs.callPackage ../plugins/classic-editor {};
-  columnShortcodePlugin = pkgs.callPackage ../plugins/column-shortcodes {};
-  excelInteractiveViewPlugin = pkgs.callPackage ../plugins/excel-interactive-view {};
-  excelToTablePlugin = pkgs.callPackage ../plugins/excel-to-table {};
-  simpleCsvTablePlugin = pkgs.callPackage ../plugins/simple-csv-table {};
-  wpBetaTesterPlugin = pkgs.callPackage ../plugins/wordpress-beta-tester {};
-  youtubeEmbedPlusPlugin = pkgs.callPackage ../plugins/youtube-embed-plus {};
+  dbHost = "localhost";
+  dbName = "exploringmormonism";
+  dbUser = "exploringmormonism";
   uploadsDir = "/var/data/exploringmormonism/uploads";
   saltsFile = "/var/data/exploringmormonism/salts";
   wordpressRoot = pkgs.callPackage ../apps/wordpress-root {
-    inherit pkgs dbName dbUser uploadsDir;
-    dbHost = "localhost";
-    wordpressConfig = pkgs.callPackage ../apps/wordpress-config {
-      inherit dbName dbUser saltsFile;
-      themePkg = kensTwentyTenTheme;
-    };
+    inherit pkgs dbName dbUser dbHost uploadsDir saltsFile;
     themes = [
-      kensTwentySeventeenTheme
-      kensTwentyTenTheme
+      "kens-twentyten"
+      "twentyseventeen"
     ];
     plugins = [
-      akismetPlugin
-      classicEditorPlugin
-      columnShortcodePlugin
-      excelInteractiveViewPlugin
-      excelToTablePlugin
-      simpleCsvTablePlugin
-      wpBetaTesterPlugin
-      youtubeEmbedPlusPlugin
+      "akismet"
+      "classic-editor"
+      "column-shortcodes"
+      "excel-interactive-view"
+      "excel-to-table"
+      "simple-csv-table"
+      "youtube-embed-plus"
     ];
   };
-  dbName = "exploringmormonism";
-  dbUser = "exploringmormonism";
 in {
   systemd.services."writeableExploringBlogUploads" = {
     enable = true;
