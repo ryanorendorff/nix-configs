@@ -35,6 +35,7 @@ with pkgs; [
   mine.vr180-creator
   mpv
   networkmanagerapplet
+  nixopsUnstable
   openssh
   php71
   phpPackages.composer

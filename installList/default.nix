@@ -31,7 +31,6 @@ with {
   ncdu
   ncmpc
   neomutt
-  nixops
   nodejs
   openssl
   perl

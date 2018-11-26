@@ -23,6 +23,7 @@ in with pkgs; [
   mine.darwinApps.teensy
   mine.darwinApps.vscode
   mosh
+  nixops
   ripgrep
   shellcheck
   silver-searcher
