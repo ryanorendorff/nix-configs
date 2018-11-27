@@ -2,13 +2,13 @@
 
 buildGoPackage rec {
   name = "wtfutil-${version}";
-  version = "0.2.1";
+  version = "0.4.0";
 
   src = fetchFromGitHub {
     owner = "senorprogrammer";
     repo = "wtf";
     rev = version;
-    sha256 = "085mqz4h6m0hzm1ash4a30vv3grnkw0qfw6fkkaszncps4fbmr01";
+    sha256 = "1vgjqmw27baiq9brmnafic3w3hw11p5qc6ahbdxi5n5n4bx7j6vn";
   };
 
   goPackagePath = "github.com/senorprogrammer/wtf";

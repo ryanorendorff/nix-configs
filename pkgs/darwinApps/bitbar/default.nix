@@ -4,9 +4,7 @@ darwinAppWrapper rec {
   appName = "Bitbar";
 
   app = pkgs.callPackage ./app.nix {
-    inherit mkDarwinApp;
-    inherit appName;
-    inherit appMeta;
+    inherit mkDarwinApp appName appMeta;
     version = "2.0.0-beta10";
     sha256  = "19ff401a4xbqc9n35marm3jl8wnaiklx97gilg1crwp0hrk1qwv9";
   };

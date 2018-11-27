@@ -4,11 +4,9 @@ darwinAppWrapper rec {
   appName = "Firefox";
   
   app = pkgs.callPackage ./app.nix {
-    inherit mkDarwinApp;
-    inherit appName;
-    inherit appMeta;
-    version = "63.0.1";
-    sha256  = "0ycgraigr9acbhbidnh5s9f9sy4qshhp36fhfjnb1wybklw11s3k";
+    inherit mkDarwinApp appName appMeta;
+    version = "63.0.3";
+    sha256  = "04c2sk84zn1wqmj4s5w2s446i7fb7p22r2bbahrjbbiv39yil81g";
   };
 
   appMeta = with pkgs.stdenv.lib; {

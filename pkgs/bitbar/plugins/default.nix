@@ -9,8 +9,8 @@ let
       fileExtension,
       inputs ? [],
       propagatedInputs ? [],
-      rev ? "60befeebb91bc1c743e062090c67b16b62eaed77",
-      sha256 ? "0014h5rkw5j20ww5gzk4banidkfmkg2r8v620dzlngjf411pk8r8"
+      rev ? "330a45002b444b2a3c1c6b4fc52422500dee7567",
+      sha256 ? "1an9rjf1r2326wvk5i5bp7ibgnji4f3m5mq8k8bmwkz0hn2cpg1j"
     }: with pkgs; stdenv.mkDerivation rec {
     inherit baseName;
     version = rev;

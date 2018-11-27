@@ -4,11 +4,9 @@ darwinAppWrapper rec {
   appName = "iTerm2";
 
   app = pkgs.callPackage ./app.nix {
-    inherit mkDarwinApp;
-    inherit appName;
-    inherit appMeta;
-    version = "3.2.5";
-    sha256  = "0s3jrwcwrkmb5ympr7vjc4jbgvkzgj2ripw1fzb6b1hzvq1yc7pc";
+    inherit mkDarwinApp appName appMeta;
+    version = "3.2.6";
+    sha256  = "116qmdcbbga8hr9q9n1yqnhrmmq26l7pb5lgvlgp976yqa043i6v";
   };
 
   appMeta = with pkgs.stdenv.lib; {

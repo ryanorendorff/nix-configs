@@ -7,8 +7,8 @@ let
   version = "2018-01-17";
   baseName = "i3blocks-contrib";
   src = fetchFromGitHub {
-    rev = "72e7afea8e35f63cee5956c84206d5c7b70ddae5";
-    sha256 = "1pkqj3kqalnlqisvblqmbq56zqh43afqvnamxfhqy5grq0jc0rl2";
+    rev = "13e46dc0f31dd5ed889025161a930db951011522";
+    sha256 = "0bf0d6ijqmz0rld7ndh9r35iwjbcbkmddxk5lj609kw0si1srnzj";
     owner = "vivien";
     repo = baseName;
   };

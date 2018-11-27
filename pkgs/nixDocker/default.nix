@@ -3,15 +3,15 @@
 {
   hostname = "nix-docker";
   pkg = pkgs.stdenv.mkDerivation rec {
-    version = "2018-05-07";
+    version = "2018-11-26";
     baseName = "nix-docker";
     name = "${baseName}-${version}";
 
     src = pkgs.fetchFromGitHub {
-      rev = "5c0ca6669a63ba81dddd47c7d7884a23d2f82ccb";
+      rev = "2f499c710f7f39b2db416826cc48bdc873c7d74c";
       owner = "LnL7";
       repo = baseName;
-      sha256 = "0gpy42a34jb55pl860l0ig91bgngj4g5b7dxxniyvvcvv0vjlr8h";
+      sha256 = "17syh27jzi1ns2l0fh81jyp1nnid54l31a42swfr1l3q7iv02sfh";
     };
 
     installPhase = ''

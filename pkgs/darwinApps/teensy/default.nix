@@ -4,9 +4,7 @@ darwinAppWrapper rec {
   appName = "Teensy";
 
   app = pkgs.callPackage ./app.nix {
-    inherit mkDarwinApp;
-    inherit appName;
-    inherit appMeta;
+    inherit mkDarwinApp appName appMeta;
     version = "2018-06-09";
     sha256  = "02vljpvg60n99mvqw70aklljpdbbv7wxqlky2rq8k870lgmp8w8l";
   };

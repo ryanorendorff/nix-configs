@@ -15,8 +15,8 @@ let
       lang,
       baseName,
       inputs ? [],
-      rev ? "bceced8b2bd7ac42396d225b3cc304afc624dc11",
-      sha256 ? "1k7ryx8z8xrngy5dmcmvdfqvx5cn0kclmz25khff3cink5wrqqqp"
+      rev ? "d7e3c1baccc96b99ab63c3e99a52c047f0ab996e",
+      sha256 ? "11ldizf2lmfnihrg9vxb66q1v74j461harg4y1wsx4qs0d94jpgr"
     }: with pkgs; stdenv.mkDerivation rec {
     inherit baseName;
     version = rev;
