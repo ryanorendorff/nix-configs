@@ -102,30 +102,37 @@ in {
   nginx.virtualHosts."${exploringBlogUrl}" = {
     forceSSL = useSSL;
     enableACME = useSSL;
+    http2 = useSSL;
     serverAliases = [ "www.${exploringBlogUrl}" ];
     root = "${wordpressRoot}/public";
     locations = {
-      "/favicon.ico" = {
+      "= /favicon.ico" = {
         extraConfig = ''
           log_not_found off;
           access_log off;
         '';
       };
-      "/robots.txt" = {
+      "= /robots.txt" = {
         extraConfig = ''
           allow all;
           log_not_found off;
           access_log off;
         '';
       };
-      "~* \.(css|js|gif|jpe?g|png)$" = {
+      "/" = {
+        index = "index.php index.html";
         extraConfig = ''
-          expires 168h;
-          add_header Pragma public;
-          add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+          if ($http_user_agent ~ "(agent1|Wget|Catall Spider)" ) {
+            return 403;
+          }
+          if (-e $request_filename) {
+            rewrite ^/(wp-(content|admin|includes).*) /$1 break;
+          }
+          rewrite ^/(.*\.php)$ /$1 break;
         '';
+        tryFiles = "$uri $uri/ /index.php$is_args$args";
       };
-      "~ \.(php|phtml)$" = {
+      "~ \.php$" = {
         tryFiles = "$uri =404";
         extraConfig = ''
           fastcgi_pass unix:/var/run/${exploringBlogUrl}-phpfpm.sock;
@@ -144,22 +151,20 @@ in {
       "/wp-includes/" =  { extraConfig = "internal;"; };
       ## block any attempted XML-RPC requests
       "/xmlrpc.php" = { extraConfig = "deny all;"; };
+      ## block attempting to run any uploaded PHP file
+      "~* /(?:uploads|files)/.*\.php$" = { extraConfig = "deny all;"; };
       ## Converted WP .htaccess file
       "/wp-admin" = {
         extraConfig = ''
           rewrite ^/wp-admin$ /wp-admin/ redirect;
         '';
       };
-      "/" = {
+      ## Have resources live long and prosper
+      "~* \.(css|js|gif|ico|jpe?g|png)$" = {
         extraConfig = ''
-          if ($http_user_agent ~ "(agent1|Wget|Catall Spider)" ) {
-            return 403;
-          }
-          if (-e $request_filename) {
-            rewrite ^/(wp-(content|admin|includes).*) /$1 break;
-          }
-          rewrite ^/(.*\.php)$ /$1 break;
-          rewrite ^(.*)$ /index.php break;
+          expires 168h;
+          add_header Pragma public;
+          add_header Cache-Control "public, must-revalidate, proxy-revalidate";
         '';
       };
     };
