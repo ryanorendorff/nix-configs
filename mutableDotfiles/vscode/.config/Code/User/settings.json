@@ -64,9 +64,9 @@
   "vim.useCtrlKeys": true,
   "window.zoomLevel": 0,
   "workbench.colorCustomizations": {
-    "statusBar.background": "#5f0000",
-    "statusBar.noFolderBackground": "#5f0000",
-    "statusBar.debuggingBackground": "#5f0000"
+    "statusBar.background": "#005f5f",
+    "statusBar.noFolderBackground": "#005f5f",
+    "statusBar.debuggingBackground": "#005f5f"
   },
   "[git-commit]": {
     "editor.fontFamily": "'iA Writer Duospace', Menlo, Monaco, 'Courier New', monospace",
@@ -120,6 +120,16 @@
   ],
   "php-cs-fixer.executablePath": "${extensionPath}/php-cs-fixer.phar",
   "php-cs-fixer.lastDownload": 1542043001636,
+  "terminal.integrated.shellArgs.linux": [
+    "-c",
+    "[[ -e ./shell.nix || -e ./default.nix ]] && nix-shell --pure || bash -l",
+    "-l"
+  ],
+  "terminal.integrated.shellArgs.osx": [
+    "-c",
+    "[[ -e ./shell.nix || -e ./default.nix ]] && nix-shell --pure || bash -l",
+    "-l"
+  ],
   "gitlab.instanceUrl": "https://git.agentplatform.net",
   "gitlab.ignoreCertificateErrors": true,
   "gitlab-ci-validator.gitLabURL": "https://git.agentplatform.net",
