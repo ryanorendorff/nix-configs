@@ -48,8 +48,9 @@ in {
   '';
   users.extraUsers.${dbUser}.uid = 1001;
   nginx.virtualHosts."${jodUrl}" = {
-    forceSSL = true;
-    enableACME = true;
+    forceSSL = useSSL;
+    enableACME = useSSL;
+    http2 = useSSL;
     serverAliases = [ "www.${jodUrl}" jodUrl ];
     root = "${journalofdiscourses.package}/public";
     locations = {

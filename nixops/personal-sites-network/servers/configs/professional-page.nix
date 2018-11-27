@@ -7,6 +7,7 @@ in {
   nginx.virtualHosts."${professionalPageUrl}" = {
     forceSSL = useSSL;
     enableACME = useSSL;
+    http2 = useSSL;
     serverAliases = [ "www.${professionalPageUrl}" professionalPageUrl ];
     root = "${pkgs.callPackage ../apps/professional-page {}}/dist";
   };

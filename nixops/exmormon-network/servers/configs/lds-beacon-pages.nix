@@ -7,6 +7,7 @@ in {
   nginx.virtualHosts."${beaconUrl}" = {
     forceSSL = useSSL;
     enableACME = useSSL;
+    http2 = useSSL;
     serverAliases = [ "www.${beaconUrl}" beaconUrl "www.lds.support" "lds.support" ];
     root = "${pkgs.callPackage ../apps/lds-beacon-pages {}}";
     locations = {

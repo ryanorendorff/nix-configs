@@ -48,8 +48,9 @@ in {
   '';
   users.extraUsers.${dbUser}.uid = 1003;
   nginx.virtualHosts."${mormonCanonUrl}" = {
-    forceSSL = true;
-    enableACME = true;
+    forceSSL = useSSL;
+    enableACME = useSSL;
+    http2 = useSSL;
     serverAliases = [ "www.${mormonCanonUrl}" mormonCanonUrl ];
     root = "${mormoncanon.package}/public";
     locations = {

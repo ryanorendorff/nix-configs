@@ -48,8 +48,9 @@ in {
   '';
   users.extraUsers.${dbUser}.uid = 1002;
   nginx.virtualHosts."${mormonQuotesUrl}" = {
-    forceSSL = true;
-    enableACME = true;
+    forceSSL = useSSL;
+    enableACME = useSSL;
+    http2 = useSSL;
     serverAliases = [ "www.${mormonQuotesUrl}" mormonQuotesUrl ];
     root = "${mormonquotes.package}/public";
     locations = {

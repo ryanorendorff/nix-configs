@@ -7,6 +7,7 @@ in {
   nginx.virtualHosts."${cesboxUrl}" = {
     forceSSL = useSSL;
     enableACME = useSSL;
+    http2 = useSSL;
     serverAliases = [ "www.${cesboxUrl}" cesboxUrl ];
     root = "${pkgs.callPackage ../apps/cesletterbox {}}";
     locations = {
