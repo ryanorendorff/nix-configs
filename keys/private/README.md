@@ -29,6 +29,8 @@ I'm also currently storing secrets (API keys, namespaces, etc) in this directory
    * My app password for connecting mopidy to Google Music
  * `jenkins_api_key.nix`
    * My API key for the agent platform Jenkins server
+ * `longview_api_key.nix`
+   * My API key for the elrond Linode server
  * `openweathermap_key.nix`
    * My API key for OpenWeatherMap
  * `todoist_key.nix`

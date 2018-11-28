@@ -40,6 +40,10 @@ if [ ! -e "$PWD/keys/private/jenkins_api_key.nix" ] ; then
   echo '""' >> "$PWD/keys/private/jenkins_api_key.nix"
 fi
 
+if [ ! -e "$PWD/keys/private/longview_api_key.nix" ] ; then
+  echo '""' >> "$PWD/keys/private/longview_api_key.nix"
+fi
+
 if [ ! -e "$PWD/keys/private/openweathermap_key.nix" ] ; then
   echo '""' >> "$PWD/keys/private/openweathermap_key.nix"
 fi

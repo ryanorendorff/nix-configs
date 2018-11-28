@@ -44,7 +44,7 @@
     host = "elrond";
     hostname = "45.33.53.132";
     identityFile = toString ../../keys/private/id_rsa;
-    user = "tdoggett";
+    user = "root";
     port = 2222;
   }
   {
