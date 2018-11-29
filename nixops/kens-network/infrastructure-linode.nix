@@ -11,6 +11,8 @@ let
     services.openssh.enable = true;
     services.openssh.permitRootLogin = "without-password";
     services.openssh.ports = [ 2222 ];
+    services.ntp.enable = true;
+    time.timeZone = "America/Los_Angeles";
     environment.systemPackages = with pkgs; [ wget vim inetutils mtr sysstat ];
     boot.loader.grub.enable = true;
     boot.loader.grub.version = 2;

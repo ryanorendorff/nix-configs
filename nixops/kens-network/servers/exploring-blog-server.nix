@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  useSSL = false;
+  useSSL = true;
   exploringBlogConfig = pkgs.callPackage ./configs/exploring-blog.nix { inherit useSSL; };
 in {
   # documentation.nixos.enable = false;
