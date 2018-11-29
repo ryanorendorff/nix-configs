@@ -77,6 +77,9 @@ let
 
     # Enable NGinx status page for longview even if another page is set as default.
     services.nginx.virtualHosts."localhost" = {
+      listen = [
+        { addr = "127.0.0.1"; port = 80; }
+      ];
       serverAliases = [ "127.0.0.1" ];
       locations = {
         "/nginx_status" = {
