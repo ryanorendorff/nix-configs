@@ -1,4 +1,6 @@
 let
+  mysqlBackupLocation = "/var/backup/mysql";
+  uploadsLocation = "/var/uploads";
   linodeInfo = { pkgs, lib, ... }: {
     deployment.targetEnv = "none";
     deployment.targetHost = "elrond";
@@ -28,6 +30,8 @@ let
     boot.extraModulePackages = [ ];
     fileSystems."/" = { device = "/dev/sda"; fsType = "ext4"; };
     swapDevices = [ { device = "/dev/sdb"; } ];
+    fileSystems."${mysqlBackupLocation}" = { device = "/dev/sdc"; fsType = "ext4"; };
+    fileSystems."${uploadsLocation}" = { device = "/dev/sdd"; fsType = "ext4"; };
     nix.maxJobs = lib.mkDefault 1;
 
     # Nixops-specific stuff
@@ -41,6 +45,35 @@ let
       CREATE USER IF NOT EXISTS 'linode-longview'@'localhost' IDENTIFIED BY '${import ../../keys/private/longview_api_key.nix}';
       FLUSH PRIVILEGES;
     '';
+    services.mysqlBackup.location = "${mysqlBackupLocation}";
+    # Run the backup on the first Saturday of every month at 6PM
+    services.mysqlBackup.calendar = "Sat *-*-1..7 18:00:00";
+
+    systemd = {
+      timers."mysql-backup-long-storage" = {
+        description = "Mysql backups backup timer";
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnCalendar = "Sat *-*-1..7 17:00:00"; # Run every Saturday at 5PM
+          AccuracySec = "5m";
+          Unit = "mysql-backup-long-storage.service";
+        };
+      };
+      services."mysql-backup-long-storage" = {
+        description = "Mysql backups backup service";
+        enable = true;
+        serviceConfig = {
+          User = "root";
+          PermissionsStartOnly = true;
+        };
+        script = ''
+          find ${mysqlBackupLocation} -type f -name '*.gz' -print0 | \
+          xargs -0 ${pkgs.bash}/bin/bash -c 'for filename; do cp -a "$filename" "$filename.`date +%s`"; done' ${pkgs.bash}/bin/bash
+        '';
+      };
+    };
+
+    # Enable NGinx status page for longview even if another page is set as default.
     services.nginx.virtualHosts."localhost" = {
       serverAliases = [ "127.0.0.1" ];
       locations = {

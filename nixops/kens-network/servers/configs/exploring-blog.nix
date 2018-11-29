@@ -5,7 +5,7 @@ let
   dbHost = "localhost";
   dbName = "exploringmormonism";
   dbUser = "exploringmormonism";
-  uploadsDir = "/var/data/exploringmormonism/uploads";
+  uploadsDir = "/var/uploads/exploringmormonism/";
   saltsFile = "/var/data/exploringmormonism/salts";
   wordpressRoot = pkgs.callPackage ../apps/wordpress-root {
     inherit pkgs dbName dbUser dbHost uploadsDir saltsFile;
@@ -74,6 +74,9 @@ in {
         };
       }
     ];
+  };
+  mysqlBackup = {
+    databases = [ dbName ];
   };
   phpfpm.poolConfigs."${exploringBlogUrl}" = ''
     listen = /var/run/${exploringBlogUrl}-phpfpm.sock

@@ -31,6 +31,11 @@ in {
     // exploringBlogConfig.services.fail2ban
   ;
 
+  services.mysqlBackup.enable = true;
+  services.mysqlBackup.databases = []
+    ++ exploringBlogConfig.mysqlBackup.databases
+  ;
+
   systemd.services."writeableExploringBlogUploads" = exploringBlogConfig.systemd.services."writeableExploringBlogUploads";
   systemd.services."getNewExploringBlogSalts" = exploringBlogConfig.systemd.services."getNewExploringBlogSalts";
 
