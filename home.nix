@@ -54,6 +54,7 @@ in lib.mkMerge [
     ];
     programs.home-manager.enable = true;
     programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
+    home.stateVersion = "18.09";
 
     accounts.email = {
       maildirBasePath = config.home.homeDirectory + "/Mail";
