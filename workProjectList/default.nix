@@ -43,6 +43,9 @@
       { repo = "gitlab-runner-testing"; }
       { repo = "innovation_week_voter_client"; }
     ];
+    ux = [
+      { repo = "paxl-react"; build = false; }
+    ];
     yoltron = [
       { repo = "agent-platform-tools-endpoints"; }
       { repo = "agent-platform-tools"; shell = ../shells/node/default.nix; }
