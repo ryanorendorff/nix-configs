@@ -38,6 +38,11 @@ pkgs.writeText "config" ''
   command=${pkgs.mine.i3blocks.mine.pomodoro}
   interval=1
 
+  # Google Drive
+  [google_drive]
+  command=${pkgs.mine.i3blocks.mine.google_drive}
+  interval=1
+
   # Bitcoin Price
   [btc]
   label=BTC
