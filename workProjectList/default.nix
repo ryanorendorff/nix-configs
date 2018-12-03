@@ -58,7 +58,7 @@
       { repo = "home-recommendations-service"; shell = ../shells/php71/default.nix; build = false; }
       { repo = "video-message-template-provisioner"; }
       { repo = "video-message-template-service"; }
-      { repo = "web-crm-frontend"; shell = ../shells/zg-web-crm-frontend/default.nix; }
+      { repo = "web-crm-frontend"; shell = ../shells/zg-web-crm-frontend/default.nix; build = false; }
       { repo = "web-crm"; }
     ];
   };
