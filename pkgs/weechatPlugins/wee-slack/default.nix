@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 with pkgs; stdenv.mkDerivation rec {
-  version = "2.0.0";
+  version = "2.2.0";
   baseName = "wee-slack";
   name = "${baseName}-${version}";
 
@@ -9,7 +9,7 @@ with pkgs; stdenv.mkDerivation rec {
     rev = "v${version}";
     owner = baseName;
     repo = baseName;
-    sha256 = "0712zzscgylprnnpgy2vr35a5mdqhic8kag5v3skhd84awbvk1n5";
+    sha256 = "1iy70q630cgs7fvk2151fq9519dwxrlqq862sbrwypzr6na6yqpg";
   };
 
   buildInputs = [ weechat (mine.weechatPythonPackageList python) ];
