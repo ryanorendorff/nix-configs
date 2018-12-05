@@ -20,6 +20,6 @@ pkgs.writeScript "googlemusicdesktopplayer" (
     ${pkgs.gnugrep}/bin/grep -q '"playing":\s*true' ${myhome}${builtins.replaceStrings [" "] ["\\ "]  appPath} &&
     ${pkgs.gnugrep}/bin/grep '\s*"title":\s*".*",' ${myhome}${builtins.replaceStrings [" "] ["\\ "]  appPath} |
     cut -d \" -f 4 ||
-    echo "Not Playing..."
+    echo "No Music"
   ''
 )
