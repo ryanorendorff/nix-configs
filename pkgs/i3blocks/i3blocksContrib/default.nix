@@ -4,11 +4,11 @@ with pkgs;
 with lib;
 
 let
-  version = "2018-01-17";
+  version = "2018-12-05";
   baseName = "i3blocks-contrib";
   src = fetchFromGitHub {
-    rev = "13e46dc0f31dd5ed889025161a930db951011522";
-    sha256 = "0bf0d6ijqmz0rld7ndh9r35iwjbcbkmddxk5lj609kw0si1srnzj";
+    rev = "c6161379d4b5130f64a847026e7deadb1646bca8";
+    sha256 = "10d9znrs2720kjsixvgbyijv4fyr04kcjpw8jxjpvhg3cp1fw9aq";
     owner = "vivien";
     repo = baseName;
   };

@@ -359,7 +359,7 @@ in lib.mkMerge [
           };
           irc = {
             appname = "weechat";
-            icon = pkgs.appConfigs.weechat.icon;
+            icon = "${pkgs.appConfigs.weechat.icon}";
             format  = "%s: %b";
             urgency = "critical";
             background = "#FD5F00";
