@@ -8,7 +8,7 @@ pkgs.mkShell rec {
   buildInputs = with pkgs; [
     less
     git
-    terraform_0_10-full
+    terraform-full
     ansible
     docker
     (python.withPackages (pythonPackages: with pythonPackages; with pkgs.mine.python27Packages; [ apopscli boto3 pyasn1 ]))

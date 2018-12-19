@@ -18,6 +18,7 @@ in boto3.overridePythonAttrs(oldAttrs: rec {
     version = "1.9.10";
     sha256 = "02i83qi1q137v6va79515ragqf02flyhwxd2zaccn9vdl1q10055";
   };
+  doCheck = false;
   buildInputs = [ botocore ];
   propagatedBuildInputs = [ botocore jmespath s3transferOverride ] ++ lib.optionals (!isPy3k) [ futures ];
 })

@@ -10,9 +10,12 @@ pkgs.writeScript "calendar" ''
     # <bitbar.desc>Displays my next event.</bitbar.desc>
     # <bitbar.dependencies>bash, gcalcli, cut, head, sed</bitbar.dependencies>
 
-    ${pkgs.gcalcli}/bin/gcalcli --nostarted --noallday --nocolor \
-       --calendar "Calendar" --calendar "nocoolnametom@gmail.com" --calendar "Family" \
-       agenda "'`date +%Y%m%dT00`'" "'`date +%Y%m%dT2359`'" \
+    export LC_ALL=en_US.UTF-8
+    export LANG=en_US.UTF-8
+
+    ${pkgs.gcalcli}/bin/gcalcli --nocolor --calendar "Calendar" \
+       --calendar "nocoolnametom@gmail.com" --calendar "Family" \
+       agenda "'`date +%Y%m%dT%H%M`'" "'`date +%Y%m%dT2359`'" \
      | cut -d " " -f 4- \
      | head -2 \
      | tail -1 \

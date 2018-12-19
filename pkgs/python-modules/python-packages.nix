@@ -12,11 +12,13 @@ rec {
   aws-encryption-sdk = callPackage ./aws-encryption-sdk { };
   
   boto3 = callPackage ./boto3 {
-    inherit myPythonPackages;
+    inherit (myPythonPackages);
     botocore = myPythonPackages.botocore;
   };
 
   botocore = callPackage ./botocore { };
+  
+  cement = callPackage ./cement { };
 
   diskcache = callPackage ./diskcache { };
 

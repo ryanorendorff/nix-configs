@@ -4,7 +4,6 @@
   beautifulsoup4,
   boto3 ? myPythonPackages.boto3,
   buildPythonPackage,
-  cement, 
   consul,
   cookiecutter,
   diskcache ? myPythonPackages.diskcache,
@@ -35,12 +34,13 @@ let
       inherit pname version sha256;
       pypiIndex = "https://pypi.stage.ap.truaws.com";
     });
+    disabled = false;
   });
   overrides = {
     aws-encryption-sdk = (mkOverride aws-encryption-sdk  "1.3.7"       "10yk23nqpxnawpm9zfib344i9dcg95m81nr653xcf1ghvv90g4wh");
     beautifulsoup4     = (mkOverride beautifulsoup4      "4.6.0"       "12cf0ygpz9srpfh9gx2f9ba0swa1rzypv3sm4r0hmjyw6b4nm2w0");
     boto3              = (mkOverride boto3               "1.9.10"      "02i83qi1q137v6va79515ragqf02flyhwxd2zaccn9vdl1q10055");
-    cement             = (mkOverride cement              "2.10.2"      "d50c5980bf3e2456e515178ba097d16e36be0fbcab7811a60589d22f45b64f55");
+    cement             = myPythonPackages.python-gitlab;
     consul             = (mkOverride consul              "0.7.2"       "0wb578i83brjsx764ifj26jj4ph3wpdsli9gc3wsbywf5n57q2zg");
     cookiecutter       = (mkZgOverride cookiecutter      "1.4.0+zfork" "b8cc8026e616854f59c164019c83e945a34f41976073b838e3645bee5748a574" );
     diskcache          = (mkOverride diskcache           "3.0.6"       "1wyb4hks977i2c134dnxdsgq0wgwk1gb3d5yk3zhgjidc6f1gw0m");
@@ -52,12 +52,12 @@ let
 in
 buildPythonPackage rec {
   pname = "apopscli";
-  version = "0.11.2";
+  version = "0.11.4";
 
   src = fetchpypi {
     inherit pname version;
     pypiIndex = "https://pypi.stage.ap.truaws.com";
-    sha256 = "63cce52166f96e3e532d1b9eed5d5f595e2595618ae16b5c09a429371d858e7d";
+    sha256 = "91aa997d620c99fd31280c58075dabeb3413ec40251ea7ca8c74580d33b207d3";
   };
 
   buildInputs = [

@@ -157,7 +157,7 @@ in {
     enableCompletion = false;
     interactiveShellInit = ''
       eval "$(${fasd}/bin/fasd --init auto)"
-      export NIX_PATH=darwin=$NIX_USER_PROFILE_DIR/channels/darwin:darwin-config=$HOME/.nixpkgs/darwin-configuration.nix:$NIX_PATH
+      # export NIX_PATH=darwin=$NIX_USER_PROFILE_DIR/channels/darwin:darwin-config=$HOME/.nixpkgs/darwin-configuration.nix:$NIX_PATH
     '';
   };
   # programs.zsh.enable = true;
