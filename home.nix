@@ -151,7 +151,7 @@ in lib.mkMerge [
       cp -fL ${pkgs.mine.weechatPlugins.wee-slack}/wee_slack.py ${mutableDotfiles}/weechat-plugins/.weechat/python/wee_slack.py
       cp -fL ${pkgs.mine.weechatPlugins.highmon}/highmon.pl ${mutableDotfiles}/weechat-plugins/.weechat/perl/highmon.pl
       cp -fL ${pkgs.mine.weechatPlugins.perlexec}/perlexec.pl ${mutableDotfiles}/weechat-plugins/.weechat/perl/perlexec.pl
-      stow -d "${mutableDotfiles}" -t ${homeDirectory} bin weechat weechat-plugins
+      ${pkgs.stow}/bin/stow -d "${mutableDotfiles}" -t ${homeDirectory} bin weechat weechat-plugins
     '';
 
     home.activation."tomDoggettUpdateNpmrc" = dagEntryAfter ["tomDoggettInit"] ''
@@ -404,7 +404,7 @@ in lib.mkMerge [
         xset dpms 90
         xset s off
         xrd -merge ~/.Xresources
-        ${pkgs.mine.python36Packages.i3-gnome-pomodoro}/bin/pomodoro-client start && ${pkgs.mine.python36Packages.i3-gnome-pomodoro}/bin/pomodoro-client skip 
+        ${pkgs.mine.python36Packages.i3-gnome-pomodoro}/bin/pomodoro-client start && ${pkgs.mine.python36Packages.i3-gnome-pomodoro}/bin/pomodoro-client skip
       '';
     };
   }

@@ -73,7 +73,7 @@ in {
     fi
   '';
 
-  # This keeps the local copy of nixpkgs up to date, but currently it's not doing anything
+  # This keeps the local copy of nixpkgs up to date
   # launchd.user.agents.fetch-nixpkgs = {
   #   command = "${git}/bin/git -C ~/.nix-defexpr/nixpkgs fetch origin master";
   #   environment.GIT_SSL_CAINFO = "${cacert}/etc/ssl/certs/ca-bundle.crt";
@@ -82,24 +82,31 @@ in {
   #   serviceConfig.StartInterval = 360;
   # };
 
-  launchd.user.agents.chwm-sa = {
-    command = "${pkgs.mine.chunkwm.core}/bin/chunkwm --load-sa";
-    serviceConfig.KeepAlive = false;
-    serviceConfig.ProcessType = "Background";
+  # Chunkwm SA requires SIP to be permanently disabled, but ZG doesn't allow this
+  # launchd.user.agents.chwm-sa = {
+  #   command = "${pkgs.mine.chunkwm.core}/bin/chunkwm --load-sa";
+  #   serviceConfig.KeepAlive = false;
+  #   serviceConfig.ProcessType = "Background";
+  #   serviceConfig.RunAtLoad = true;
+  # };
+
+  # This ensures that I always have a backup of my current git repos synced with cloud storage
+  launchd.user.agents.zgbackup = {
+    command = "${pkgs.mine.scripts.sync_projects}";
+    serviceConfig.Nice = 1;
+    serviceConfig.StartInterval = 60;
     serviceConfig.RunAtLoad = true;
+    serviceConfig.StandardErrorPath = "/tmp/sync_projects.err";
+    serviceConfig.StandardOutPath = "/tmp/sync_projects.out";
   };
 
-  # Auto upgrade nix package and the daemon service.
-  services.activate-system.enable = true;
-  services.nix-daemon = {
-    enable = true;
-  };
-  nix.gc.automatic = true;
-  nix.package = nix;
+  # Auto upgrade nix package and the daemon service.  All gone because something odd is going on with Mojave and how Nix-Darwin replaces the default nix-daemon
+  services.nix-daemon.enable = false;
+  nix.gc.automatic = false;
 
   programs.vim = with pkgs.appConfigs.vim; {
     inherit vimConfig;
-    enable = true;
+    enable = false; # Something is broken on Mojave right now with vim
     enableSensible = true;
     extraKnownPlugins = {
       vim-jsx = vimUtils.buildVimPluginFrom2Nix {
@@ -185,7 +192,7 @@ in {
 
   # You should generally set this to the total number of logical cores in your system.
   # $ sysctl -n hw.ncpu
-  nix.maxJobs = 1;
+  nix.maxJobs = 8;
   nix.buildCores = 1;
   nix.distributedBuilds = true;
   nix.buildMachines = [

@@ -13,15 +13,11 @@ in with pkgs; [
   mine.chunkwm.purify
   mine.chunkwm.tiling
   skhd
-  # rtv # can't currently be built on Darwin without `allowUnsupportedSystems = true` which causes problems with other packages
   # home-manager # can't currently be built on Darwin without `allowUnsupportedSystems = true` which causes problems with other packages
   mine.darwinApps.bitbar
-  mine.darwinApps.firefox
   mine.darwinApps.google-play-music-desktop-player
-  mine.darwinApps.iterm
   mine.darwinApps.postman
   mine.darwinApps.teensy
-  mine.darwinApps.vscode
   mosh
   nixops
   ripgrep

@@ -8,7 +8,7 @@ pync.overridePythonAttrs(oldAttrs: {
   inherit version;
   src = fetchurl {
     inherit sha256;
-    url = "mirror://pypi/p/${oldAttrs.baseName}/${oldAttrs.baseName}-${version}.tar.gz";
+    url = "mirror://pypi/p/pync/pync-${version}.tar.gz";
   };
   preInstall = false;
   buildInputs = oldAttrs.buildInputs ++ lib.optionals stdenv.isDarwin [

@@ -5,8 +5,8 @@ darwinAppWrapper rec {
   
   app = pkgs.callPackage ./app.nix {
     inherit mkDarwinApp appName appMeta;
-    version = "63.0.3";
-    sha256  = "04c2sk84zn1wqmj4s5w2s446i7fb7p22r2bbahrjbbiv39yil81g";
+    version = "64.0";
+    sha256  = "0bz9ds4z5if5xqp4vqydkmyrdlryqr3l6sfsvh6fmsxzgz5113p1";
   };
 
   appMeta = with pkgs.stdenv.lib; {

@@ -40,18 +40,19 @@ pkgs.writeText "config" ''
 
   # Google Drive
   [google_drive]
+  label=G
   command=${pkgs.mine.i3blocks.mine.google_drive}
   interval=1
 
   # Bitcoin Price
   [btc]
-  label=BTC
+  label=B
   command=${pkgs.mine.i3blocks.mine.bitcoin}
   interval=60
 
   # Ethereum Price
   [eth]
-  label=ETH
+  label=E
   command=${pkgs.mine.i3blocks.mine.ethereum}
   interval=60
 
@@ -84,14 +85,14 @@ pkgs.writeText "config" ''
   interval=30
 
   [memory]
-  label=SWAP
+  label=SWP
   instance=swap
   separator=false
   interval=30
 
   # Disk usage
   [disk]
-  label=HOME
+  label=~
   interval=30
 
   # Network interface monitoring
@@ -106,9 +107,8 @@ pkgs.writeText "config" ''
 
   # CPU usage
   [cpu_usage]
-  label=CPU
   interval=10
-  min_width=CPU: 100.00%
+  min_width=100.00%
   #separator=false
 
   # Battery indicator
@@ -117,7 +117,7 @@ pkgs.writeText "config" ''
   label=⚡
   interval=30
   markup=pango
-  min_width=bat: ■■■■■
+  min_width=b: ■■■■■
 
   # Date Time
   #
@@ -140,6 +140,5 @@ pkgs.writeText "config" ''
   # The script may be called with -w and -c switches to specify thresholds,
   # see the script for details.
   [temperature]
-  label=TEMP
   interval=10
 ''

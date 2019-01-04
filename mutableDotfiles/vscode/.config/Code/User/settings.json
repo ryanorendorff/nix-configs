@@ -9,7 +9,9 @@
   "editor.disableTranslate3d": true,
   "extensions.ignoreRecommendations": true,
   "git.autofetch": true,
-  "phan.analyzedFileExtensions": ["php"],
+  "phan.analyzedFileExtensions": [
+    "php"
+  ],
   "phan.analyzeOnlyOnSave": true,
   "phpfmt.visibility_order": true,
   "phpfmt.smart_linebreak_after_curly": true,
@@ -17,7 +19,7 @@
   "phpfmt.psr1": true,
   "phpfmt.psr2": true,
   "phpfmt.indent_with_space": 4,
-  "phpfmt.passes":[
+  "phpfmt.passes": [
     "AlignGroupDoubleArrow",
     "AlignEquals",
     "AlignDoubleSlashComments",
@@ -32,7 +34,6 @@
     "AllmanStyleBraces"
   ],
   "php.suggest.basic": false,
-  "terraform.format.enable": false,
   "update.channel": "none",
   "vim.autoindent": true,
   "vim.handleKeys": {
@@ -52,6 +53,16 @@
       ]
     }
   ],
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": [
+        ":"
+      ],
+      "commands": [
+        "workbench.action.showCommands",
+      ]
+    }
+  ],
   "vim.statusBarColors": {
     "normal": "#005f5f",
     "insert": "#5f0000",
@@ -62,11 +73,11 @@
   },
   "vim.statusBarColorControl": true,
   "vim.useCtrlKeys": true,
-  "window.zoomLevel": 0,
+  "window.zoomLevel": -3,
   "workbench.colorCustomizations": {
-    "statusBar.background": "#005f5f",
-    "statusBar.noFolderBackground": "#005f5f",
-    "statusBar.debuggingBackground": "#005f5f"
+    "statusBar.background": "#5f0000",
+    "statusBar.noFolderBackground": "#5f0000",
+    "statusBar.debuggingBackground": "#5f0000"
   },
   "[git-commit]": {
     "editor.fontFamily": "'iA Writer Duospace', Menlo, Monaco, 'Courier New', monospace",
@@ -119,7 +130,7 @@
     "zuid"
   ],
   "php-cs-fixer.executablePath": "${extensionPath}/php-cs-fixer.phar",
-  "php-cs-fixer.lastDownload": 1542043001636,
+  "php-cs-fixer.lastDownload": 1546532722824,
   "terminal.integrated.shellArgs.linux": [
     "-c",
     "[[ -e ./shell.nix || -e ./default.nix ]] && nix-shell --pure || bash -l",

@@ -21,6 +21,7 @@
       { repo = "agent-platform-core-clients"; }
       { repo = "aps-contacts"; }
       { repo = "crm-data-entities"; }
+      { repo = "contact-proxy-webserver"; }
       { repo = "crm-data-repository"; shell = ../shells/php55/default.nix; build = false; }
     ];
     delta-force = [
@@ -29,6 +30,7 @@
       { repo = "ean-client"; }
       { repo = "ean-data-repository"; }
       { repo = "goodcop"; shell = ../shells/zg-goodcop/default.nix; build = false; }
+      { repo = "jumpball-callback-service"; shell = ../shells/php71/default.nix; }
       { repo = "l2-functional-tests"; }
       { repo = "l2-queue-essentials"; }
       { repo = "lead-model-serialization"; }
