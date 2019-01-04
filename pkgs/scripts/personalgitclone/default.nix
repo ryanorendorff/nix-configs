@@ -102,7 +102,7 @@ pkgs.writeScript "personalgitclone" (
 
     export REMOTE_USER_NAME=$1
     export REMOTE_PROJECT_NAME=$2
-    export TEAM_NAME=${"$"}{REMOTE_USER_NAME//\~/_}
+    export USER_NAME=${"$"}{REMOTE_USER_NAME//\~/_}
     export PROJECT_NAME=${"$"}{REMOTE_PROJECT_NAME//\~/_}
     if [[ -z "$NAME" ]] ; then
       export NAME="$PROJECT_NAME"
@@ -114,6 +114,8 @@ pkgs.writeScript "personalgitclone" (
     if [[ $USE_GITLAB -eq 1 ]] ; then
       export SERVICE_HOST="gitlab"
     fi
+
+    export MY_SERVICE_PATH="$SERVICE_HOST:nocoolnametom"
 
     if [[ ! -z "$NIX_SHELL" && ${"$"}{NIX_SHELL: -4} != ".nix" ]] ; then
       export NIX_SHELL="$NIX_SHELL/default.nix"
@@ -131,7 +133,7 @@ pkgs.writeScript "personalgitclone" (
     fi
 
     if [[ -z "$DIR" ]] ; then
-      export DIR="${projects}/$TEAM_NAME/$NAME"
+      export DIR="${projects}/$USER_NAME/$NAME"
     fi
 
     if [ ! -d "$DIR" ] ; then
@@ -147,6 +149,11 @@ pkgs.writeScript "personalgitclone" (
 
     cd "$DIR"
 
+    if [[ $USE_GITLAB -eq 1 && -z `git remote get-url gitlabhttp 2> /dev/null` ]]; then
+      git remote add gitlabhttp "https://gitlab.com/$REMOTE_USER_NAME/$REMOTE_PROJECT_NAME.git"
+    fi
+
+    git remote set-url --push origin "$MY_SERVICE_PATH/$PROJECT_NAME.git"
     git config user.name "Tom Doggett"
     git config user.email "nocoolnametom@gmail.com"
 
