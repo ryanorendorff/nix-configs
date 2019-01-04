@@ -2,4 +2,5 @@ result
 *.swp
 .DS_Store
 node_modules
+/.vscode
 /hardware-configuration.nix

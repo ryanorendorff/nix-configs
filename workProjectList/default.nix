@@ -1,17 +1,7 @@
 {
   gitlab = {
     apex = [
-      # { repo = "agent-teams-utilities"; }
       { repo = "agent-teams"; shell = ../shells/php55/default.nix; build = false; }
-      # { repo = "agentteamsproc"; }
-      # { repo = "aps-team-stats"; }
-      # { repo = "lead-forwarding-proc"; }
-      # { repo = "lead-routing-api"; }
-      # { repo = "polaris-lead-events-proc"; }
-      # { repo = "polaris-to-beth-concierge-proc"; }
-      # { repo = "trulia-featured-listings-api"; }
-      # { repo = "universal-nav-ui"; }
-      # { repo = "user-profile-api-client"; }
     ];
     apops = [
       { repo = "apops-cli"; }
