@@ -3,7 +3,7 @@
 with pkgs;
 with {
   sharedPythonPackages = [
-    # pkgs.mine.python27Packages.apopscli
+    # pkgs.mine.python27Packages.apopscli # something is broken on MacOS right now
   ];
 };
 [
@@ -20,12 +20,12 @@ with {
   gnupg
   gnupg1compat
   hasklig
-  haxor-news
+  # haxor-news # something is broken on MacOS right now
   htop
   jq
   links2
   lsof
-  mine.weechat
+  # mine.weechat # something is broken on MacOS right now
   mine.wtfutil
   mpc_cli
   ncdu
@@ -34,7 +34,7 @@ with {
   nodejs
   openssl
   perl
-  playerctl
+  rtv
   silver-searcher
   stow
   styx

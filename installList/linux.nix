@@ -39,8 +39,8 @@ with pkgs; [
   openssh
   php71
   phpPackages.composer
+  playerctl
   qscreenshot
-  rtv
   sysstat
   termite
   vit

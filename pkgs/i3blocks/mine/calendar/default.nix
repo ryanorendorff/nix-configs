@@ -16,6 +16,7 @@ pkgs.writeScript "calendar" ''
     ${pkgs.gcalcli}/bin/gcalcli --nocolor --calendar "Calendar" \
        --calendar "nocoolnametom@gmail.com" --calendar "Family" \
        agenda "'`date +%Y%m%dT%H%M`'" "'`date +%Y%m%dT2359`'" \
+       --nostarted \
      | cut -d " " -f 4- \
      | head -2 \
      | tail -1 \
