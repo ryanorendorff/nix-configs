@@ -106,7 +106,7 @@ in {
 
   programs.vim = with pkgs.appConfigs.vim; {
     inherit vimConfig;
-    enable = false; # Something is broken on Mojave right now with vim
+    enable = true; # Something is broken on Mojave right now with vim
     enableSensible = true;
     extraKnownPlugins = {
       vim-jsx = vimUtils.buildVimPluginFrom2Nix {

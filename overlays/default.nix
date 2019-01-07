@@ -6,5 +6,6 @@
     (import ../cronJobs/overlays.nix)
     (import ../files/overlays.nix)
     (import ../pkgs/overlays.nix)
+    (import ./darwin-vim.nix)
   ];
 }

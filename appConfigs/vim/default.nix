@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
-  knownPlugins = pkgs.callPackage ./knownPlugins.nix {};
-  vimConfig = pkgs.callPackage ./vimConfig.nix {};
+  knownPlugins = import ./knownPlugins.nix {};
+  vimConfig = import ./vimConfig.nix {};
 }
