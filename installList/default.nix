@@ -3,7 +3,7 @@
 with pkgs;
 with {
   sharedPythonPackages = [
-    # pkgs.mine.python27Packages.apopscli # something is broken on MacOS right now
+    # pkgs.mine.python2Packages.apopscli # something is broken on MacOS right now
   ];
 };
 [

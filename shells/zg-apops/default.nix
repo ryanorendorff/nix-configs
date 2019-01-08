@@ -11,7 +11,7 @@ pkgs.mkShell rec {
     terraform-full
     ansible
     docker
-    (python.withPackages (pythonPackages: with pythonPackages; with pkgs.mine.python27Packages; [ apopscli boto3 pyasn1 ]))
+    (python.withPackages (pythonPackages: with pythonPackages; with pkgs.mine.python2Packages; [ apopscli boto3 pyasn1 ]))
   ];
 
   # This sets up the environment within the shell, places the composer `vendor/bin` directory within

@@ -10,6 +10,7 @@ with pkgs; [
   (python.withPackages myPythonPackages)
   bash-completion
   blueman
+  # bluejeans
   cava
   compton
   dmenu
@@ -30,7 +31,9 @@ with pkgs; [
   libnotify
   lm_sensors
   marp
-  mine.python36Packages.i3-gnome-pomodoro
+  mcomix
+  mine.python3Packages.i3-gnome-pomodoro
+  mine.python3Packages.kindle-comic-converter
   mine.postman
   mine.vr180-creator
   mpv
@@ -41,6 +44,7 @@ with pkgs; [
   phpPackages.composer
   playerctl
   qscreenshot
+  slack
   sysstat
   termite
   vit

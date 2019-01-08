@@ -13,6 +13,8 @@ in {
   networking.firewall.allowedTCPPorts = [ 80 22 ] ++ (if useSSL then [ 443 ] else []);
   networking.firewall.allowPing = true;
 
+  services.postfix.enable = true;
+
   services.mysql = {
     enable = true;
     package = pkgs.mysql;

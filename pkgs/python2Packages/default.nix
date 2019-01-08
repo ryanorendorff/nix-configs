@@ -1,8 +1,8 @@
 { pkgs, lib ? pkgs.lib, debug ? false, ... }:
 
 with lib; with {
-  pythonPackages = pkgs.python36Packages;
-  myPythonPackages = pkgs.mine.python36Packages;
+  pythonPackages = pkgs.python27Packages;
+  myPythonPackages = pkgs.mine.python2Packages;
 };
 ( pkgs.callPackage ../python-modules/python-packages.nix { inherit pkgs; inherit pythonPackages; inherit myPythonPackages; }) //
 mapAttrs' (name: type: {

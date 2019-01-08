@@ -400,11 +400,11 @@ in lib.mkMerge [
         systemctl --user start compton.service
         systemctl --user start keybase.service
         systemctl --user start kbfs.service
-        ${pkgs.mine.python36Packages.i3-gnome-pomodoro}/bin/pomodoro-client daemon 4 --nagbar &
+        ${pkgs.mine.python3Packages.i3-gnome-pomodoro}/bin/pomodoro-client daemon 4 --nagbar &
         xset dpms 90
         xset s off
         xrd -merge ~/.Xresources
-        ${pkgs.mine.python36Packages.i3-gnome-pomodoro}/bin/pomodoro-client start && ${pkgs.mine.python36Packages.i3-gnome-pomodoro}/bin/pomodoro-client skip
+        ${pkgs.mine.python3Packages.i3-gnome-pomodoro}/bin/pomodoro-client start && ${pkgs.mine.python3Packages.i3-gnome-pomodoro}/bin/pomodoro-client skip
       '';
     };
   }
