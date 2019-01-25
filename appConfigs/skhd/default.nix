@@ -50,7 +50,7 @@ in ''
   ${shalt} - 8 : ${chunkc} tiling::window --send-to-desktop 8
   ${shalt} - 9 : ${chunkc} tiling::window --send-to-desktop 9
 
-  # move focus to workspace
+  # move focus to workspace # Doesn't work on Mojave without chunkwm-sa and SIP disabled!
   ${meh} - 1 : ${chunkc} tiling::desktop --focus 1
   ${meh} - 2 : ${chunkc} tiling::desktop --focus 2
   ${meh} - 3 : ${chunkc} tiling::desktop --focus 3

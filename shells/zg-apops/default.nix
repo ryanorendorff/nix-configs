@@ -1,6 +1,4 @@
-with import <nixpkgs> { overlays = [ 
-  (import (builtins.toString ../../pkgs/overlays.nix))
-]; };
+with import <nixpkgs> { };
 
 pkgs.mkShell rec {
   # This is the list of packages used for this environment. If it's here then it's available within
@@ -8,19 +6,20 @@ pkgs.mkShell rec {
   buildInputs = with pkgs; [
     less
     git
+    vim
+    openssl
     terraform-full
     ansible
     docker
-    (python.withPackages (pythonPackages: with pythonPackages; with pkgs.mine.python2Packages; [ apopscli boto3 pyasn1 ]))
-  ];
+    python2
+    python2Packages.virtualenv
+    python2Packages.pip
+    python2Packages.cffi
+    python2Packages.cryptography
+  ] ++ (if pkgs.stdenv.isDarwin then [pkgs.darwin.cctools] else []);
 
-  # This sets up the environment within the shell, places the composer `vendor/bin` directory within
-  # the path so you can run phpunit from the command line, and symlinks the installed binaries to
-  # `.php/bin` so they can be used in IDEs or however you may need them.
   shellHook = ''
-    export PROJECT_HOME=`pwd`
-    export PATH=$PROJECT_HOME/.bin:$PATH
-    rm -f $PROJECT_HOME/.bin && ln -s $env/bin $PROJECT_HOME/.bin
-    [[ -e $PROJECT_HOME/.git/info/exclude && ! `grep "^\.bin$" $PROJECT_HOME/.git/info/exclude` ]] && echo ".bin" >> ./.git/info/exclude
+    ${python2Packages.virtualenv}/bin/virtualenv ~/.cache/apopsclienv
+    ${python2Packages.pip}/bin/pip install --extra-index-url https://pypi.stage.ap.truaws.com apopscli
   '';
 }

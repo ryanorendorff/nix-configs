@@ -11,7 +11,7 @@
   pyasn1 ? myPythonPackages.pyasn1,
   pyopenssl,
   python-jenkins,
-  python-gitlab ? myPythonPackages.python-gitlab, 
+  python-gitlab ? myPythonPackages.python-gitlab,
   pyyaml,
   requests,
   semver,
@@ -52,7 +52,7 @@ let
 in
 buildPythonPackage rec {
   pname = "apopscli";
-  version = "0.11.4";
+  version = "0.11.7";
 
   src = fetchpypi {
     inherit pname version;

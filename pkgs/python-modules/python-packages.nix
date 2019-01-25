@@ -2,22 +2,22 @@
 
 with pkgs; with pythonPackages;
 rec {
-  apopscli = callPackage ./apopscli {
-    inherit myPythonPackages;
-    ndg-httpsclient = myPythonPackages.ndg-httpsclient;
-    boto3 = myPythonPackages.boto3;
-    pyasn1 = myPythonPackages.pyasn1;
-  };
+  # apopscli = callPackage ./apopscli {
+  #   inherit myPythonPackages;
+  #   ndg-httpsclient = myPythonPackages.ndg-httpsclient;
+  #   boto3 = myPythonPackages.boto3;
+  #   pyasn1 = myPythonPackages.pyasn1;
+  # };
 
   aws-encryption-sdk = callPackage ./aws-encryption-sdk { };
-  
+
   boto3 = callPackage ./boto3 {
     inherit (myPythonPackages);
     botocore = myPythonPackages.botocore;
   };
 
   botocore = callPackage ./botocore { };
-  
+
   cement = callPackage ./cement { };
 
   diskcache = callPackage ./diskcache { };

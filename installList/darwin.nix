@@ -19,6 +19,7 @@ in with pkgs; [
   mine.darwinApps.google-play-music-desktop-player
   mine.darwinApps.postman
   mine.darwinApps.teensy
+  mine.python3Packages.kindle-comic-converter
   mosh
   nixops
   ripgrep
