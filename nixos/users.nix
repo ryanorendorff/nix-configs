@@ -10,7 +10,7 @@
     description = "Tom Doggett";
     group = pkgs.my.username;
     packages = [ pkgs.git pkgs.stow ];
-    extraGroups = [ "wheel" "networkmanager" "users" "audio" "vboxusers" ];
+    extraGroups = [ "wheel" "networkmanager" "users" "audio" "vboxusers" "docker" ];
     uid = 1000;
     hashedPassword = "$6$Zmgjoxw7$UTKTEtSRxVcUK0MmYM2OEDZ6.vtueK2G5FMHlGmpv2swu83PqDf1hM9nhGQ1VQWSUD5CzrXat0YdTYzNzwo.H/";
     openssh.authorizedKeys.keys = [
