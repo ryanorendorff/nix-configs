@@ -105,10 +105,10 @@
     pkgs.myCronJobs.hourlySyncProjects
   ];
 
-  # Enable the i3 Window Manager through auto-logging in tdoggett
+  # Enable the i3 Window Manager through auto-logging in my user
   services.xserver.displayManager.auto = {
     enable = true;
-    user = "tdoggett";
+    user = pkgs.my.username;
   };
 
   # Enable touchpad support.

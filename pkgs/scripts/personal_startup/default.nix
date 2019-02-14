@@ -1,7 +1,6 @@
 { pkgs, lib, ... }:
 
 let
-  projectsPath = if pkgs.stdenv.isDarwin then "~/Projects" else "~/projects";
   downloadsVBoxPath = "/mnt/vbox/sdcard/Downloads";
   downloadsVmwarePath = "/mnt/vmware/downloads";
 in pkgs.writeScript "personal_startup" (

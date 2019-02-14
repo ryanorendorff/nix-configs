@@ -3,9 +3,6 @@
 pkgs.writeScript "zgitclone" (
   let
     nixpkgsChannel = "nixpkgs-unstable";
-    myhome = if pkgs.stdenv.isDarwin then "/Users/tdoggett" else "/home/tdoggett";
-    projects = if pkgs.stdenv.isDarwin then "${myhome}/Projects" else "${myhome}/projects";
-    zillow = "${projects}/zillow";
   in ''
     #!/usr/bin/env bash
     export DIR=""
@@ -29,7 +26,7 @@ pkgs.writeScript "zgitclone" (
         echo "-s, --stash               use Stash as the remote service [default]"
         echo "-b, --gitlab              use Gitlab as the remote service"
         echo "-n, --name=NAME           specify the directory name (default is projectName)"
-        echo "-d, --output-dir=DIR      specify an absolute directory path (default is $ZILLOW/<teamName>/<projectName>)"
+        echo "-d, --output-dir=DIR      specify an absolute directory path (default is ${pkgs.my.directories.zillow}/<teamName>/<projectName>)"
         echo "--no-build                do not run automatic dependency building"
         echo "-N, --nix-shell=<path>    path to a nix file to copy as shell.nix"
         echo "--make-shell=[0,1]        whether or not to build the shell environment"
@@ -134,7 +131,7 @@ pkgs.writeScript "zgitclone" (
     fi
 
     if [[ -z "$DIR" ]] ; then
-      export DIR="${zillow}/$TEAM_NAME/$NAME"
+      export DIR="${pkgs.my.directories.zillow}/$TEAM_NAME/$NAME"
     fi
 
     if [ ! -d "$DIR" ] ; then
@@ -145,8 +142,8 @@ pkgs.writeScript "zgitclone" (
       exit
     fi
 
-    mkdir -p "${myhome}/.local/share"
-    echo "$DIR" >> "${myhome}/.local/share/zillowgits"
+    mkdir -p "${pkgs.my.directories.home}/.local/share"
+    echo "$DIR" >> "${pkgs.my.directories.home}/.local/share/zillowgits"
 
     cd "$DIR"
 

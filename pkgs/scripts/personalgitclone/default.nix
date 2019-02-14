@@ -3,8 +3,6 @@
 pkgs.writeScript "personalgitclone" (
   let
     nixpkgsChannel = "nixpkgs-unstable";
-    myhome = if pkgs.stdenv.isDarwin then "/Users/tdoggett" else "/home/tdoggett";
-    projects = if pkgs.stdenv.isDarwin then "${myhome}/Projects" else "${myhome}/projects";
   in ''
     #!/usr/bin/env bash
     export DIR=""
@@ -28,7 +26,7 @@ pkgs.writeScript "personalgitclone" (
         echo "-g, --github              use Github as the remote service [default]"
         echo "-b, --gitlab              use Gitlab as the remote service"
         echo "-n, --name=NAME           specify the directory name (default is repoName)"
-        echo "-d, --output-dir=DIR      specify an absolute directory path (default is $PROJECTS/<userName>/<repoName>)"
+        echo "-d, --output-dir=DIR      specify an absolute directory path (default is ${pkgs.my.directories.projects}/<userName>/<repoName>)"
         echo "--no-build                do not run automatic dependency building"
         echo "-N, --nix-shell=<path>    path to a nix file to copy as shell.nix"
         echo "--make-shell=[0,1]        whether or not to build the shell environment"
@@ -133,7 +131,7 @@ pkgs.writeScript "personalgitclone" (
     fi
 
     if [[ -z "$DIR" ]] ; then
-      export DIR="${projects}/$USER_NAME/$NAME"
+      export DIR="${pkgs.my.directories.projects}/$USER_NAME/$NAME"
     fi
 
     if [ ! -d "$DIR" ] ; then
@@ -144,8 +142,8 @@ pkgs.writeScript "personalgitclone" (
       exit
     fi
 
-    mkdir -p "${myhome}/.local/share"
-    echo "$DIR" >> "${myhome}/.local/share/personalgits"
+    mkdir -p "${pkgs.my.directories.home}/.local/share"
+    echo "$DIR" >> "${pkgs.my.directories.home}/.local/share/personalgits"
 
     cd "$DIR"
 

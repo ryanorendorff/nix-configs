@@ -3,12 +3,12 @@
 {
   users.mutableUsers = false;
 
-  users.extraGroups.tdoggett.gid = 499;
-  users.extraUsers.tdoggett = {
+  users.extraGroups.${pkgs.my.username}.gid = 499;
+  users.extraUsers.${pkgs.my.username} = {
     isNormalUser = true;
-    home = "/home/tdoggett";
+    home = "/home/${pkgs.my.username}";
     description = "Tom Doggett";
-    group = "tdoggett";
+    group = pkgs.my.username;
     packages = [ pkgs.git pkgs.stow ];
     extraGroups = [ "wheel" "networkmanager" "users" "audio" "vboxusers" ];
     uid = 1000;

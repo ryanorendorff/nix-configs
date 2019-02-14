@@ -14,10 +14,6 @@
           "swallows": [
             {
               "class": "^Google\\-chrome$",
-              // "title": "^Developer.*"
-              // "instance": "^google\\-chrome\\ \\(\\/home\\/tdoggett\\/\\.config\\/google\\-chrome\\)$",
-              // "title": "^Developer\\ Tools\\ \\-\\ http\\:\\/\\/localhost\\:8000\\/teams\\/login\\?redirect\\=\\/teams\\/rules\\/404$",
-              // "transient_for": "^$",
               "window_role": "^pop\\-up$"
             }
           ],

@@ -20,12 +20,12 @@ with {
   gnupg
   gnupg1compat
   hasklig
-  # haxor-news # something is broken on MacOS right now
+  haxor-news # something is broken on MacOS right now
   htop
   jq
   links2
   lsof
-  # mine.weechat # something is broken on MacOS right now
+  mine.weechat # something is broken on MacOS right now
   mine.wtfutil
   mpc_cli
   ncdu

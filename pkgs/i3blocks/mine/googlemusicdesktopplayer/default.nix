@@ -2,10 +2,7 @@
 
 pkgs.writeScript "googlemusicdesktopplayer" (
   let
-    myhome = if pkgs.stdenv.isDarwin then "/Users/tdoggett" else "/home/tdoggett";
-    appPath = if pkgs.stdenv.isDarwin
-      then "/Library/Application Support/Google Play Music Desktop Player/json_store/playback.json"
-      else "/.config/Google Play Music Desktop Player/json_store/playback.json";
+    appPath = (if pkgs.stdenv.isDarwin then "/Library/Application Support" else "/.config") + "/Google Play Music Desktop Player/json_store/playback.json";
   in ''
     #!/usr/bin/env bash
 
@@ -17,8 +14,8 @@ pkgs.writeScript "googlemusicdesktopplayer" (
     # <bitbar.dependencies>bash, grep, sed</bitbar.dependencies>
     #
 
-    ${pkgs.gnugrep}/bin/grep -q '"playing":\s*true' ${myhome}${builtins.replaceStrings [" "] ["\\ "]  appPath} &&
-    ${pkgs.gnugrep}/bin/grep '\s*"title":\s*".*",' ${myhome}${builtins.replaceStrings [" "] ["\\ "]  appPath} |
+    ${pkgs.gnugrep}/bin/grep -q '"playing":\s*true' ${pkgs.my.directories.home}${builtins.replaceStrings [" "] ["\\ "]  appPath} &&
+    ${pkgs.gnugrep}/bin/grep '\s*"title":\s*".*",' ${pkgs.my.directories.home}${builtins.replaceStrings [" "] ["\\ "]  appPath} |
     cut -d \" -f 4 ||
     echo "No Music"
   ''

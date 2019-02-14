@@ -17,9 +17,9 @@
     device = "sdcard";
     options = [ "rw,uid=1000,gid=100,dmode=777,fmode=777" ];
   };
-  fileSystems."/mnt/vbox/tdoggett" = {
+  fileSystems."/mnt/vbox/${pkgs.my.username}" = {
     fsType = "vboxsf";
-    device = "tdoggett";
+    device = pkgs.my.username;
     options = [ "rw,uid=1000,gid=100,dmode=777,fmode=777" ];
   };
   fileSystems."/mnt/vbox/windows" = {

@@ -2,6 +2,7 @@
 
 {
   nixpkgs.overlays = [
+    (import ./directories.nix)
     (import ../appConfigs/overlays.nix)
     (import ../cronJobs/overlays.nix)
     (import ../files/overlays.nix)

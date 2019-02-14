@@ -56,7 +56,7 @@ pkgs.writeText "config.yml" ''
           width: 2
         refreshInterval: 8
         repositories:
-        - "${if stdenv.isDarwin then "/Users/tdoggett/Projects" else "/home/tdoggett/projects"}/nocoolnametom/nix-configs"
+        - "${pkgs.my.directories.nixConfigsRepo}
       weather:
         apiKey: "${import ../../keys/private/openweathermap_key.nix}"
         # From http://openweathermap.org/help/city_list.txt
