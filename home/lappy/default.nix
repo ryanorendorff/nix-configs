@@ -30,6 +30,7 @@ in (lib.mkIf pkgs.stdenv.isLinux {
   services.screen-locker.enable = false;
   services.unclutter.enable = true;
   services.xscreensaver.enable = true;
+  services.polybar.enable = true;
 
   home.file = addHomeFiles pkgs.myFiles [
     pkgs.myFiles.home.mailcap

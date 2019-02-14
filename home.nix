@@ -346,6 +346,17 @@ in {
       extraFlags = [
       ];
     };
+    polybar = {
+      package = pkgs.polybar.override {
+        i3Support = true;
+        alsaSupport = true;
+        pulseSupport = true;
+        mpdSupport = true;
+        githubSupport = true;
+      };
+      config = ./polybar.conf;
+      script = "polybar example &";
+    };
     random-background = {
       imageDirectory = "${homeDirectory}/wallpapers/";
       interval = "30 min";
@@ -379,6 +390,7 @@ in {
       xset s off
       xrd -merge ~/.Xresources
       ${pkgs.mine.python3Packages.i3-gnome-pomodoro}/bin/pomodoro-client start && ${pkgs.mine.python3Packages.i3-gnome-pomodoro}/bin/pomodoro-client skip
+      systemctl --user restart polybar.service
     '';
   };
 

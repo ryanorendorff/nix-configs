@@ -50,7 +50,6 @@ with pkgs; [
   vit
   vlc
   vscode
-  whois
   xautolock
   xterm
 ]

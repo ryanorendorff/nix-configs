@@ -1,16 +1,16 @@
 { pkgs, lib, ... }:
 
 let
-  MainWS = "\"1: Main \"";
-  DevWS = "\"2: Dev \"";
-  InfoWS = "\"3: Info \"";
-  PersonalWS = "\"4: Personal \"";
-  PostmanWS = "\"5: Postman\"";
-  MusicWS = "\"6: Music \"";
-  DatabaseWS = "\"7: Database \"";
-  KeepassWS = "\"8: Keepass \"";
-  ws9 = "9";
-  ws10 = "10";
+  MainWS     = "1:main";
+  DevWS      = "2:dev";
+  InfoWS     = "3:info";
+  PersonalWS = "4:personal";
+  PostmanWS  = "5:postman";
+  MusicWS    = "6:music";
+  DatabaseWS = "7:database";
+  KeepassWS  = "8:keepass";
+  ws9        = "9";
+  ws10       = "10";
   monitor1 = "Virtual1";
   monitor2 = "Virtual3";
   monitor3 = "Virtual2";
@@ -204,13 +204,13 @@ in {
         };
       };
       bars = [
-        {
-          mode = "dock";
-          hiddenState = "hide";
-          position = "top";
-          workspaceButtons = true;
-          statusCommand = "${pkgs.i3blocks}/bin/i3blocks -c ${pkgs.appConfigs.i3blocks}";
-        }
+        # {
+        #   mode = "dock";
+        #   hiddenState = "hide";
+        #   position = "top";
+        #   workspaceButtons = true;
+        #   statusCommand = "${pkgs.i3blocks}/bin/i3blocks -c ${pkgs.appConfigs.i3blocks}";
+        # }
       ];
       startup = [
         {
@@ -254,9 +254,9 @@ in {
     });
     extraConfig = ''
       # Pulse Audio controls
-      bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% && pkill -RTMIN+10 i3blocks
-      bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% && pkill -RTMIN+10 i3blocks
-      bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle && pkill -RTMIN+10 i3blocks
+      bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% # && pkill -RTMIN+10 i3blocks
+      bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% # && pkill -RTMIN+10 i3blocks
+      bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # && pkill -RTMIN+10 i3blocks
 
       # Sreen brightness controls
       bindsym XF86MonBrightnessUp exec ${pkgs.xorg.xbacklight}/bin/xbacklight -inc 5 # increase screen brightness

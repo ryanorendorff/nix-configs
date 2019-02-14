@@ -11,6 +11,7 @@ with pkgs; [
   screen
   mopidy
   unzip
+  gnumake
   glibcLocales
   gitAndTools.gitFull
   gitAndTools.git-extras
