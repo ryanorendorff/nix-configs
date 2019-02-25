@@ -7,6 +7,7 @@ with {
   ];
 };
 [
+  awscli
   ctags
   curl
   fasd
@@ -25,6 +26,7 @@ with {
   jq
   links2
   lsof
+  kindlegen
   mine.weechat # something is broken on MacOS right now
   mine.wtfutil
   mpc_cli
@@ -34,6 +36,7 @@ with {
   nodejs
   openssl
   perl
+  phpPackages.phpstan
   rtv
   silver-searcher
   stow

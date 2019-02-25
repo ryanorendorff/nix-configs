@@ -2,7 +2,7 @@
 
 let
   repoName = "chunkwm";
-  repoV = "0.4.7";
+  repoV = "0.4.8";
   repoSha = "0bj704dpvsjhxbg07nm1bipijd3lcvhm83vsscidpbgp21rv6gzp";
 
   self = chunkwm;

@@ -17,9 +17,8 @@ in with pkgs; [
   # home-manager # can't currently be built on Darwin without `allowUnsupportedSystems = true` which causes problems with other packages
   mine.darwinApps.bitbar
   mine.darwinApps.google-play-music-desktop-player
-  mine.darwinApps.postman
   mine.darwinApps.teensy
-  mine.python3Packages.kindle-comic-converter
+  # mine.python3Packages.kindle-comic-converter
   mosh
   nixops
   ripgrep

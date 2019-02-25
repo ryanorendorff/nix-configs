@@ -7,7 +7,6 @@ pkgs.mkShell rec {
     less
     git
     nodejs
-    npm2nix
   ];
 
   # This sets up the environment within the shell, places the composer `vendor/bin` directory within

@@ -31,6 +31,9 @@
     rouge = [
       { repo = "zillow-readiness-handler"; }
     ];
+    tab = [
+      { repo = "tab"; build = false; }
+    ];
     tdoggett = [
       { repo = "gitlab-runner-testing"; }
       { repo = "innovation_week_voter_client"; }
@@ -47,7 +50,11 @@
       { repo = "crm-webhookz"; }
       { repo = "dispatcher"; shell = ../shells/zg-dispatcher/default.nix; }
       { repo = "dispatcher-model"; shell = ../shells/zg-dispatcher-model/default.nix; build = false; }
+      { repo = "gmail-webservices"; }
       { repo = "home-recommendations-service"; shell = ../shells/php71/default.nix; build = false; }
+      { repo = "lead-notifications-lambda"; shell = ../shells/node/default.nix; }
+      { repo = "kinesis-lead-event-to-sqs-lambda"; shell = ../shells/node/default.nix; }
+      { repo = "sqs-lead-event-to-dispatcher-lambda"; shell = ../shells/node/default.nix; }
       { repo = "video-message-template-provisioner"; }
       { repo = "video-message-template-service"; }
       { repo = "web-crm-frontend"; shell = ../shells/zg-web-crm-frontend/default.nix; build = false; }

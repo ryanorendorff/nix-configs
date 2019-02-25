@@ -27,10 +27,10 @@
     port = 22223;
   }
   {
-    host = "remote_bill";
+    host = "remote_gimli";
     hostname = "home.nocoolnametom.com";
     identityFile = toString ../../keys/private/id_rsa;
-    user = "pi";
+    user = "tdoggett";
     port = 22224;
   }
   {
@@ -54,10 +54,10 @@
     user = "pi";
   }
   {
-    host = "bill";
-    hostname = "bill";
+    host = "gimli";
+    hostname = "gimli";
     identityFile = toString ../../keys/private/id_rsa;
-    user = "pi";
+    user = "tdoggett";
   }
   {
     host = "gollum";
