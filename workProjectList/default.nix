@@ -44,6 +44,7 @@
     yoltron = [
       { repo = "agent-platform-tools-endpoints"; }
       { repo = "agent-platform-tools"; shell = ../shells/node/default.nix; }
+      { repo = "api-service-messaging"; shell = ../shells/php71; }
       { repo = "aps-messages"; shell = ../shells/zg-aps-messages/default.nix; build = false; }
       { repo = "aps-push-notification"; }
       { repo = "crm-messages"; }

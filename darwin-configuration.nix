@@ -36,7 +36,7 @@ in {
     // pkgs.myFiles.etc.ssh_config
     // pkgs.myFiles.etc.trulia_server
     // pkgs.myFiles.etc.ap_api_local
-    // pkgs.myFiles.etc.ap_handles
+    // pkgs.myFiles.etc.db_handles
     // pkgs.myFiles.etc.trulia_api_local
     # This is just so we can run the nixos-config files from MacOS for testing without worrying about referencing a missing file
     // pkgs.myFiles.etc.nixos_hardware_configuration

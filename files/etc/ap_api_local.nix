@@ -7,7 +7,7 @@
         "appName": "aps-team-stats",
         "environment": "dev",
         "baseUriPath": "/",
-        "dbHandles": "${(pkgs.callPackage ./ap_handles/ap_handles.nix {})}",
+        "dbHandles": "${(pkgs.callPackage ./db_handles_file {})}",
         "logFile": "/tmp/log.log",
         "logStashErrorFile": "/tmp/logStashErrors.log",
         "useAPCuMetadataCache" : "1",

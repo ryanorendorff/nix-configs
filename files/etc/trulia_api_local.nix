@@ -1,4 +1,4 @@
-{ prefix ? "", ... }:
+{ prefix ? "", pkgs, ... }:
 
 {
   "${prefix}trulia/api_local.json" = {
@@ -7,7 +7,7 @@
         "appName": "aps-team-stats",
         "environment": "dev",
         "baseUriPath": "/",
-        "dbHandles": "/mnt/vbox/windows/handles.json",
+        "dbHandles": "${(pkgs.callPackage ./db_handles_file {})}",
         "logFile": "/tmp/log.log",
         "logStashErrorFile": "/tmp/logStashErrors.log",
         "useAPCuMetadataCache" : "1",
